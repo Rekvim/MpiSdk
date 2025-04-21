@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>translations/qt_ru.qm</file>
+        <file>translations/qtBase_ru.qm</file>
+        <file>translations/qtMultimedia_ru.qm</file>
+    </qresource>
+</RCC>

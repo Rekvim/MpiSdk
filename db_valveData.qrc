@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/db_valveData">
+        <file>ValveConfig.json</file>
+    </qresource>
+</RCC>
