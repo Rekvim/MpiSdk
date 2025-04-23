@@ -93,8 +93,6 @@ ValveWindow::ValveWindow(QWidget *parent)
         double cvValue = variant.value("CV").toDouble();
         ui->comboBox_CV->addItem(QString::number(cvValue));
     }
-
-
 }
 
 ValveWindow::~ValveWindow()
