@@ -15,7 +15,6 @@ QXLSX_SOURCEPATH=./source/
 include(./QXlsx.pri)
 
 SOURCES += \
-    FileSaver.cpp \
     MainTestSettings.cpp \
     MainWindow.cpp \
     Mpi.cpp \
@@ -26,17 +25,19 @@ SOURCES += \
     OtherTestSettings.cpp \
     Program.cpp \
     Registry.cpp \
+    ReportSaver.cpp \
     Sensor.cpp \
     StepTestSettings.cpp \
     Test.cpp \
     Uart.cpp \
+    UartMessage.cpp \
     UartReader.cpp \
+    ValidatorFactory.cpp \
     ValveWindow.cpp \
     main.cpp \
     src/ValveСonfig/ValveDataLoader.cpp
 
 HEADERS += \
-    FileSaver.h \
     MainTestSettings.h \
     MainWindow.h \
     Mpi.h \
@@ -47,11 +48,14 @@ HEADERS += \
     OtherTestSettings.h \
     Program.h \
     Registry.h \
+    ReportSaver.h \
     Sensor.h \
     StepTestSettings.h \
     Test.h \
     Uart.h \
+    UartMessage.h \
     UartReader.h \
+    ValidatorFactory.h \
     ValveWindow.h \
     src/ValveСonfig/ValveDataLoader.h
 

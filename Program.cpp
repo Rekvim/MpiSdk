@@ -1,9 +1,5 @@
 #include "Program.h"
 
-#include <QEventLoop>
-#include <QMessageBox>
-#include <QTimer>
-
 Program::Program(QObject *parent)
     : QObject{parent}
 {
@@ -23,7 +19,7 @@ Program::Program(QObject *parent)
 
 void Program::SetRegistry(Registry *registry)
 {
-    registry_ = registry;
+    m_registry = registry;
 }
 
 void Program::SetDAC(quint16 dac, quint32 sleep_ms, bool wait_for_stop, bool wait_for_start)
@@ -123,7 +119,7 @@ void Program::AddRegression(const QVector<QPointF> &points)
     for (QPointF point : points) {
         chart_points.push_back({1, point.x(), point.y()});
     }
-    emit AddPoints(Charts::Main_pressure, chart_points);
+    emit AddPoints(Charts::Pressure, chart_points);
 
     //emit SetVisible(Charts::Main_pressure, 1, true);
     emit SetRegressionEnable(true);
@@ -133,14 +129,14 @@ void Program::AddFriction(const QVector<QPointF> &points)
 {
     QVector<Point> chart_points;
 
-    ValveInfo *valve_info = registry_->GetValveInfo();
+    ValveInfo *valve_info = m_registry->GetValveInfo();
 
     qreal k = 5 * M_PI * valve_info->diameter * valve_info->diameter / 4;
 
     for (QPointF point : points) {
         chart_points.push_back({0, point.x(), point.y() * k});
     }
-    emit AddPoints(Charts::Main_friction, chart_points);
+    emit AddPoints(Charts::Friction, chart_points);
 }
 
 void Program::UpdateSensors()
@@ -169,7 +165,7 @@ void Program::UpdateSensors()
     qreal percent = ((mpi_.GetDAC()->GetValue() - 4) / 16) * 100;
     percent = qMin(qMax(percent, 0.0), 100.0);
 
-    ValveInfo *valve_info = registry_->GetValveInfo();
+    ValveInfo *valve_info = m_registry->GetValveInfo();
     if (valve_info->safePosition != 0) {
         percent = 100 - percent;
     }
@@ -188,7 +184,7 @@ void Program::UpdateCharts_maintest()
     qreal percent = ((mpi_.GetDAC()->GetValue() - 4) / 16) * 100;
     percent = qMin(qMax(percent, 0.0), 100.0);
 
-    ValveInfo *valve_info = registry_->GetValveInfo();
+    ValveInfo *valve_info = m_registry->GetValveInfo();
     if (valve_info->safePosition != 0) {
         percent = 100 - percent;
     }
@@ -201,12 +197,12 @@ void Program::UpdateCharts_maintest()
         points.push_back({static_cast<quint8>(i + 1), X, mpi_[i]->GetValue()});
     }
 
-    emit AddPoints(Charts::Main_task, points);
+    emit AddPoints(Charts::Task, points);
 
     points.clear();
     points.push_back({0, mpi_[1]->GetValue(), mpi_[0]->GetValue()});
 
-    emit AddPoints(Charts::Main_pressure, points);
+    emit AddPoints(Charts::Pressure, points);
 }
 
 void Program::UpdateCharts_stroketest()
@@ -216,7 +212,7 @@ void Program::UpdateCharts_stroketest()
     qreal percent = ((mpi_.GetDAC()->GetValue() - 4) / 16) * 100;
     percent = qMin(qMax(percent, 0.0), 100.0);
 
-    ValveInfo *valve_info = registry_->GetValveInfo();
+    ValveInfo *valve_info = m_registry->GetValveInfo();
     if (valve_info->safePosition != 0) {
         percent = 100 - percent;
     }
@@ -236,7 +232,7 @@ void Program::UpdateCharts_optiontest(Charts chart)
     qreal percent = ((mpi_.GetDAC()->GetValue() - 4) / 16) * 100;
     percent = qMin(qMax(percent, 0.0), 100.0);
 
-    ValveInfo *valve_info = registry_->GetValveInfo();
+    ValveInfo *valve_info = m_registry->GetValveInfo();
     if (valve_info->safePosition != 0) {
         percent = 100 - percent;
     }
@@ -256,7 +252,7 @@ void Program::UpdateCharts_CyclicTred()
     qreal percent = ((mpi_.GetDAC()->GetValue() - 4) / 16) * 100;
     percent = qMin(qMax(percent, 0.0), 100.0);
 
-    ValveInfo *valve_info = registry_->GetValveInfo();
+    ValveInfo *valve_info = m_registry->GetValveInfo();
     if (valve_info->safePosition != 0) {
         percent = 100 - percent;
     }
@@ -271,7 +267,7 @@ void Program::UpdateCharts_CyclicTred()
 
 void Program::MainTestResults(MainTest::TestResults results)
 {
-    ValveInfo *valve_info = registry_->GetValveInfo();
+    ValveInfo *valve_info = m_registry->GetValveInfo();
 
     qreal k = 5 * M_PI * valve_info->diameter * valve_info->diameter / 4;
 
@@ -312,7 +308,7 @@ void Program::StepTestResults(QVector<StepTest::TestResult> results, quint32 T_v
 
 void Program::GetPoints_maintest(QVector<QVector<QPointF> > &points)
 {
-    emit GetPoints(points, Charts::Main_task);
+    emit GetPoints(points, Charts::Task);
 }
 
 void Program::GetPoints_steptest(QVector<QVector<QPointF> > &points)
@@ -398,7 +394,7 @@ void Program::button_init()
         emit SetTextColor(TextObjects::Label_sensors, Qt::darkGreen);
     }
 
-    ValveInfo *valve_info = registry_->GetValveInfo();
+    ValveInfo *valve_info = m_registry->GetValveInfo();
     bool normal_closed = (valve_info->safePosition == 0);
 
     emit SetText(TextObjects::Label_start_value, "Измерение");
@@ -532,9 +528,9 @@ void Program::MainTestStart()
     connect(main_test, &MainTest::ShowDots, this, [&](bool visible) { emit ShowDots(visible); });
 
     connect(main_test, &MainTest::ClearGraph, this, [&] {
-        emit ClearPoints(Charts::Main_task);
-        emit ClearPoints(Charts::Main_pressure);
-        emit ClearPoints(Charts::Main_friction);
+        emit ClearPoints(Charts::Task);
+        emit ClearPoints(Charts::Pressure);
+        emit ClearPoints(Charts::Friction);
         emit SetRegressionEnable(false);
     });
 
@@ -595,7 +591,7 @@ void Program::OptionalTestStart(quint8 test_num)
 
         task.delay = parameters.delay;
 
-        ValveInfo *valve_info = registry_->GetValveInfo();
+        ValveInfo *valve_info = m_registry->GetValveInfo();
 
         bool normal_open = (valve_info->safePosition != 0);
 
@@ -638,7 +634,7 @@ void Program::OptionalTestStart(quint8 test_num)
 
         task.delay = parameters.delay;
 
-        ValveInfo *valve_info = registry_->GetValveInfo();
+        ValveInfo *valve_info = m_registry->GetValveInfo();
 
         bool normal_open = (valve_info->safePosition != 0);
 
@@ -679,7 +675,7 @@ void Program::OptionalTestStart(quint8 test_num)
         }
 
         task.delay = parameters.delay;
-        ValveInfo *valve_info = registry_->GetValveInfo();
+        ValveInfo *valve_info = m_registry->GetValveInfo();
 
         qreal start_value = 4.0;
         qreal end_value = 20.0;

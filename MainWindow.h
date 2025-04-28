@@ -1,13 +1,14 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#pragma once
 #include <QLabel>
 #include <QLineEdit>
 #include <QMainWindow>
 #include <QPointF>
 #include <QThread>
 
-#include "FileSaver.h"
+#include "ReportSaver.h"
 #include "MyChart.h"
 #include "Program.h"
 #include "Registry.h"
@@ -24,7 +25,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void SetRegistry(Registry *registry);
-    void setReport(const FileSaver::Report &report);
+    void setReport(const ReportSaver::Report &report);
 
 private slots:
     void SetText(const TextObjects object, const QString &text);
@@ -33,6 +34,8 @@ private slots:
     void SetStepTestResults(QVector<StepTest::TestResult> results, quint32 T_value);
     void SetSensorsNumber(quint8 num);
     void SetButtonInitEnabled(bool enable);
+
+
     void AddPoints(Charts chart, QVector<Point> points);
     void ClearPoints(Charts chart);
     void SetChartVisible(Charts chart, quint16 series, bool visible);
@@ -56,21 +59,29 @@ private slots:
     void SetCheckboxDIChecked(quint8 status);
 
 private:
-    FileSaver::Report currentReport_;
-    FileSaver::Report report_;
-    bool testing_;
     Ui::MainWindow *ui;
-    Program *program_;
-    QThread *program_thread_;
-    Registry *registry_;
-    QHash<TextObjects, QLabel *> labels_;
-    QHash<TextObjects, QLineEdit *> line_edits_;
-    QHash<Charts, MyChart *> charts_;
-    MainTestSettings *main_test_settings_;
-    StepTestSettings *step_test_settings_;
-    OtherTestSettings *response_test_settings_;
-    OtherTestSettings *resolution_test_settings_;
-    FileSaver *file_saver_;
+
+    ReportSaver::Report m_notationReport;
+    ReportSaver::Report m_valveReport;
+    ReportSaver::Report m_currentReport;
+    ReportSaver::Report m_report;
+    ReportSaver *m_reportSaver;
+
+    Program *m_program;
+    QThread *m_programThread;
+
+    Registry *m_registry;
+
+    QHash<TextObjects, QLabel *> m_labels;
+    QHash<TextObjects, QLineEdit *> m_lineEdits;
+    QHash<Charts, MyChart *> m_charts;
+
+    bool m_testing;
+    MainTestSettings *m_mainTestSettings;
+    StepTestSettings *m_stepTestSettings;
+    OtherTestSettings *m_responseTestSettings;
+    OtherTestSettings *m_resolutionTestSettings;
+
     void InitCharts();
     void SaveChart(Charts chart);
     void GetImage(QLabel *label, QImage *image);

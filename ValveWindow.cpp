@@ -1,7 +1,6 @@
-#include <QMessageBox>
 #include "ui_ValveWindow.h"
 #include "ValveWindow.h"
-#include "./src/ValveСonfig/ValveDataLoader.h"
+#include "ValidatorFactory.h"
 
 ValveWindow::ValveWindow(QWidget *parent)
     : QDialog(parent)
@@ -9,28 +8,31 @@ ValveWindow::ValveWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    QRegularExpression regular;
-    regular.setPattern("[^/?*:;{}\\\\]+");
-    QRegularExpressionValidator *validator = new QRegularExpressionValidator(regular, this);
+    auto* validatorDigits = ValidatorFactory::create(ValidatorFactory::Type::Digits, this);
 
-    ui->lineEdit_positionNumber->setValidator(validator);
-    ui->lineEdit_manufacturer->setValidator(validator);
-    ui->lineEdit_serial->setValidator(validator);
-    ui->lineEdit_PN->setValidator(validator);
-    ui->lineEdit_stroke->setValidator(validator);
-    ui->lineEdit_positioner->setValidator(validator);
-    ui->lineEdit_dinamicError->setValidator(validator);
-    ui->lineEdit_modelDrive->setValidator(validator);
-    ui->lineEdit_range->setValidator(validator);
-    ui->lineEdit_materialStuffingBoxSeal->setValidator(validator);
-    ui->lineEdit_material_1->setValidator(validator);
-    ui->lineEdit_material_2->setValidator(validator);
-    ui->lineEdit_material_4->setValidator(validator);
-    ui->lineEdit_material_5->setValidator(validator);
-    ui->lineEdit_material_6->setValidator(validator);
-    ui->lineEdit_material_7->setValidator(validator);
-    ui->lineEdit_material_8->setValidator(validator);
-    ui->lineEdit_material_9->setValidator(validator);
+    auto* validatorLettersHyphens = ValidatorFactory::create(ValidatorFactory::Type::LettersHyphens, this);
+
+    auto* noSpecialChars = ValidatorFactory::create(ValidatorFactory::Type::NoSpecialChars, this);
+
+    ui->lineEdit_positionNumber->setValidator(noSpecialChars);
+    ui->lineEdit_manufacturer->setValidator(noSpecialChars);
+    ui->lineEdit_serial->setValidator(noSpecialChars);
+    ui->lineEdit_PN->setValidator(validatorDigits);
+    ui->lineEdit_valveStroke->setValidator(noSpecialChars);
+    ui->lineEdit_positioner->setValidator(noSpecialChars);
+    ui->lineEdit_dinamicError->setValidator(noSpecialChars);
+    ui->lineEdit_modelDrive->setValidator(noSpecialChars);
+    ui->lineEdit_range->setValidator(noSpecialChars);
+
+    ui->lineEdit_materialStuffingBoxSeal->setValidator(noSpecialChars);
+    ui->lineEdit_materialCorpus->setValidator(noSpecialChars);
+    ui->lineEdit_materialCap->setValidator(noSpecialChars);
+    ui->lineEdit_materialBall->setValidator(noSpecialChars);
+    ui->lineEdit_materialDisk->setValidator(noSpecialChars);
+    ui->lineEdit_materialPlunger->setValidator(noSpecialChars);
+    ui->lineEdit_materialShaft->setValidator(noSpecialChars);
+    ui->lineEdit_materialStock->setValidator(noSpecialChars);
+    ui->lineEdit_materialGuideSleeve->setValidator(noSpecialChars);
 
     ui->doubleSpinBox_diameter_pulley->setValue(m_diameter[0]);
 
@@ -52,29 +54,46 @@ ValveWindow::ValveWindow(QWidget *parent)
 
     DiameterChanged(ui->doubleSpinBox_diameter->value());
 
-    ValveDataLoader loader;
-    if (!loader.loadFromFile(":/db_valveData/ValveConfig.json")) {
-        return;
-    }
-
     ui->comboBox_manufacturer->clear();
-    ui->comboBox_manufacturer->addItems(loader.getManufacturers());
+    ui->comboBox_manufacturer->addItems(m_loader.getManufacturers());
 
     ui->comboBox_valveModel->clear();
-    ui->comboBox_valveModel->addItems(loader.getValveModels());
+    ui->comboBox_valveModel->addItems(m_loader.getValveModels());
 
     ui->comboBox_driveModel->clear();
-    ui->comboBox_driveModel->addItems(loader.getDriveModels());
+    ui->comboBox_driveModel->addItems(m_loader.getDriveModels());
 
-    ui->comboBox_saddleMaterials->clear();
-    ui->comboBox_saddleMaterials->addItems(loader.getSaddleMaterials());
+    ui->comboBox_materialSaddle->clear();
+    ui->comboBox_materialSaddle->addItems(m_loader.getSaddleMaterials());
 
     ui->comboBox_materialBody->clear();
-    ui->comboBox_materialBody->addItems(loader.getBodyMaterials());
+    ui->comboBox_materialBody->addItems(m_loader.getBodyMaterials());
 
+    m_valveDataObj = m_loader.getValveData();
     ui->comboBox_DN->clear();
-    ui->comboBox_DN->addItems(loader.getDNList());
+    ui->comboBox_DN->addItems(m_loader.getDNList());
 
+<<<<<<< HEAD
+    m_partFields.insert("plunger", ui->lineEdit_plunger);
+    m_partFields.insert("saddle", ui->lineEdit_saddle);
+    m_partFields.insert("bushing", ui->lineEdit_bushing);
+    m_partFields.insert("oRingSealingRing", ui->lineEdit_oRing);
+    m_partFields.insert("stuffingBoxSeal", ui->lineEdit_stuffingSeal);
+    m_partFields.insert("driveDiaphragm", ui->lineEdit_diaphragm);
+    m_partFields.insert("setOfCovers", ui->lineEdit_covers);
+    m_partFields.insert("shaft", ui->lineEdit_shaft);
+    m_partFields.insert("saddleLock", ui->lineEdit_saddleLock);
+
+    connect(ui->comboBox_DN, &QComboBox::currentTextChanged,
+            this, &ValveWindow::onDNChanged);
+    connect(ui->comboBox_CV, &QComboBox::currentTextChanged,
+            this, &ValveWindow::updatePartNumbers);
+    connect(ui->comboBox_materialSaddle, &QComboBox::currentTextChanged,
+            this, &ValveWindow::updatePartNumbers);
+
+    if (ui->comboBox_DN->count() > 0)
+        onDNChanged(ui->comboBox_DN->currentText());
+=======
     // Сохраняем для будущей логики
     m_valveDataObj = loader.getValveData();
 
@@ -93,6 +112,10 @@ ValveWindow::ValveWindow(QWidget *parent)
         double cvValue = variant.value("CV").toDouble();
         ui->comboBox_CV->addItem(QString::number(cvValue));
     }
+<<<<<<< Updated upstream
+=======
+>>>>>>> 865d38d92f460ab26110b9ee5d04192c1e582d91
+>>>>>>> Stashed changes
 }
 
 ValveWindow::~ValveWindow()
@@ -100,28 +123,52 @@ ValveWindow::~ValveWindow()
     delete ui;
 }
 
-void ValveWindow::on_comboBox_DN_currentIndexChanged(const QString &dn)
+void ValveWindow::onDNChanged(const QString &dn)
 {
     ui->comboBox_CV->clear();
-    if (!m_valveDataObj.contains(dn))
-        return;
-
-    // 1) получаем массив вариантов для этого DN
-    QJsonArray variants = m_valveDataObj.value(dn).toArray();
-
-    // 2) пробегаем по каждому объекту и достаём CV
-    for (const QJsonValue &vv : variants) {
-        QJsonObject obj = vv.toObject();
-        // Если JSON у тебя ключит "Cv" с маленькой v — используй именно "Cv"
-        double cv = obj.value("CV").toDouble();
+    auto variants = m_valveDataObj.value(dn).toArray();
+    for (auto vv : variants) {
+        double cv = vv.toObject().value("CV").toDouble();
         ui->comboBox_CV->addItem(QString::number(cv));
     }
+    if (ui->comboBox_CV->count()>0)
+        ui->comboBox_CV->setCurrentIndex(0);
+
+    updatePartNumbers();
 }
 
+void ValveWindow::updatePartNumbers()
+{
+    QString dn  = ui->comboBox_DN->currentText();
+    double cv   = ui->comboBox_CV->currentText().toDouble();
+    QString mat = ui->comboBox_materialSaddle->currentText();
+
+    auto parts = m_loader.materialsFor(dn, cv, mat);
+
+    static const QMap<QString, QString> displayNames = {
+        {"plunger", "Плунжер"},
+        {"saddle", "Седло"},
+        {"bushing", "Втулка"},
+        {"oRingSealingRing", "Уплотнительное кольцо"},
+        {"stuffingBoxSeal", "Манжета"},
+        {"driveDiaphragm", "Диафрагма привода"},
+        {"setOfCovers", "Крышки"},
+        {"shaft", "Вал"},
+        {"saddleLock", "Фиксатор седла"}
+    };
+
+    for (const auto &key : m_partFields.keys()) {
+        QString code = parts.value(key, QStringLiteral(""));
+        QString name = displayNames.value(key, key);
+        m_partFields[key]->setText(code + ": " + name);
+    }
+}
 
 void ValveWindow::SetRegistry(Registry *registry)
 {
     m_registry = registry;
+
+    m_valveInfo = m_registry->GetValveInfo();
 
     ui->comboBox_positionNumber->clear();
     ui->comboBox_positionNumber->addItems(m_registry->GetPositions());
@@ -149,12 +196,11 @@ void ValveWindow::SaveValveInfo()
     m_valveInfo->manufacturer = ui->lineEdit_manufacturer->text();
     m_valveInfo->serialNumber = ui->lineEdit_serial->text();
     m_valveInfo->PN = ui->lineEdit_PN->text();
-    m_valveInfo->stroke = ui->lineEdit_stroke->text();
+    m_valveInfo->stroke = ui->lineEdit_valveStroke->text();
     m_valveInfo->positioner = ui->lineEdit_positioner->text();
     m_valveInfo->dinamicError = ui->lineEdit_dinamicError->text();
     m_valveInfo->modelDrive = ui->lineEdit_modelDrive->text();
     m_valveInfo->range = ui->lineEdit_range->text();
-    m_valveInfo->materialStuffingBoxSeal = ui->lineEdit_materialStuffingBoxSeal->text();
     m_valveInfo->manufacturer = ui->lineEdit_manufacturer->text();
 
     m_valveInfo->diameter = ui->doubleSpinBox_diameter->value();
@@ -167,16 +213,17 @@ void ValveWindow::SaveValveInfo()
     m_valveInfo->strokeMovement = ui->comboBox_stroke_movement->currentIndex();
     m_valveInfo->toolNumber = ui->comboBox_toolNumber->currentIndex();
 
-    m_valveInfo->material1 = ui->lineEdit_material_1->text();
-    m_valveInfo->material2 = ui->lineEdit_material_2->text();
-    // m_valveInfo->material3 = ui->lineEdit_material_3->text();
-    m_valveInfo->material4 = ui->lineEdit_material_4->text();
-    m_valveInfo->material5 = ui->lineEdit_material_5->text();
-    m_valveInfo->material6 = ui->lineEdit_material_6->text();
-    m_valveInfo->material7 = ui->lineEdit_material_7->text();
-    m_valveInfo->material8 = ui->lineEdit_material_8->text();
-    m_valveInfo->material9 = ui->lineEdit_material_9->text();
+    m_materialsOfComponentParts->materialStuffingBoxSeal = ui->lineEdit_materialStuffingBoxSeal->text();
+    m_materialsOfComponentParts->materialCorpus = ui->lineEdit_materialCorpus->text();
+    m_materialsOfComponentParts->materialCap = ui->lineEdit_materialCap->text();
+    m_materialsOfComponentParts->materialBall = ui->lineEdit_materialBall->text();
+    m_materialsOfComponentParts->materialDisk = ui->lineEdit_materialDisk->text();
+    m_materialsOfComponentParts->materialPlunger = ui->lineEdit_materialPlunger->text();
+    m_materialsOfComponentParts->materialShaft = ui->lineEdit_materialShaft->text();
+    m_materialsOfComponentParts->materialStock = ui->lineEdit_materialStock->text();
+    m_materialsOfComponentParts->materialGuideSleeve = ui->lineEdit_materialGuideSleeve->text();
 
+    m_registry->SaveMaterialsOfComponentParts();
     m_registry->SaveValveInfo();
 }
 
@@ -188,6 +235,7 @@ void ValveWindow::PositionChanged(const QString &position)
     }
 
     m_valveInfo = m_registry->GetValveInfo(position);
+    m_materialsOfComponentParts = m_registry->GetMaterialsOfComponentParts();
 
     ui->lineEdit_positionNumber->setText(position);
     ui->lineEdit_positionNumber->setEnabled(false);
@@ -195,12 +243,12 @@ void ValveWindow::PositionChanged(const QString &position)
     ui->lineEdit_manufacturer->setText(m_valveInfo->manufacturer);
     ui->lineEdit_serial->setText(m_valveInfo->serialNumber);
     ui->lineEdit_PN->setText(m_valveInfo->PN);
-    ui->lineEdit_stroke->setText(m_valveInfo->stroke);
+    ui->lineEdit_valveStroke->setText(m_valveInfo->stroke);
     ui->lineEdit_positioner->setText(m_valveInfo->positioner);
     ui->lineEdit_dinamicError->setText(m_valveInfo->dinamicError);
     ui->lineEdit_modelDrive->setText(m_valveInfo->modelDrive);
     ui->lineEdit_range->setText(m_valveInfo->range);
-    ui->lineEdit_materialStuffingBoxSeal->setText(m_valveInfo->materialStuffingBoxSeal);
+
 
     ui->doubleSpinBox_diameter->setValue(m_valveInfo->diameter);
 
@@ -214,15 +262,16 @@ void ValveWindow::PositionChanged(const QString &position)
 
     ui->doubleSpinBox_diameter_pulley->setValue(m_valveInfo->pulley);
 
-    ui->lineEdit_material_1->setText(m_valveInfo->material1);
-    ui->lineEdit_material_2->setText(m_valveInfo->material2);
-    // ui->lineEdit_material_3->setText(m_valveInfo->material3);
-    ui->lineEdit_material_4->setText(m_valveInfo->material4);
-    ui->lineEdit_material_5->setText(m_valveInfo->material5);
-    ui->lineEdit_material_6->setText(m_valveInfo->material6);
-    ui->lineEdit_material_7->setText(m_valveInfo->material7);
-    ui->lineEdit_material_8->setText(m_valveInfo->material8);
-    ui->lineEdit_material_9->setText(m_valveInfo->material9);
+
+    ui->lineEdit_materialStuffingBoxSeal->setText(m_materialsOfComponentParts->materialStuffingBoxSeal);
+    ui->lineEdit_materialCorpus->setText(m_materialsOfComponentParts->materialCorpus);
+    ui->lineEdit_materialCap->setText(m_materialsOfComponentParts->materialCap);
+    ui->lineEdit_materialBall->setText(m_materialsOfComponentParts->materialBall);
+    ui->lineEdit_materialDisk->setText(m_materialsOfComponentParts->materialDisk);
+    ui->lineEdit_materialPlunger->setText(m_materialsOfComponentParts->materialPlunger);
+    ui->lineEdit_materialShaft->setText(m_materialsOfComponentParts->materialShaft);
+    ui->lineEdit_materialStock->setText(m_materialsOfComponentParts->materialStock);
+    ui->lineEdit_materialGuideSleeve->setText(m_materialsOfComponentParts->materialGuideSleeve);
 }
 
 void ValveWindow::ButtonClick()
@@ -233,7 +282,7 @@ void ValveWindow::ButtonClick()
     }
 
     if ((ui->lineEdit_manufacturer->text().isEmpty()) or (ui->lineEdit_serial->text().isEmpty())
-        or (ui->lineEdit_PN->text().isEmpty()) or (ui->lineEdit_stroke->text().isEmpty())
+        or (ui->lineEdit_PN->text().isEmpty()) or (ui->lineEdit_valveStroke->text().isEmpty())
         or (ui->lineEdit_positioner->text().isEmpty()) or (ui->lineEdit_dinamicError->text().isEmpty())
         or (ui->lineEdit_modelDrive->text().isEmpty()) or (ui->lineEdit_range->text().isEmpty())
         or (ui->lineEdit_materialStuffingBoxSeal->text().isEmpty())) {
@@ -250,8 +299,8 @@ void ValveWindow::ButtonClick()
     OtherParameters *otherParameters = m_registry->GetOtherParameters();
     otherParameters->safePosition = ui->comboBox_safePosition->currentText();
     otherParameters->movement = ui->comboBox_stroke_movement->currentText();
-    SaveValveInfo();
 
+    SaveValveInfo();
     accept();
 }
 
@@ -278,12 +327,33 @@ void ValveWindow::DiameterChanged(qreal value)
     ui->label_square->setText(QString().asprintf("%.2f", M_PI * value * value / 4));
 }
 
+void ValveWindow::fillReport(ReportSaver::Report &report) {
+
+    report.data.push_back({56, 10, ui->lineEdit_plunger->text()});
+
+    report.data.push_back({57, 10, ui->lineEdit_saddle->text()});
+
+    report.data.push_back({58, 10, ui->lineEdit_bushing->text()});
+
+    report.data.push_back({59, 10, ui->lineEdit_oRing->text()});
+
+    report.data.push_back({60, 10, ui->lineEdit_stuffingSeal->text()});
+
+    report.data.push_back({61, 10, ui->lineEdit_diaphragm->text()});
+
+    report.data.push_back({62, 10, ui->lineEdit_covers->text()});
+
+    report.data.push_back({63, 10, ui->lineEdit_shaft->text()});
+
+    report.data.push_back({64, 10, ui->lineEdit_saddleLock->text()});
+}
+
 void ValveWindow::Clear()
 {
     ui->lineEdit_manufacturer->setText("");
     ui->lineEdit_serial->setText("");
     ui->lineEdit_PN->setText("");
-    ui->lineEdit_stroke->setText("");
+    ui->lineEdit_valveStroke->setText("");
     ui->lineEdit_positioner->setText("");
     ui->lineEdit_dinamicError->setText("");
     ui->lineEdit_modelDrive->setText("");
@@ -299,13 +369,12 @@ void ValveWindow::Clear()
     ui->comboBox_toolNumber->setCurrentIndex(0);
     ui->doubleSpinBox_diameter_pulley->setValue(m_diameter[0]);
 
-    ui->lineEdit_material_1->setText("");
-    ui->lineEdit_material_2->setText("");
-    // ui->lineEdit_material_3->setText("");
-    ui->lineEdit_material_4->setText("");
-    ui->lineEdit_material_5->setText("");
-    ui->lineEdit_material_6->setText("");
-    ui->lineEdit_material_7->setText("");
-    ui->lineEdit_material_8->setText("");
-    ui->lineEdit_material_9->setText("");
+    ui->lineEdit_materialCorpus->setText("");
+    ui->lineEdit_materialCap->setText("");
+    ui->lineEdit_materialBall->setText("");
+    ui->lineEdit_materialDisk->setText("");
+    ui->lineEdit_materialPlunger->setText("");
+    ui->lineEdit_materialShaft->setText("");
+    ui->lineEdit_materialStock->setText("");
+    ui->lineEdit_materialGuideSleeve->setText("");
 }

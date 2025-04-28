@@ -1,10 +1,15 @@
 #ifndef TEST_H
 #define TEST_H
 
+#pragma once
 #include <QEventLoop>
 #include <QObject>
 #include <QPointF>
 #include <QTimer>
+#include <QDateTime>
+#include <QEventLoop>
+#include <QThread>
+
 #include "MainTestSettings.h"
 
 class Test : public QObject

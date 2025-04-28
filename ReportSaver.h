@@ -1,20 +1,23 @@
-#ifndef FILESAVER_H
-#define FILESAVER_H
+#ifndef REPORTSAVER_H
+#define REPORTSAVER_H
 
+#pragma once
 #include <QDir>
 #include <QObject>
+
 #include "MyChart.h"
 #include "Registry.h"
 
-class FileSaver : public QObject
+class ReportSaver : public QObject
 {
     Q_OBJECT
 public:
+
     struct ExcelData
     {
         quint8 x;
         quint8 y;
-        QLineEdit *line_edit;
+        QString text;
     };
 
     struct ValidationData
@@ -32,17 +35,18 @@ public:
         QImage image3;
     };
 
-    explicit FileSaver(QObject *parent = nullptr);
-    void SetRegistry(Registry *registry);
-    void SaveImage(MyChart *chart);
-    QDir Directory();
+    explicit ReportSaver(QObject *parent = nullptr);
     bool SaveReport(const Report &report);
+    void SaveImage(MyChart *chart);
+
+    void SetRegistry(Registry *registry);
+    QDir Directory();
 
 private:
     void CreateDir();
-    QDir dir_;
-    bool created_;
-    Registry *registry_;
+    QDir m_dir;
+    bool m_created;
+    Registry *m_registry;
 signals:
     void Question(QString title, QString text, bool &result);
     void GetDirectory(QString current_path, QString &result);

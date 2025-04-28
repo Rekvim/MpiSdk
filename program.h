@@ -1,9 +1,13 @@
 #ifndef PROGRAM_H
 #define PROGRAM_H
 
+#pragma once
 #include <QColor>
 #include <QObject>
 #include <QPointF>
+#include <QEventLoop>
+#include <QMessageBox>
+#include <QTimer>
 
 #include "Mpi.h"
 #include "OtherTestSettings.h"
@@ -53,9 +57,9 @@ enum class TextObjects {
 };
 
 enum class Charts {
-    Main_task,
-    Main_pressure,
-    Main_friction,
+    Task,
+    Pressure,
+    Friction,
     Response,
     Resolution,
     Stroke,
@@ -79,7 +83,7 @@ public:
     void SetRegistry(Registry *registry);
 
 private:
-    Registry *registry_;
+    Registry *m_registry;
     MPI mpi_;
     QTimer *timer_sensors_;
     QTimer *timer_DI_;

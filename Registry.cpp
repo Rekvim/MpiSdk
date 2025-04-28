@@ -2,196 +2,259 @@
 
 Registry::Registry(QObject *parent)
     : QObject{parent}
-    , settings_("MPPI", "Data")
+    , m_settings("MPPI", "Data")
 {
-    object_info_.object = settings_.value("object", "").toString();
-    object_info_.manufactory = settings_.value("manufactory", "").toString();
-    object_info_.department = settings_.value("department", "").toString();
-    object_info_.FIO = settings_.value("FIO", "").toString();
+    m_objectInfo.object = m_settings.value("object", "").toString();
+    m_objectInfo.manufactory = m_settings.value("manufactory", "").toString();
+    m_objectInfo.department = m_settings.value("department", "").toString();
+    m_objectInfo.FIO = m_settings.value("FIO", "").toString();
 }
 
 ObjectInfo *Registry::GetObjectInfo()
 {
-    return &object_info_;
+    return &m_objectInfo;
 }
 
 void Registry::SaveObjectInfo()
 {
-    settings_.setValue("object", object_info_.object);
-    settings_.setValue("manufactory", object_info_.manufactory);
-    settings_.setValue("department", object_info_.department);
-    settings_.setValue("FIO", object_info_.FIO);
+    m_settings.setValue("object", m_objectInfo.object);
+    m_settings.setValue("manufactory", m_objectInfo.manufactory);
+    m_settings.setValue("department", m_objectInfo.department);
+    m_settings.setValue("FIO", m_objectInfo.FIO);
 }
 
 ValveInfo *Registry::GetValveInfo(const QString &positionNumber)
 {
 
-    settings_.beginGroup(object_info_.object);
-    settings_.beginGroup(object_info_.manufactory);
-    settings_.beginGroup(object_info_.department);
-    settings_.beginGroup(positionNumber);
+    m_settings.beginGroup(m_objectInfo.object);
+    m_settings.beginGroup(m_objectInfo.manufactory);
+    m_settings.beginGroup(m_objectInfo.department);
+    m_settings.beginGroup(positionNumber);
 
-    valve_info_.positionNumber = positionNumber;
-    valve_info_.manufacturer = settings_.value("manufacturer", "").toString();
-    valve_info_.valveModel = settings_.value("valveModel", "").toString();
-    valve_info_.serialNumber = settings_.value("serialNumber", "").toString();
-    valve_info_.DN = settings_.value("DN", "").toInt();;
-    valve_info_.PN = settings_.value("PN", "").toString();
-    valve_info_.stroke = settings_.value("stroke", "").toString();
-    valve_info_.positioner = settings_.value("positioner", "").toString();
-    valve_info_.dinamicError = settings_.value("dinamicError", "").toString();
-    valve_info_.modelDrive = settings_.value("model_drive", "").toString();
-    valve_info_.range = settings_.value("range", "").toString();
-    valve_info_.materialStuffingBoxSeal = settings_.value("material", "").toString();
-    valve_info_.diameter = settings_.value("diameter", "").toDouble();
-    valve_info_.safePosition = settings_.value("safePosition", "").toInt();
-    valve_info_.driveType = settings_.value("driveType", "").toInt();
-    valve_info_.strokeMovement = settings_.value("strokeMovement", "").toInt();
-    valve_info_.toolNumber = settings_.value("toolNumber", "").toInt();
-    valve_info_.pulley = settings_.value("pulley", "").toInt();
-    valve_info_.CV = settings_.value("CV", "").toInt();
+    m_valveInfo.positionNumber = positionNumber;
+    m_valveInfo.manufacturer = m_settings.value("manufacturer", "").toString();
+    m_valveInfo.valveModel = m_settings.value("valveModel", "").toString();
+    m_valveInfo.serialNumber = m_settings.value("serialNumber", "").toString();
+    m_valveInfo.DN = m_settings.value("DN", "").toInt();;
+    m_valveInfo.PN = m_settings.value("PN", "").toString();
+    m_valveInfo.stroke = m_settings.value("stroke", "").toString();
+    m_valveInfo.positioner = m_settings.value("positioner", "").toString();
+    m_valveInfo.dinamicError = m_settings.value("dinamicError", "").toString();
+    m_valveInfo.modelDrive = m_settings.value("modelDrive", "").toString();
+    m_valveInfo.range = m_settings.value("range", "").toString();
+    m_valveInfo.diameter = m_settings.value("diameter", "").toDouble();
+    m_valveInfo.safePosition = m_settings.value("safePosition", "").toInt();
+    m_valveInfo.driveType = m_settings.value("driveType", "").toInt();
+    m_valveInfo.strokeMovement = m_settings.value("strokeMovement", "").toInt();
+    m_valveInfo.toolNumber = m_settings.value("toolNumber", "").toInt();
+    m_valveInfo.pulley = m_settings.value("pulley", "").toInt();
+    m_valveInfo.CV = m_settings.value("CV", "").toInt();
 
-    valve_info_.material1 = settings_.value("material1", "").toString();
-    valve_info_.material2 = settings_.value("material2", "").toString();
-    valve_info_.material4 = settings_.value("material4", "").toString();
-    valve_info_.material5 = settings_.value("material5", "").toString();
-    valve_info_.material6 = settings_.value("material6", "").toString();
-    valve_info_.material7 = settings_.value("material7", "").toString();
-    valve_info_.material8 = settings_.value("material8", "").toString();
-    valve_info_.material9 = settings_.value("material9", "").toString();
 
-    settings_.endGroup();
-    settings_.endGroup();
-    settings_.endGroup();
-    settings_.endGroup();
+    m_settings.endGroup();
+    m_settings.endGroup();
+    m_settings.endGroup();
+    m_settings.endGroup();
 
-    return &valve_info_;
+    return &m_valveInfo;
 }
 
 ValveInfo *Registry::GetValveInfo()
 {
-    return &valve_info_;
+    return &m_valveInfo;
 }
 
 void Registry::SaveValveInfo()
 {
-    settings_.beginGroup(object_info_.object);
-    settings_.beginGroup(object_info_.manufactory);
-    settings_.beginGroup(object_info_.department);
+    m_settings.beginGroup(m_objectInfo.object);
+    m_settings.beginGroup(m_objectInfo.manufactory);
+    m_settings.beginGroup(m_objectInfo.department);
 
-    settings_.setValue("last_position", valve_info_.positionNumber);
+    m_settings.setValue("last_position", m_valveInfo.positionNumber);
 
-    settings_.beginGroup(valve_info_.positionNumber);
+    m_settings.beginGroup(m_valveInfo.positionNumber);
 
-    settings_.setValue("manufacturer", valve_info_.manufacturer);
-    settings_.setValue("model", valve_info_.valveModel);
-    settings_.setValue("serial", valve_info_.serialNumber);
-    settings_.setValue("DN", valve_info_.DN);
-    settings_.setValue("PN", valve_info_.PN);
-    settings_.setValue("CV", valve_info_.CV);
-    settings_.setValue("stroke", valve_info_.stroke);
-    settings_.setValue("positioner", valve_info_.positioner);
-    settings_.setValue("dinamic_error", valve_info_.dinamicError);
-    settings_.setValue("modelDrive", valve_info_.modelDrive);
-    settings_.setValue("range", valve_info_.range);
-    settings_.setValue("materialStuffingBoxSeal", valve_info_.materialStuffingBoxSeal);
-    settings_.setValue("diameter", valve_info_.diameter);
-    settings_.setValue("safePosition", valve_info_.safePosition);
-    settings_.setValue("driveType", valve_info_.driveType);
-    settings_.setValue("strokeMovement", valve_info_.strokeMovement);
-    settings_.setValue("toolNumber", valve_info_.toolNumber);
-    settings_.setValue("pulley", valve_info_.pulley);
+    m_settings.setValue("manufacturer", m_valveInfo.manufacturer);
+    m_settings.setValue("valveModel", m_valveInfo.valveModel);
+    m_settings.setValue("serialNumber", m_valveInfo.serialNumber);
+    m_settings.setValue("DN", m_valveInfo.DN);
+    m_settings.setValue("PN", m_valveInfo.PN);
+    m_settings.setValue("CV", m_valveInfo.CV);
+    m_settings.setValue("stroke", m_valveInfo.stroke);
+    m_settings.setValue("positioner", m_valveInfo.positioner);
+    m_settings.setValue("dinamicError", m_valveInfo.dinamicError);
+    m_settings.setValue("modelDrive", m_valveInfo.modelDrive);
+    m_settings.setValue("range", m_valveInfo.range);
+    m_settings.setValue("diameter", m_valveInfo.diameter);
+    m_settings.setValue("safePosition", m_valveInfo.safePosition);
+    m_settings.setValue("driveType", m_valveInfo.driveType);
+    m_settings.setValue("strokeMovement", m_valveInfo.strokeMovement);
+    m_settings.setValue("toolNumber", m_valveInfo.toolNumber);
+    m_settings.setValue("pulley", m_valveInfo.pulley);
+    m_settings.setValue("materialStuffingBoxSeal", m_materialsOfComponentParts.materialStuffingBoxSeal);
 
-    settings_.setValue("material1", valve_info_.material1);
-    settings_.setValue("material2", valve_info_.material2);
-    settings_.setValue("material4", valve_info_.material4);
-    settings_.setValue("material5", valve_info_.material5);
-    settings_.setValue("material6", valve_info_.material6);
-    settings_.setValue("material7", valve_info_.material7);
-    settings_.setValue("material8", valve_info_.material8);
-    settings_.setValue("material9", valve_info_.material9);
+    m_settings.endGroup();
+    m_settings.endGroup();
+    m_settings.endGroup();
+    m_settings.endGroup();
+    m_settings.sync();
+}
 
-    settings_.endGroup();
-    settings_.endGroup();
-    settings_.endGroup();
-    settings_.endGroup();
+MaterialsOfComponentParts *Registry::GetMaterialsOfComponentParts() {
+    m_settings.beginGroup(m_objectInfo.object);
+    m_settings.beginGroup(m_objectInfo.manufactory);
+    m_settings.beginGroup(m_objectInfo.department);
+    m_settings.beginGroup(m_valveInfo.positionNumber);
+
+    m_materialsOfComponentParts.materialStuffingBoxSeal = m_settings.value("materialStuffingBoxSeal", "").toString();
+    m_materialsOfComponentParts.materialCorpus = m_settings.value("materialCorpus", "").toString();
+    m_materialsOfComponentParts.materialCap = m_settings.value("materialCap", "").toString();
+    m_materialsOfComponentParts.materialBall = m_settings.value("materialBall", "").toString();
+    m_materialsOfComponentParts.materialDisk = m_settings.value("materialDisk", "").toString();
+    m_materialsOfComponentParts.materialPlunger = m_settings.value("materialPlunger", "").toString();
+    m_materialsOfComponentParts.materialShaft = m_settings.value("materialShaft", "").toString();
+    m_materialsOfComponentParts.materialStock = m_settings.value("materialStock", "").toString();
+    m_materialsOfComponentParts.materialGuideSleeve = m_settings.value("materialGuideSleeve", "").toString();
+
+    m_settings.endGroup();
+    m_settings.endGroup();
+    m_settings.endGroup();
+    m_settings.endGroup();
+
+    return &m_materialsOfComponentParts;
+}
+
+void Registry::SaveMaterialsOfComponentParts()
+{
+    const auto &mat = m_materialsOfComponentParts;
+
+    m_settings.beginGroup(m_objectInfo.object);
+    m_settings.beginGroup(m_objectInfo.manufactory);
+    m_settings.beginGroup(m_objectInfo.department);
+
+    QString pos = m_valveInfo.positionNumber;
+    m_settings.beginGroup(pos);
+
+    m_settings.setValue("materialStuffingBoxSeal", mat.materialStuffingBoxSeal);
+    m_settings.setValue("materialCorpus", mat.materialCorpus);
+    m_settings.setValue("materialCap", mat.materialCap);
+    m_settings.setValue("materialBall", mat.materialBall);
+    m_settings.setValue("materialDisk", mat.materialDisk);
+    m_settings.setValue("materialPlunger", mat.materialPlunger);
+    m_settings.setValue("materialShaft", mat.materialShaft);
+    m_settings.setValue("materialStock", mat.materialStock);
+    m_settings.setValue("materialGuideSleeve", mat.materialGuideSleeve);
+
+    m_settings.endGroup();
+    m_settings.endGroup();
+    m_settings.endGroup();
+    m_settings.endGroup();
+    m_settings.sync();
+}
+
+void Registry::SaveAccessoriesSeries()
+{
+    m_settings.beginGroup(m_objectInfo.object);
+    m_settings.beginGroup(m_objectInfo.manufactory);
+    m_settings.beginGroup(m_objectInfo.department);
+    m_settings.beginGroup(m_valveInfo.positionNumber);
+
+    m_settings.setValue("accessoryPlunger", m_accessoriesSeries.plunger);
+    m_settings.setValue("accessorySaddle", m_accessoriesSeries.saddle);
+    m_settings.setValue("accessoryBushing", m_accessoriesSeries.bushing);
+    m_settings.setValue("accessoryORing", m_accessoriesSeries.oRing);
+    m_settings.setValue("accessoryStuffingSeal", m_accessoriesSeries.stuffingSeal);
+    m_settings.setValue("accessoryDiaphragm", m_accessoriesSeries.diaphragm);
+    m_settings.setValue("accessoryCovers", m_accessoriesSeries.covers);
+    m_settings.setValue("accessoryShaft", m_accessoriesSeries.shaft);
+    m_settings.setValue("accessorySaddleLock",m_accessoriesSeries.saddleLock);
+
+    m_settings.endGroup();
+    m_settings.endGroup();
+    m_settings.endGroup();
+    m_settings.endGroup();
+}
+
+AccessoriesSeries *Registry::GetAccessoriesSeries()
+{
+    return &m_accessoriesSeries;
 }
 
 OtherParameters *Registry::GetOtherParameters()
 {
-    return &other_parameters_;
+    return &m_otherParameters;
 }
 
 bool Registry::CheckObject(const QString &object)
 {
-    return settings_.childGroups().contains(object);
+    return m_settings.childGroups().contains(object);
 }
 
 bool Registry::CheckManufactory(const QString &manufactory)
 {
-    settings_.beginGroup(object_info_.object);
+    m_settings.beginGroup(m_objectInfo.object);
 
-    bool result = settings_.childGroups().contains(manufactory);
+    bool result = m_settings.childGroups().contains(manufactory);
 
-    settings_.endGroup();
+    m_settings.endGroup();
 
     return result;
 }
 
 bool Registry::CheckDepartment(const QString &department)
 {
-    settings_.beginGroup(object_info_.object);
-    settings_.beginGroup(object_info_.manufactory);
+    m_settings.beginGroup(m_objectInfo.object);
+    m_settings.beginGroup(m_objectInfo.manufactory);
 
-    bool result = settings_.childGroups().contains(department);
+    bool result = m_settings.childGroups().contains(department);
 
-    settings_.endGroup();
-    settings_.endGroup();
+    m_settings.endGroup();
+    m_settings.endGroup();
 
     return result;
 }
 
 bool Registry::CheckPosition(const QString &position)
 {
-    settings_.beginGroup(object_info_.object);
-    settings_.beginGroup(object_info_.manufactory);
-    settings_.beginGroup(object_info_.department);
+    m_settings.beginGroup(m_objectInfo.object);
+    m_settings.beginGroup(m_objectInfo.manufactory);
+    m_settings.beginGroup(m_objectInfo.department);
 
-    bool result = settings_.childGroups().contains(position);
+    bool result = m_settings.childGroups().contains(position);
 
-    settings_.endGroup();
-    settings_.endGroup();
-    settings_.endGroup();
+    m_settings.endGroup();
+    m_settings.endGroup();
+    m_settings.endGroup();
 
     return result;
 }
 
 QStringList Registry::GetPositions()
 {
-    settings_.beginGroup(object_info_.object);
-    settings_.beginGroup(object_info_.manufactory);
-    settings_.beginGroup(object_info_.department);
+    m_settings.beginGroup(m_objectInfo.object);
+    m_settings.beginGroup(m_objectInfo.manufactory);
+    m_settings.beginGroup(m_objectInfo.department);
 
-    QStringList result = settings_.childGroups();
+    QStringList result = m_settings.childGroups();
 
-    settings_.endGroup();
-    settings_.endGroup();
-    settings_.endGroup();
+    m_settings.endGroup();
+    m_settings.endGroup();
+    m_settings.endGroup();
 
     return result;
 }
 
 QString Registry::GetLastPosition()
 {
-    settings_.beginGroup(object_info_.object);
-    settings_.beginGroup(object_info_.manufactory);
-    settings_.beginGroup(object_info_.department);
+    m_settings.beginGroup(m_objectInfo.object);
+    m_settings.beginGroup(m_objectInfo.manufactory);
+    m_settings.beginGroup(m_objectInfo.department);
 
-    QString result = settings_.value("last_position", "").toString();
+    QString result = m_settings.value("last_position", "").toString();
 
-    settings_.endGroup();
-    settings_.endGroup();
-    settings_.endGroup();
+    m_settings.endGroup();
+    m_settings.endGroup();
+    m_settings.endGroup();
 
     return result;
 }

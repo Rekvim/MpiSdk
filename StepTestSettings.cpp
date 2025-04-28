@@ -1,5 +1,4 @@
 #include "StepTestSettings.h"
-#include <QInputDialog>
 #include "ui_StepTestSettings.h"
 
 StepTestSettings::StepTestSettings(QWidget *parent) :
@@ -45,20 +44,20 @@ StepTestSettings::StepTestSettings(QWidget *parent) :
     });
 
     connect(ui->timeEdit, &QTimeEdit::timeChanged, this, [&](QTime time) {
-        if (time > max_time) {
-            ui->timeEdit->setTime(max_time);
+        if (time < m_minTime) {
+            ui->timeEdit->setTime(m_minTime);
         }
-        if (time < min_time) {
-            ui->timeEdit->setTime(min_time);
+        if (time > m_maxTime) {
+            ui->timeEdit->setTime(m_maxTime);
         }
     });
 
     connect(ui->spinBox_T_value, &QSpinBox::valueChanged, this, [&](int value) {
-        if (value < min_T_value) {
-            ui->spinBox_T_value->setValue(min_T_value);
+        if (value < m_minTValue) {
+            ui->spinBox_T_value->setValue(m_minTValue);
         }
-        if (value > max_T_value) {
-            ui->spinBox_T_value->setValue(max_T_value);
+        if (value > m_maxTValue) {
+            ui->spinBox_T_value->setValue(m_maxTValue);
         }
     });
 

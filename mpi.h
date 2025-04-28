@@ -1,7 +1,11 @@
 #ifndef MPI_H
 #define MPI_H
 
+#pragma once
 #include <QObject>
+#include <QDebug>
+#include <QEventLoop>
+#include <QThread>
 
 #include "Sensor.h"
 #include "UartReader.h"
@@ -29,16 +33,18 @@ public:
     void SetDiscreteOutput(quint8 DO_num, bool state);
 
 private:
-    UartReader *uart_reader_;
-    QThread *uart_thread_;
-    bool is_connected_ = false;
-    QString port_name_;
-    QVector<Sensor *> sensors_;
-    Sensor *dac_ = new Sensor;
+    UartReader *m_uartReader;
+    QThread *m_uartThread;
+    bool m_isConnected = false;
+    QString m_portName;
+    QVector<Sensor *> m_sensors;
+    Sensor *m_dac = new Sensor;
 
-    void Sleep(quint16 msecs);
     quint16 DAC_MIN = 65536 * 3 / 24;
     quint16 DAC_MAX = 65536 * 21 / 24;
+
+    void Sleep(quint16 msecs);
+
 public slots:
     void ADC(QVector<quint16> adc);
     void UART_connected(const QString port_name);

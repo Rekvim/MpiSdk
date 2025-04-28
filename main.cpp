@@ -11,39 +11,41 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
-    QTranslator qtTranslator;
-
-    if (qtTranslator.load("qt_ru.qm", ":/translations"))
-        a.installTranslator(&qtTranslator);
-
-    //MainWindow w;
-    //w.show();
     Registry registry;
 
-    MainWindow main_window;
-
-    ObjectWindow object_window; // Окно данных об объекте
-    object_window.LoadFromReg(&registry);
-    if (object_window.exec() == QDialog::Rejected)
+    ObjectWindow objectWindow;
+    objectWindow.LoadFromReg(&registry);
+    if (objectWindow.exec() != QDialog::Accepted)
         return 0;
 
     NotationWindow notationWindow;
-    if (notationWindow.exec() == QDialog::Rejected) {
+    notationWindow.SetRegistry(&registry);
+    if (notationWindow.exec() != QDialog::Accepted)
         return 0;
+
+    ValveWindow valveWindow;
+    valveWindow.SetRegistry(&registry);
+    if (valveWindow.exec() != QDialog::Accepted)
+        return 0;
+
+    // Единственный Report, который передаём всем окнам
+    ReportSaver::Report report;
+
+    notationWindow.fillReport(report);
+    valveWindow.fillReport(report);
+
+    ReportSaver saver;
+    saver.SetRegistry(&registry);
+    if (!saver.SaveReport(report)) {
+        QMessageBox::warning(nullptr, "Ошибка", "Не удалось сохранить отчет");
     }
-    notationWindow.fillReport();
 
-    ValveWindow valve_window;
-    valve_window.SetRegistry(&registry);
-    FileSaver::Report report = notationWindow.getReport();
-
-    if (valve_window.exec() == QDialog::Rejected)
-        return 0;
-
-    main_window.setReport(report);
-    main_window.SetRegistry(&registry);
-    main_window.show();
+    // Если вы хотите показать MainWindow с уже собранным report:
+    MainWindow mainWindow;
+    mainWindow.SetRegistry(&registry);
+    mainWindow.setReport(report);
+    mainWindow.show();
 
     return a.exec();
 }
+

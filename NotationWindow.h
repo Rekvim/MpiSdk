@@ -1,8 +1,10 @@
 #ifndef NOTATIONWINDOW_H
 #define NOTATIONWINDOW_H
 
+#pragma once
 #include <QDialog>
-#include "FileSaver.h"
+#include <QSettings>
+#include "ReportSaver.h"
 
 namespace Ui {
 class NotationWindow;
@@ -16,11 +18,10 @@ public:
     explicit NotationWindow(QWidget *parent = nullptr);
     ~NotationWindow();
 
-    // Добавляем метод fillReport в public, чтобы он был доступен извне:
-    void fillReport();
-    const FileSaver::Report &getReport() const { return report_; }
+    void SetRegistry(Registry *registry);
 
-    // Геттеры для доступа к данным, если нужны:
+    void fillReport(ReportSaver::Report &report);
+
     QString getPressureSensor1() const { return m_pressureSensor1; }
     QString getPressureSensor2() const { return m_pressureSensor2; }
     QString getPressureSensor3() const { return m_pressureSensor3; }
@@ -30,10 +31,16 @@ public:
 private slots:
     void onComboBoxIndexChanged(int index);
     void onCheckBoxChanged();
+    // void onEntryTestingClicked();
 
 private:
     Ui::NotationWindow *ui;
-    FileSaver::Report report_;
+    ReportSaver::Report m_report;
+    QSettings m_settings;
+    Registry *m_registry;
+
+    void loadSettings();
+    void saveSettings();
 
     QString m_pressureSensor1;
     QString m_pressureSensor2;

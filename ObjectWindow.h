@@ -1,7 +1,11 @@
 #ifndef OBJECTWINDOW_H
 #define OBJECTWINDOW_H
 
+#pragma once
 #include <QDialog>
+#include <QMessageBox>
+#include <QScreen>
+
 #include "Registry.h"
 
 namespace Ui {
@@ -18,9 +22,11 @@ public:
     ~ObjectWindow();
 
 private:
-    Registry *registry_;
-    ObjectInfo *object_info_;
+
     Ui::ObjectWindow *ui;
+    Registry *m_registry;
+    ObjectInfo *m_objectInfo;
+
     void SaveObjectInfo();
 private slots:
     void ButtonClick();

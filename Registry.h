@@ -1,6 +1,7 @@
 #ifndef REGISTRY_H
 #define REGISTRY_H
 
+#pragma once
 #include <QDate>
 #include <QObject>
 #include <QSettings>
@@ -13,37 +14,52 @@ struct ObjectInfo
     QString FIO;
 };
 
+struct AccessoriesSeries {
+    QString plunger;
+    QString saddle;
+    QString bushing;
+    QString oRing;
+    QString stuffingSeal;
+    QString diaphragm;
+    QString covers;
+    QString shaft;
+    QString saddleLock;
+};
+struct MaterialsOfComponentParts {
+    QString materialSaddle;
+    QString materialCorpus;
+    QString materialCap;
+    QString materialBall;
+    QString materialDisk;
+    QString materialPlunger;
+    QString materialShaft;
+    QString materialStock;
+    QString materialGuideSleeve;
+    QString materialStuffingBoxSeal;
+};
+
 struct ValveInfo
 {
-    QString positionNumber; // Номер позиции
-    QString manufacturer; // Производитель ЗРА (торговая марка)
-    QString valveModel; // Модель клапана
-    QString serialNumber; // Серийный номер
+    QString positionNumber;
+    QString serialNumber;
+    QString manufacturer;
+    QString valveModel;
 
-    QString saddleMaterials; // Материал седла
     quint32 DN;
     quint32 CV;
     QString PN;
-    QString stroke; //
-    QString positioner; //
-    QString dinamicError; //
-    QString modelDrive; //
-    QString range; //
-    QString materialStuffingBoxSeal; // Материал сальникового уплотнения:
-    qreal diameter; //
-    quint32 safePosition; //
-    quint32 driveType; //
-    quint32 strokeMovement; //
-    quint32 toolNumber; //
-    qreal pulley; //
-    QString material1;
-    QString material2;
-    QString material4;
-    QString material5;
-    QString material6;
-    QString material7;
-    QString material8;
-    QString material9;
+
+    QString stroke;
+    QString positioner;
+    QString dinamicError;
+    QString modelDrive;
+    QString range;
+    qreal diameter;
+    quint32 safePosition;
+    quint32 driveType;
+    quint32 strokeMovement;
+    quint32 toolNumber;
+    qreal pulley;
 };
 
 struct OtherParameters
@@ -58,11 +74,20 @@ class Registry : public QObject
     Q_OBJECT
 public:
     explicit Registry(QObject *parent = nullptr);
+
     ObjectInfo *GetObjectInfo();
     void SaveObjectInfo();
-    ValveInfo *GetValveInfo(const QString &position);
+
+    ValveInfo *GetValveInfo(const QString &positionNumber);
     ValveInfo *GetValveInfo();
     void SaveValveInfo();
+
+    MaterialsOfComponentParts *GetMaterialsOfComponentParts();
+    void SaveMaterialsOfComponentParts();
+
+    AccessoriesSeries *GetAccessoriesSeries();
+    void SaveAccessoriesSeries();
+
     OtherParameters *GetOtherParameters();
     bool CheckObject(const QString &object);
     bool CheckManufactory(const QString &manufactory);
@@ -72,10 +97,13 @@ public:
     QString GetLastPosition();
 
 private:
-    QSettings settings_;
-    ObjectInfo object_info_;
-    ValveInfo valve_info_;
-    OtherParameters other_parameters_;
+    ObjectInfo m_objectInfo;
+    ValveInfo m_valveInfo;
+    AccessoriesSeries m_accessoriesSeries;
+    MaterialsOfComponentParts m_materialsOfComponentParts;
+
+    QSettings m_settings;
+    OtherParameters m_otherParameters;
 signals:
 };
 

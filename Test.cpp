@@ -1,7 +1,4 @@
 #include "Test.h"
-#include <QDateTime>
-#include <QEventLoop>
-#include <QThread>
 
 Test::Test(QObject *parent)
     : QObject{parent}

@@ -1,5 +1,4 @@
 #include "MyChart.h"
-#include <QtCharts>
 
 MySeries::MySeries(QObject *parent, quint8 axN)
     : QLineSeries{parent}

@@ -2,9 +2,6 @@
 
 #include "ui_ObjectWindow.h"
 
-#include <QMessageBox>
-#include <QScreen>
-
 ObjectWindow::ObjectWindow(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::ObjectWindow)
@@ -29,12 +26,12 @@ ObjectWindow::ObjectWindow(QWidget *parent)
 
 void ObjectWindow::LoadFromReg(Registry *registry)
 {
-    registry_ = registry;
-    object_info_ = registry->GetObjectInfo();
-    ui->lineEdit_object->setText(object_info_->object);
-    ui->lineEdit_manufactory->setText(object_info_->manufactory);
-    ui->lineEdit_department->setText(object_info_->department);
-    ui->lineEdit_FIO->setText(object_info_->FIO);
+    m_registry = registry;
+    m_objectInfo = registry->GetObjectInfo();
+    ui->lineEdit_object->setText(m_objectInfo->object);
+    ui->lineEdit_manufactory->setText(m_objectInfo->manufactory);
+    ui->lineEdit_department->setText(m_objectInfo->department);
+    ui->lineEdit_FIO->setText(m_objectInfo->FIO);
 }
 
 ObjectWindow::~ObjectWindow()
@@ -59,7 +56,7 @@ void ObjectWindow::ButtonClick()
         return;
     }
 
-    if (!registry_->CheckObject(ui->lineEdit_object->text())) {
+    if (!m_registry->CheckObject(ui->lineEdit_object->text())) {
         QMessageBox::StandardButton button
             = QMessageBox::question(this,
                                     "Предупреждение",
@@ -74,9 +71,9 @@ void ObjectWindow::ButtonClick()
         return;
     }
 
-    object_info_->object = ui->lineEdit_object->text();
+    m_objectInfo->object = ui->lineEdit_object->text();
 
-    if (!registry_->CheckManufactory(ui->lineEdit_manufactory->text())) {
+    if (!m_registry->CheckManufactory(ui->lineEdit_manufactory->text())) {
         QMessageBox::StandardButton button
             = QMessageBox::question(this,
                                     "Предупреждение",
@@ -91,9 +88,9 @@ void ObjectWindow::ButtonClick()
         return;
     }
 
-    object_info_->manufactory = ui->lineEdit_manufactory->text();
+    m_objectInfo->manufactory = ui->lineEdit_manufactory->text();
 
-    if (!registry_->CheckDepartment(ui->lineEdit_department->text())) {
+    if (!m_registry->CheckDepartment(ui->lineEdit_department->text())) {
         QMessageBox::StandardButton button = QMessageBox::question(
             this,
             "Предупреждение",
@@ -108,7 +105,7 @@ void ObjectWindow::ButtonClick()
         return;
     }
 
-    OtherParameters *other_parameters = registry_->GetOtherParameters();
+    OtherParameters *other_parameters = m_registry->GetOtherParameters();
     other_parameters->data = ui->dateEdit->date().toString("dd.MM.yyyy");
     SaveObjectInfo();
     accept();
@@ -116,10 +113,10 @@ void ObjectWindow::ButtonClick()
 
 void ObjectWindow::SaveObjectInfo()
 {
-    object_info_->object = ui->lineEdit_object->text();
-    object_info_->manufactory = ui->lineEdit_manufactory->text();
-    object_info_->department = ui->lineEdit_department->text();
-    object_info_->FIO = ui->lineEdit_FIO->text();
+    m_objectInfo->object = ui->lineEdit_object->text();
+    m_objectInfo->manufactory = ui->lineEdit_manufactory->text();
+    m_objectInfo->department = ui->lineEdit_department->text();
+    m_objectInfo->FIO = ui->lineEdit_FIO->text();
 
-    registry_->SaveObjectInfo();
+    m_registry->SaveObjectInfo();
 }

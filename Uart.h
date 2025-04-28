@@ -1,6 +1,7 @@
 #ifndef UART_H
 #define UART_H
 
+#pragma once
 #include <QByteArray>
 #include <QObject>
 #include <QSerialPort>
