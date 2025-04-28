@@ -73,7 +73,6 @@ ValveWindow::ValveWindow(QWidget *parent)
     ui->comboBox_DN->clear();
     ui->comboBox_DN->addItems(m_loader.getDNList());
 
-<<<<<<< HEAD
     m_partFields.insert("plunger", ui->lineEdit_plunger);
     m_partFields.insert("saddle", ui->lineEdit_saddle);
     m_partFields.insert("bushing", ui->lineEdit_bushing);
@@ -93,29 +92,6 @@ ValveWindow::ValveWindow(QWidget *parent)
 
     if (ui->comboBox_DN->count() > 0)
         onDNChanged(ui->comboBox_DN->currentText());
-=======
-    // Сохраняем для будущей логики
-    m_valveDataObj = loader.getValveData();
-
-    // Инициализация первого значения
-    if (ui->comboBox_DN->count() > 0) {
-        ui->comboBox_DN->setCurrentIndex(0);
-        on_comboBox_DN_currentIndexChanged(ui->comboBox_DN->currentText());
-    }
-
-    QJsonArray variantsArray = m_valveDataObj.value(ui->comboBox_DN->currentText()).toArray();
-
-    ui->comboBox_CV->clear();
-    // Вывод CV из DN
-    for (const QJsonValue &val : variantsArray) {
-        QJsonObject variant = val.toObject();
-        double cvValue = variant.value("CV").toDouble();
-        ui->comboBox_CV->addItem(QString::number(cvValue));
-    }
-<<<<<<< Updated upstream
-=======
->>>>>>> 865d38d92f460ab26110b9ee5d04192c1e582d91
->>>>>>> Stashed changes
 }
 
 ValveWindow::~ValveWindow()
