@@ -36,7 +36,7 @@ ValveInfo *Registry::GetValveInfo(const QString &positionNumber)
     m_valveInfo.valveModel = m_settings.value("valveModel", "").toString();
     m_valveInfo.serialNumber = m_settings.value("serialNumber", "").toString();
     m_valveInfo.DN = m_settings.value("DN", "").toInt();;
-    m_valveInfo.PN = m_settings.value("PN", "").toString();
+    m_valveInfo.PN = m_settings.value("PN", "").toInt();
     m_valveInfo.stroke = m_settings.value("stroke", "").toString();
     m_valveInfo.positioner = m_settings.value("positioner", "").toString();
     m_valveInfo.dinamicError = m_settings.value("dinamicError", "").toString();

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1046</width>
-    <height>685</height>
+    <height>690</height>
    </rect>
   </property>
   <property name="font">
@@ -1891,7 +1891,7 @@
                         </widget>
                        </item>
                        <item>
-                        <widget class="QLabel" name="label_67">
+                        <widget class="QLabel" name="label_date">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                            <horstretch>0</horstretch>
@@ -1960,7 +1960,7 @@
                         </widget>
                        </item>
                        <item>
-                        <widget class="QLineEdit" name="lineEdit_data">
+                        <widget class="QLineEdit" name="lineEdit_date">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -3338,7 +3338,7 @@
   <tabstop>lineEdit_manufacture</tabstop>
   <tabstop>lineEdit_department</tabstop>
   <tabstop>lineEdit_FIO</tabstop>
-  <tabstop>lineEdit_data</tabstop>
+  <tabstop>lineEdit_date</tabstop>
   <tabstop>lineEdit_positionNumber</tabstop>
   <tabstop>lineEdit_serialNumber</tabstop>
   <tabstop>lineEdit_valveModel</tabstop>

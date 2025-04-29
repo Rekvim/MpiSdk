@@ -10,7 +10,7 @@ ValveWindow::ValveWindow(QWidget *parent)
 
     auto* validatorDigits = ValidatorFactory::create(ValidatorFactory::Type::Digits, this);
 
-    auto* validatorLettersHyphens = ValidatorFactory::create(ValidatorFactory::Type::LettersHyphens, this);
+    // auto* validatorLettersHyphens = ValidatorFactory::create(ValidatorFactory::Type::LettersHyphens, this);
 
     auto* noSpecialChars = ValidatorFactory::create(ValidatorFactory::Type::NoSpecialChars, this);
 
@@ -70,8 +70,13 @@ ValveWindow::ValveWindow(QWidget *parent)
     ui->comboBox_materialBody->addItems(m_loader.getBodyMaterials());
 
     m_valveDataObj = m_loader.getValveData();
+
+    qDebug() << "Перед clear: count =" << ui->comboBox_DN->count();
+
     ui->comboBox_DN->clear();
+
     ui->comboBox_DN->addItems(m_loader.getDNList());
+
 
     m_partFields.insert("plunger", ui->lineEdit_plunger);
     m_partFields.insert("saddle", ui->lineEdit_saddle);
@@ -90,8 +95,11 @@ ValveWindow::ValveWindow(QWidget *parent)
     connect(ui->comboBox_materialSaddle, &QComboBox::currentTextChanged,
             this, &ValveWindow::updatePartNumbers);
 
-    if (ui->comboBox_DN->count() > 0)
+    ui->comboBox_DN->setCurrentIndex(0);
+
+    if (ui->comboBox_DN->count() > 0) {
         onDNChanged(ui->comboBox_DN->currentText());
+    }
 }
 
 ValveWindow::~ValveWindow()
@@ -134,9 +142,13 @@ void ValveWindow::updatePartNumbers()
     };
 
     for (const auto &key : m_partFields.keys()) {
-        QString code = parts.value(key, QStringLiteral(""));
-        QString name = displayNames.value(key, key);
-        m_partFields[key]->setText(code + ": " + name);
+        QString code = parts.value(key, QString());
+        if (code.isEmpty()) {
+            m_partFields[key]->clear();
+        } else {
+            QString name = displayNames.value(key, key);
+            m_partFields[key]->setText(code + ": " + name);
+        }
     }
 }
 
@@ -171,7 +183,6 @@ void ValveWindow::SaveValveInfo()
 
     m_valveInfo->manufacturer = ui->lineEdit_manufacturer->text();
     m_valveInfo->serialNumber = ui->lineEdit_serial->text();
-    m_valveInfo->PN = ui->lineEdit_PN->text();
     m_valveInfo->stroke = ui->lineEdit_valveStroke->text();
     m_valveInfo->positioner = ui->lineEdit_positioner->text();
     m_valveInfo->dinamicError = ui->lineEdit_dinamicError->text();
@@ -182,7 +193,10 @@ void ValveWindow::SaveValveInfo()
     m_valveInfo->diameter = ui->doubleSpinBox_diameter->value();
     m_valveInfo->pulley = ui->doubleSpinBox_diameter_pulley->value();
 
-    m_valveInfo->DN = ui->comboBox_DN->currentIndex();
+    m_valveInfo->DN = ui->comboBox_DN->currentText().toInt();
+    m_valveInfo->CV = ui->comboBox_CV->currentText().toInt();
+    m_valveInfo->PN = ui->lineEdit_PN->text().toInt();
+
     m_valveInfo->valveModel = ui->comboBox_valveModel->currentText();
     m_valveInfo->safePosition = ui->comboBox_safePosition->currentIndex();
     m_valveInfo->driveType = ui->comboBox_driveType->currentIndex();
@@ -190,6 +204,8 @@ void ValveWindow::SaveValveInfo()
     m_valveInfo->toolNumber = ui->comboBox_toolNumber->currentIndex();
 
     m_materialsOfComponentParts->materialStuffingBoxSeal = ui->lineEdit_materialStuffingBoxSeal->text();
+
+    m_materialsOfComponentParts->materialSaddle = ui->comboBox_materialSaddle->currentText();
     m_materialsOfComponentParts->materialCorpus = ui->lineEdit_materialCorpus->text();
     m_materialsOfComponentParts->materialCap = ui->lineEdit_materialCap->text();
     m_materialsOfComponentParts->materialBall = ui->lineEdit_materialBall->text();
@@ -218,7 +234,7 @@ void ValveWindow::PositionChanged(const QString &position)
 
     ui->lineEdit_manufacturer->setText(m_valveInfo->manufacturer);
     ui->lineEdit_serial->setText(m_valveInfo->serialNumber);
-    ui->lineEdit_PN->setText(m_valveInfo->PN);
+    ui->lineEdit_PN->setText(QString::number(m_valveInfo->PN));
     ui->lineEdit_valveStroke->setText(m_valveInfo->stroke);
     ui->lineEdit_positioner->setText(m_valveInfo->positioner);
     ui->lineEdit_dinamicError->setText(m_valveInfo->dinamicError);
@@ -228,7 +244,7 @@ void ValveWindow::PositionChanged(const QString &position)
 
     ui->doubleSpinBox_diameter->setValue(m_valveInfo->diameter);
 
-    ui->comboBox_DN->setCurrentIndex(m_valveInfo->DN);
+    // ui->comboBox_DN->setCurrentIndex(m_valveInfo->DN);
     // ui->comboBox_valveModel->currentText(m_valveInfo->valveModel);
 
     ui->comboBox_safePosition->setCurrentIndex(m_valveInfo->safePosition);

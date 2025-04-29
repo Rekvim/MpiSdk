@@ -270,13 +270,15 @@ void MainWindow::SetRegistry(Registry *registry)
     ui->lineEdit_manufacture->setText(object_info->manufactory);
     ui->lineEdit_department->setText(object_info->department);
     ui->lineEdit_FIO->setText(object_info->FIO);
-    ui->lineEdit_data->setText(other_parameters->data);
+    ui->lineEdit_date->setText(other_parameters->date);
 
     ui->lineEdit_positionNumber->setText(valveInfo->positionNumber);
     ui->lineEdit_serialNumber->setText(valveInfo->serialNumber);
     ui->lineEdit_valveModel->setText(valveInfo->valveModel);
     ui->lineEdit_manufacturer->setText(valveInfo->manufacturer);
-    ui->lineEdit_DNPN->setText(valveInfo->DN + "/" + valveInfo->PN);
+    ui->lineEdit_DNPN->setText(QString::number(valveInfo->DN));
+    ui->lineEdit_PN->setText(QString::number(valveInfo->PN));
+    ui->lineEdit_CV->setText(QString::number(valveInfo->CV));
     ui->lineEdit_positioner->setText(valveInfo->positioner);
     ui->lineEdit_safePosition->setText(other_parameters->safePosition);
     ui->lineEdit_modelDrive->setText(valveInfo->modelDrive);
@@ -288,15 +290,15 @@ void MainWindow::SetRegistry(Registry *registry)
 
     ui->lineEdit_materialStuffingBoxSeal->setText(m->materialStuffingBoxSeal);
 
-    ui->lineEdit_materialCorpus->       setText(m->materialCorpus);
-    ui->lineEdit_materialCap->          setText(m->materialCap);
-    ui->lineEdit_materialSaddle->       setText(m->materialSaddle);
-    ui->lineEdit_materialBall->         setText(m->materialBall);
-    ui->lineEdit_materialDisk->         setText(m->materialDisk);
-    ui->lineEdit_materialPlunger->      setText(m->materialPlunger);
-    ui->lineEdit_materialShaft->        setText(m->materialShaft);
-    ui->lineEdit_materialStock->        setText(m->materialStock);
-    ui->lineEdit_materialGuideSleeve->  setText(m->materialGuideSleeve);
+    ui->lineEdit_materialCap-> setText(m->materialCap);
+    ui->lineEdit_materialCorpus-> setText(m->materialCorpus);
+    ui->lineEdit_materialSaddle-> setText(m->materialSaddle);
+    ui->lineEdit_materialBall-> setText(m->materialBall);
+    ui->lineEdit_materialDisk-> setText(m->materialDisk);
+    ui->lineEdit_materialPlunger-> setText(m->materialPlunger);
+    ui->lineEdit_materialShaft-> setText(m->materialShaft);
+    ui->lineEdit_materialStock-> setText(m->materialStock);
+    ui->lineEdit_materialGuideSleeve-> setText(m->materialGuideSleeve);
 
     if (valveInfo->safePosition != 0) {
         m_stepTestSettings->reverse();
@@ -743,6 +745,34 @@ void MainWindow::InitCharts()
 void MainWindow::SaveChart(Charts chart)
 {
     m_reportSaver->SaveImage(m_charts[chart]);
+
+    QPixmap pix = m_charts[chart]->grab();
+
+    switch (chart) {
+    case Charts::Task:
+        ui->label_pixmap3->setPixmap(pix);
+        break;
+    case Charts::Stroke:
+        break;
+    case Charts::Response:
+    case Charts::Resolution:
+    case Charts::Step:
+    case Charts::Pressure:
+        ui->label_pixmap2->setPixmap(pix);
+    case Charts::Friction:
+        ui->label_pixmap1->setPixmap(pix);
+
+    case Charts::Trend:
+    case Charts::Cyclic:
+    case Charts::Solenoid:
+        break;
+    default:
+        break;
+    }
+
+    ui->label_pixmap1->setScaledContents(true);
+    ui->label_pixmap2->setScaledContents(true);
+    ui->label_pixmap3->setScaledContents(true);
 }
 
 void MainWindow::setReport(const ReportSaver::Report &report)
@@ -781,10 +811,11 @@ void MainWindow::InitReport()
     m_report.data.push_back({6, 13, ui->lineEdit_serialNumber->text()});
     m_report.data.push_back({7, 13, ui->lineEdit_valveModel->text()});
     m_report.data.push_back({8, 13, ui->lineEdit_manufacturer->text()});
-    m_report.data.push_back({9, 13, ui->lineEdit_DNPN->text()});
+    m_report.data.push_back({9, 13, ui->lineEdit_DNPN->text() + "/" + ui->lineEdit_PN->text()});
     m_report.data.push_back({10, 13, ui->lineEdit_positioner->text()});
     m_report.data.push_back({11, 13, ui->lineEdit_pressure->text()});
     m_report.data.push_back({12, 13, ui->lineEdit_safePosition->text()});
+    m_report.data.push_back({13, 6, ui->lineEdit_CV->text()});
     m_report.data.push_back({13, 13, ui->lineEdit_modelDrive->text()});
     m_report.data.push_back({14, 13, ui->lineEdit_movement->text()});
     m_report.data.push_back({15, 13, ui->lineEdit_materialStuffingBoxSeal->text()});
@@ -808,8 +839,8 @@ void MainWindow::InitReport()
 
     // Пользователь и дата
     m_report.data.push_back({74, 4, ui->lineEdit_FIO->text()});
-    m_report.data.push_back({66, 12, ui->lineEdit_data->text()});
-    m_report.data.push_back({159, 12, ui->lineEdit_data->text()});
+    m_report.data.push_back({66, 12, ui->lineEdit_date->text()});
+    m_report.data.push_back({159, 12, ui->lineEdit_date->text()});
 
     // Материалы
     m_report.data.push_back({11, 4, ui->lineEdit_materialCorpus->text()});

@@ -47,7 +47,7 @@ struct ValveInfo
 
     quint32 DN;
     quint32 CV;
-    QString PN;
+    quint32 PN;
 
     QString stroke;
     QString positioner;
@@ -64,7 +64,7 @@ struct ValveInfo
 
 struct OtherParameters
 {
-    QString data;
+    QString date;
     QString safePosition;
     QString movement;
 };

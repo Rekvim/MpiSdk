@@ -65,7 +65,8 @@ enum class Charts {
     Stroke,
     Step,
     Trend,
-    Cyclic
+    Cyclic,
+    Solenoid
 };
 
 struct Point

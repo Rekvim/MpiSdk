@@ -105,8 +105,8 @@ void ObjectWindow::ButtonClick()
         return;
     }
 
-    OtherParameters *other_parameters = m_registry->GetOtherParameters();
-    other_parameters->data = ui->dateEdit->date().toString("dd.MM.yyyy");
+    OtherParameters *otherParameters = m_registry->GetOtherParameters();
+    otherParameters->date = ui->dateEdit->date().toString("dd.MM.yyyy");
     SaveObjectInfo();
     accept();
 }
