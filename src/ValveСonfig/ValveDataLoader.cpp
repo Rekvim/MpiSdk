@@ -1,9 +1,4 @@
 #include "ValveDataLoader.h"
-#include <QFile>
-#include <QJsonDocument>
-#include <QDebug>
-#include <algorithm>
-#include <QMessageBox>
 
 ValveDataLoader::ValveDataLoader(QObject *parent)
     : QObject(parent) {
@@ -31,7 +26,6 @@ bool ValveDataLoader::loadFromFile(const QString &resourcePath) {
 
     m_rootObj = doc.object();
     m_valveDataObj = m_rootObj.value("DN").toObject();
-    qDebug() << "Ключи DN в JSON:" << m_valveDataObj.keys();
 
     for (auto it = m_valveDataObj.constBegin(); it != m_valveDataObj.constEnd(); ++it) {
         const QString &dn = it.key();

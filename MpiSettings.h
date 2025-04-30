@@ -6,11 +6,11 @@
 #include <QApplication>
 #include <QSettings>
 
-class MPI_Settings : public QObject
+class MpiSettings : public QObject
 {
     Q_OBJECT
 public:
-    explicit MPI_Settings(QObject *parent = nullptr);
+    explicit MpiSettings(QObject *parent = nullptr);
 
     struct MinMax
     {

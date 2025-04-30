@@ -85,15 +85,16 @@ public:
 
 private:
     Registry *m_registry;
-    MPI mpi_;
-    QTimer *timer_sensors_;
-    QTimer *timer_DI_;
-    quint64 start_time_;
-    quint64 init_time_;
-    bool testing_;
-    QEventLoop *dac_eventloop_;
-    bool stop_set_dac_;
-    bool wait_for_button_ = false;
+    MPI m_mpi;
+    QTimer *m_timerSensors;
+    QTimer *m_timerDI;
+    quint64 m_startTime;
+    quint64 m_initTime;
+    bool m_testing;
+    QEventLoop *m_dacEventloop;
+    bool m_stopSetDac;
+    bool m_waitForButton = false;
+
 signals:
     void SetText(const TextObjects object, const QString &text);
     void SetTextColor(const TextObjects object, const QColor color);

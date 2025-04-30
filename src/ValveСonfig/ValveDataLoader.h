@@ -5,7 +5,10 @@
 
 #include <QObject>
 #include <QString>
-
+#include <QFile>
+#include <QJsonDocument>
+#include <QDebug>
+#include <QMessageBox>
 #include <QJsonObject>
 #include <QJsonArray>
 

@@ -28,7 +28,6 @@ int main(int argc, char *argv[])
     if (valveWindow.exec() != QDialog::Accepted)
         return 0;
 
-    // Единственный Report, который передаём всем окнам
     ReportSaver::Report report;
 
     notationWindow.fillReport(report);
@@ -40,7 +39,6 @@ int main(int argc, char *argv[])
         QMessageBox::warning(nullptr, "Ошибка", "Не удалось сохранить отчет");
     }
 
-    // Если вы хотите показать MainWindow с уже собранным report:
     MainWindow mainWindow;
     mainWindow.SetRegistry(&registry);
     mainWindow.setReport(report);

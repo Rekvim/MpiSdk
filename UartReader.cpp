@@ -20,30 +20,29 @@ UartReader::UartReader(QObject *parent)
 QByteArray UartReader::SendMessage(const UartMessage &message)
 {
     for (quint8 attempt = 0; attempt < m_maxAttempts; ++attempt) {
-        QByteArray read_data;
-        emit Write_Read(message.toByteArray(), read_data);
-        UartMessage response(read_data);
-        if (response.checkCRC() && response.command() == Command::OK)
-            return response.data();
+        QByteArray readData;
+        emit Write_Read(message.toByteArray(), readData);
+        UartMessage response(readData);
+        if (response.checkCRC() && response.GetCommand() == Command::OK)
+            return response.GetData();
         else
-            qDebug() << m_portName << message.toByteArray();
+            qDebug() << m_portName << message.toByteArray() << Qt::endl;
     }
-    return {};
+    return QByteArray();
 }
 
 void UartReader::ConnectToUart()
 {
-    for (const QSerialPortInfo &port : QSerialPortInfo::availablePorts()) {
+    foreach (QSerialPortInfo port, QSerialPortInfo::availablePorts()) {
         emit Connect(port.portName());
-        QByteArray ver = SendMessage(UartMessage(Command::GetVersion));
-        if (!ver.isEmpty()) {
-            m_version = static_cast<quint8>(ver.at(0));
+        QByteArray version = SendMessage(UartMessage(Command::GetVersion));
+        if (!version.isEmpty()) {
+            m_version = version.at(0);
             return;
         }
         emit Disconnect();
     }
 }
-
 void UartReader::GetVersion(quint8 &version)
 {
     if (!m_isConnected) return;
@@ -127,20 +126,20 @@ void UartReader::Connected(const QString &portName)
 {
     m_portName = portName;
     m_isConnected = true;
-    emit Uart_connected(portName);
+    emit UartConnected(portName);
 }
 
 void UartReader::Disconnected()
 {
     m_isConnected = false;
     m_adcTimer->stop();
-    emit Uart_disconnected();
+    emit UartDisconnected();
 }
 
 void UartReader::Error(QSerialPort::SerialPortError err)
 {
     if (err != QSerialPort::NoError && err != QSerialPort::TimeoutError)
-        emit Uart_error(err);
+        emit UartError(err);
 }
 
 void UartReader::SendADC()

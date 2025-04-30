@@ -42,9 +42,9 @@ signals:
     void Write_Read(const QByteArray &data_to_write, QByteArray &read_data);
 
     void ADC(QVector<quint16> adc);
-    void Uart_connected(const QString &portName);
-    void Uart_disconnected();
-    void Uart_error(QSerialPort::SerialPortError err);
+    void UartConnected(const QString &portName);
+    void UartDisconnected();
+    void UartError(QSerialPort::SerialPortError err);
 
 private:
     Uart *m_uart;

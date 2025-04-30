@@ -47,9 +47,9 @@ private:
 
 public slots:
     void ADC(QVector<quint16> adc);
-    void UART_connected(const QString port_name);
-    void UART_disconnected();
-    void UART_error(QSerialPort::SerialPortError err);
+    void UartConnected(const QString portName);
+    void UartDisconnected();
+    void UartError(QSerialPort::SerialPortError err);
 signals:
     void ConnectToUart();
     void GetVersion(quint8 &version);

@@ -25,19 +25,21 @@ enum class Command : quint8 {
 // Класс для упаковки и распаковки UART-сообщений с CRC
 class UartMessage {
 public:
-    UartMessage() = default;
+    explicit UartMessage(const QByteArray &raw);
     explicit UartMessage(Command command);
+
+    UartMessage() = default;
     UartMessage(Command command, const QByteArray &data);
     UartMessage(Command command, quint16 value);
     UartMessage(Command command, quint8 value);
-    explicit UartMessage(const QByteArray &raw);
+
 
     QByteArray toByteArray() const;
     bool checkCRC() const;
     void addCRC();
 
-    Command command() const { return m_command; }
-    QByteArray data() const { return m_data; }
+    Command GetCommand() const { return m_command; }
+    QByteArray GetData() const { return m_data; }
 
 private:
     QByteArray crc16() const;
