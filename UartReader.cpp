@@ -33,7 +33,7 @@ QByteArray UartReader::SendMessage(const UartMessage &message)
 
 void UartReader::ConnectToUart()
 {
-    foreach (QSerialPortInfo port, QSerialPortInfo::availablePorts()) {
+    for (const QSerialPortInfo &port : QSerialPortInfo::availablePorts()) {
         emit Connect(port.portName());
         QByteArray version = SendMessage(UartMessage(Command::GetVersion));
         if (!version.isEmpty()) {

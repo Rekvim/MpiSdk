@@ -778,8 +778,6 @@ void MainWindow::SaveChart(Charts chart)
 void MainWindow::setReport(const ReportSaver::Report &report)
 {
     m_report = report;
-
-    InitReport();
 }
 
 void MainWindow::GetImage(QLabel *label, QImage *image)
@@ -811,6 +809,7 @@ void MainWindow::InitReport()
     m_report.data.push_back({6, 13, ui->lineEdit_serialNumber->text()});
     m_report.data.push_back({7, 13, ui->lineEdit_valveModel->text()});
     m_report.data.push_back({8, 13, ui->lineEdit_manufacturer->text()});
+
     m_report.data.push_back({9, 13, ui->lineEdit_DNPN->text() + "/" + ui->lineEdit_PN->text()});
     m_report.data.push_back({10, 13, ui->lineEdit_positioner->text()});
     m_report.data.push_back({11, 13, ui->lineEdit_pressure->text()});
@@ -839,6 +838,7 @@ void MainWindow::InitReport()
 
     // Пользователь и дата
     m_report.data.push_back({74, 4, ui->lineEdit_FIO->text()});
+
     m_report.data.push_back({66, 12, ui->lineEdit_date->text()});
     m_report.data.push_back({159, 12, ui->lineEdit_date->text()});
 

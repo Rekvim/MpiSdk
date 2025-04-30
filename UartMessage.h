@@ -33,14 +33,12 @@ public:
     UartMessage(Command command, quint16 value);
     UartMessage(Command command, quint8 value);
 
-
     QByteArray toByteArray() const;
     bool checkCRC() const;
     void addCRC();
 
     Command GetCommand() const { return m_command; }
     QByteArray GetData() const { return m_data; }
-
 private:
     QByteArray crc16() const;
 

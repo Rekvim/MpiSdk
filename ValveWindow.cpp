@@ -71,12 +71,8 @@ ValveWindow::ValveWindow(QWidget *parent)
 
     m_valveDataObj = m_loader.getValveData();
 
-    qDebug() << "Перед clear: count =" << ui->comboBox_DN->count();
-
     ui->comboBox_DN->clear();
-
     ui->comboBox_DN->addItems(m_loader.getDNList());
-
 
     m_partFields.insert("plunger", ui->lineEdit_plunger);
     m_partFields.insert("saddle", ui->lineEdit_saddle);
@@ -95,11 +91,8 @@ ValveWindow::ValveWindow(QWidget *parent)
     connect(ui->comboBox_materialSaddle, &QComboBox::currentTextChanged,
             this, &ValveWindow::updatePartNumbers);
 
-    ui->comboBox_DN->setCurrentIndex(0);
-
-    if (ui->comboBox_DN->count() > 0) {
+    if (ui->comboBox_DN->count() > 0)
         onDNChanged(ui->comboBox_DN->currentText());
-    }
 }
 
 ValveWindow::~ValveWindow()
