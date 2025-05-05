@@ -13,7 +13,9 @@
 #include "OtherTestSettings.h"
 #include "Registry.h"
 #include "StepTestSettings.h"
-#include "Test.h"
+
+#include "./Src/Tests/StepTest.h"
+#include "./Src/Tests/MainTest.h"
 
 enum class TextObjects {
     LineEdit_linear_sensor,

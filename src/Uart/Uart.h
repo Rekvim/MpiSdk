@@ -14,14 +14,14 @@ public:
     ~Uart();
 
 private:
-    QSerialPort *serial_port_;
+    QSerialPort *m_serialPort;
 
 public slots:
-    void Connect(const QString &port_name);
+    void Connect(const QString &portName);
     void Disconnect();
-    void Write_Read(const QByteArray &data_to_write, QByteArray &read_data);
+    void Write_Read(const QByteArray &dataToWrite, QByteArray &readData);
 signals:
-    void Connected(QString port_name);
+    void Connected(QString portName);
     void Disconnected();
     void Error(QSerialPort::SerialPortError err);
 };

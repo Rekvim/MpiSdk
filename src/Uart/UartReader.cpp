@@ -21,12 +21,12 @@ QByteArray UartReader::SendMessage(const UartMessage &message)
 {
     for (quint8 attempt = 0; attempt < m_maxAttempts; ++attempt) {
         QByteArray readData;
-        emit Write_Read(message.toByteArray(), readData);
+        emit Write_Read(message.ToByteArray(), readData);
         UartMessage response(readData);
-        if (response.checkCRC() && response.GetCommand() == Command::OK)
+        if (response.CheckCrc() && response.GetCommand() == Command::OK)
             return response.GetData();
         else
-            qDebug() << m_portName << message.toByteArray() << Qt::endl;
+            qDebug() << m_portName << message.ToByteArray() << Qt::endl;
     }
     return QByteArray();
 }

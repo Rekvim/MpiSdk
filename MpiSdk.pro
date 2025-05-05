@@ -28,13 +28,18 @@ SOURCES += \
     ReportSaver.cpp \
     Sensor.cpp \
     StepTestSettings.cpp \
-    Test.cpp \
-    Uart.cpp \
-    UartMessage.cpp \
-    UartReader.cpp \
-    ValidatorFactory.cpp \
     ValveWindow.cpp \
     main.cpp \
+    src/Tests/CyclicTestPositioner.cpp \
+    src/Tests/MainTest.cpp \
+    src/Tests/OptionTest.cpp \
+    src/Tests/StepTest.cpp \
+    src/Tests/StrokeTest.cpp \
+    src/Tests/Test.cpp \
+    src/Uart/Uart.cpp \
+    src/Uart/UartMessage.cpp \
+    src/Uart/UartReader.cpp \
+    src/ValidatorFactory/ValidatorFactory.cpp \
     src/ValveСonfig/ValveDataLoader.cpp
 
 HEADERS += \
@@ -51,12 +56,17 @@ HEADERS += \
     ReportSaver.h \
     Sensor.h \
     StepTestSettings.h \
-    Test.h \
-    Uart.h \
-    UartMessage.h \
-    UartReader.h \
-    ValidatorFactory.h \
     ValveWindow.h \
+    src/Tests/CyclicTestPositioner.h \
+    src/Tests/MainTest.h \
+    src/Tests/OptionTest.h \
+    src/Tests/StepTest.h \
+    src/Tests/StrokeTest.h \
+    src/Tests/Test.h \
+    src/Uart/Uart.h \
+    src/Uart/UartMessage.h \
+    src/Uart/UartReader.h \
+    src/ValidatorFactory/ValidatorFactory.h \
     src/ValveСonfig/ValveDataLoader.h
 
 FORMS += \

@@ -18,16 +18,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_reportSaver = new ReportSaver(this);
 
-    ui->groupBox_DO->setVisible(false);
-
     ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tab_main), false);
     ui->tabWidget->setTabEnabled(2, false);
     ui->tabWidget->setTabEnabled(3, false);
-
-    ui->checkBox_DI1->setAttribute(Qt::WA_TransparentForMouseEvents);
-    ui->checkBox_DI1->setFocusPolicy(Qt::NoFocus);
-    ui->checkBox_DI2->setAttribute(Qt::WA_TransparentForMouseEvents);
-    ui->checkBox_DI2->setFocusPolicy(Qt::NoFocus);
 
     m_labels[TextObjects::Label_status] = ui->label_status;
     m_labels[TextObjects::Label_init] = ui->label_init;
@@ -74,22 +67,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->checkBox_autoinit, &QCheckBox::checkStateChanged, m_program, &Program::checkbox_autoinit);
 
     connect(this, &MainWindow::SetDO, m_program, &Program::button_DO);
-
-    connect(ui->pushButton_DO0, &QPushButton::clicked, this, [&](bool checked) {
-        emit SetDO(0, checked);
-    });
-
-    connect(ui->pushButton_DO1, &QPushButton::clicked, this, [&](bool checked) {
-        emit SetDO(1, checked);
-    });
-
-    connect(ui->pushButton_DO2, &QPushButton::clicked, this, [&](bool checked) {
-        emit SetDO(2, checked);
-    });
-
-    connect(ui->pushButton_DO3, &QPushButton::clicked, this, [&](bool checked) {
-        emit SetDO(3, checked);
-    });
 
     connect(ui->pushButton_main_save, &QPushButton::clicked, this, [&] {
         if (ui->tabWidget_maintest->currentWidget() == ui->tab_task) {
@@ -147,13 +124,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(m_program, &Program::SetText, this, &MainWindow::SetText);
     connect(m_program, &Program::SetTextColor, this, &MainWindow::SetTextColor);
-
-    connect(m_program, &Program::SetGroupDOVisible, this, [&](bool visible) {
-        ui->groupBox_DO->setVisible(visible);
-    });
-
-    connect(m_program, &Program::SetButtonsDOChecked, this, &MainWindow::SetButtonsDOChecked);
-    connect(m_program, &Program::SetCheckboxDIChecked, this, &MainWindow::SetCheckboxDIChecked);
 
     connect(this, &MainWindow::SetDAC, m_program, &Program::SetDAC_real);
 
@@ -570,30 +540,6 @@ void MainWindow::ButtonStartOptional()
     }
 }
 
-void MainWindow::SetButtonsDOChecked(quint8 status)
-{
-    ui->pushButton_DO0->blockSignals(true);
-    ui->pushButton_DO1->blockSignals(true);
-    ui->pushButton_DO2->blockSignals(true);
-    ui->pushButton_DO3->blockSignals(true);
-
-    ui->pushButton_DO0->setChecked((status & (1 << 0)) != 0);
-    ui->pushButton_DO1->setChecked((status & (1 << 1)) != 0);
-    ui->pushButton_DO2->setChecked((status & (1 << 2)) != 0);
-    ui->pushButton_DO3->setChecked((status & (1 << 3)) != 0);
-
-    ui->pushButton_DO0->blockSignals(false);
-    ui->pushButton_DO1->blockSignals(false);
-    ui->pushButton_DO2->blockSignals(false);
-    ui->pushButton_DO3->blockSignals(false);
-}
-
-void MainWindow::SetCheckboxDIChecked(quint8 status)
-{
-    ui->checkBox_DI1->setChecked((status & (1 << 0)) != 0);
-    ui->checkBox_DI2->setChecked((status & (1 << 1)) != 0);
-}
-
 void MainWindow::InitCharts()
 {
     ValveInfo *valve_info = m_registry->GetValveInfo();
@@ -797,7 +743,7 @@ void MainWindow::GetImage(QLabel *label, QImage *image)
 void MainWindow::InitReport()
 {
 
-    auto oldData = m_report.data;
+    auto dataFromOtherFiles = m_report.data;
 
     // Общие поля
     m_report.data.push_back({5, 4, ui->lineEdit_object->text()});
@@ -853,8 +799,8 @@ void MainWindow::InitReport()
     m_report.data.push_back({18, 4, ui->lineEdit_materialStock->text()});
     m_report.data.push_back({19, 4, ui->lineEdit_materialGuideSleeve->text()});
 
-    for (const auto &f : oldData) {
-        m_report.data.push_back(f);
+    for (const auto &data : dataFromOtherFiles) {
+        m_report.data.push_back(data);
     }
 
     m_report.validation = {

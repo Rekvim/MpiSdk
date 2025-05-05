@@ -1,102 +1,67 @@
-#include "Test.h"
+#include "MainTest.h"
 
-Test::Test(QObject *parent)
-    : QObject{parent}
-{
-    graph_timer_ = new QTimer(this);
-    connect(graph_timer_, &QTimer::timeout, this, [&] { emit UpdateGraph(); });
-    terminate_ = false;
-    event_loop_ = new QEventLoop(this);
-}
-
-void Test::Sleep(quint16 msecs)
-{
-    QEventLoop loop(this);
-    QTimer::singleShot(msecs, &loop, &QEventLoop::quit);
-    loop.exec();
-}
-
-void Test::SetDACBlocked(quint16 value, quint32 sleep_ms, bool wait_for_stop, bool wait_for_start)
-{
-    emit SetDAC(value, sleep_ms, wait_for_stop, wait_for_start);
-    event_loop_->exec();
-}
-
-void Test::Stop()
-{
-    terminate_ = true;
-    event_loop_->quit();
-    graph_timer_->stop();
-    //emit EndTest();
-}
-
-void Test::ReleaseBlock()
-{
-    event_loop_->quit();
-}
-
-MainTest::MainTest(QObject *parent, bool end_test_after_process)
+MainTest::MainTest(QObject *parent, bool endTestAfterProcess)
     : Test(parent)
-    , end_test_after_process_(end_test_after_process)
+    , m_endTestAfterProcess(endTestAfterProcess)
 {}
 
 void MainTest::Process()
 {
     emit ClearGraph();
-    emit ShowDots(!parameters_.continuous);
+    emit ShowDots(!m_parameters.continuous);
 
-    SetDACBlocked(parameters_.dac_min, 10000, true);
+    SetDACBlocked(m_parameters.dac_min, 10000, true);
 
-    graph_timer_->start(parameters_.delay);
+    m_graphTimer->start(m_parameters.delay);
 
-    Sleep(parameters_.delay);
+    Sleep(m_parameters.delay);
 
-    quint16 point_numbers = parameters_.point_numbers * parameters_.delay / parameters_.response;
+    quint16 pointNumbers = m_parameters.pointNumbers * m_parameters.delay / m_parameters.response;
 
     quint64 time;
     time = QDateTime::currentMSecsSinceEpoch();
 
-    for (qint16 i = 0; i <= point_numbers; ++i) {
-        quint16 dac = i * (parameters_.dac_max - parameters_.dac_min) / point_numbers
-                      + parameters_.dac_min;
+    for (qint16 i = 0; i <= pointNumbers; ++i) {
+        quint16 dac = i * (m_parameters.dac_max - m_parameters.dac_min) / pointNumbers
+                      + m_parameters.dac_min;
 
-        time += parameters_.response;
+        time += m_parameters.response;
         quint64 current_time = QDateTime::currentMSecsSinceEpoch();
         SetDACBlocked(dac, time < current_time ? 0 : (time - current_time));
 
-        if (terminate_) {
+        if (m_terminate) {
             emit EndTest();
             return;
         }
     }
 
-    SetDACBlocked(parameters_.dac_max, 0, true);
+    SetDACBlocked(m_parameters.dac_max, 0, true);
 
     emit DublSeries();
 
-    Sleep(parameters_.delay);
+    Sleep(m_parameters.delay);
 
     time = QDateTime::currentMSecsSinceEpoch();
 
-    for (qint16 i = point_numbers; i >= 0; --i) {
-        quint16 dac = i * (parameters_.dac_max - parameters_.dac_min) / point_numbers
-                      + parameters_.dac_min;
+    for (qint16 i = pointNumbers; i >= 0; --i) {
+        quint16 dac = i * (m_parameters.dac_max - m_parameters.dac_min) / pointNumbers
+                      + m_parameters.dac_min;
 
-        time += parameters_.response;
+        time += m_parameters.response;
         quint64 current_time = QDateTime::currentMSecsSinceEpoch();
         SetDACBlocked(dac, time < current_time ? 0 : (time - current_time));
 
-        if (terminate_) {
+        if (m_terminate) {
             emit EndTest();
             return;
         }
     }
 
-    SetDACBlocked(parameters_.dac_min, 0, true);
+    SetDACBlocked(m_parameters.dac_min, 0, true);
 
-    graph_timer_->stop();
+    m_graphTimer->stop();
 
-    if (terminate_) {
+    if (m_terminate) {
         emit EndTest();
         return;
     }
@@ -124,42 +89,42 @@ void MainTest::Process()
 
     qreal y_mean = (regression_limits.maxY + regression_limits.minY) / 2.0;
 
-    test_results.pressure_diff = qAbs((y_mean - regression_forward.b) / regression_forward.k
-                                      - (y_mean - regression_backward.b) / regression_backward.k);
+    test_results.pressureDiff = qAbs((y_mean - regression_forward.b) / regression_forward.k
+                                     - (y_mean - regression_backward.b) / regression_backward.k);
 
     auto [mean, max] = GetMeanMax(points[0], points[1]);
 
-    test_results.din_error_mean = mean / 2;
-    test_results.din_error_max = max;
+    test_results.dinErrorMean = mean / 2;
+    test_results.dinErrorMax = max;
 
     qreal range = qAbs((regression_limits.minY - regression_forward.b) / regression_forward.k
                        - (regression_limits.maxY - regression_forward.b) / regression_forward.k);
 
-    test_results.friction = 50.0 * test_results.pressure_diff / range;
+    test_results.friction = 50.0 * test_results.pressureDiff / range;
 
     auto [low_limit, high_limit] = GetRangeLimits(regression_forward,
                                                   regression_backward,
                                                   regression_limits);
 
-    test_results.low_limit = low_limit;
-    test_results.high_limit = high_limit;
+    test_results.lowLimit = low_limit;
+    test_results.highLimit = high_limit;
 
     auto [spring_low, spring_high] = GetSpringLimits(regression_forward,
                                                      regression_backward,
                                                      regression_limits);
 
-    test_results.spring_low = spring_low;
-    test_results.spring_high = spring_high;
+    test_results.springLow = spring_low;
+    test_results.springHigh = spring_high;
 
     emit Results(test_results);
-    if (end_test_after_process_) {
+    if (m_endTestAfterProcess) {
         emit EndTest();
     }
 }
 
 void MainTest::SetParameters(MainTestSettings::TestParameters &parameters)
 {
-    parameters_ = parameters;
+    m_parameters = parameters;
 }
 
 MainTest::Regression MainTest::CalculateRegression(QVector<QPointF> &points, Limits limits)
@@ -240,7 +205,7 @@ QVector<QPointF> MainTest::GetRegressionPoints(Regression regression, Limits lim
 
     auto PointInLimits = [limits](QPointF point) {
         return (point.x() >= limits.minX) && (point.x() <= limits.maxX)
-               && (point.y() >= limits.minY) && (point.y() <= limits.maxY);
+        && (point.y() >= limits.minY) && (point.y() <= limits.maxY);
     };
 
     bool minX_InLimits = PointInLimits(point_minX);
@@ -420,206 +385,4 @@ QPair<qreal, qreal> MainTest::GetSpringLimits(Regression regression1,
     qreal max = (qMax(x1, x2) + qMax(x3, x4)) / 2;
 
     return qMakePair(min, max);
-}
-
-StrokeTest::StrokeTest(QObject *parent)
-    : Test(parent)
-{}
-
-void StrokeTest::Process()
-{
-    SetDACBlocked(0, 10000, true);
-
-    if (terminate_) {
-        emit EndTest();
-        return;
-    }
-
-    emit SetStartTime();
-
-    graph_timer_->start(50);
-
-    Sleep(5000);
-
-    if (terminate_) {
-        emit EndTest();
-        return;
-    }
-
-    quint64 start_time = QDateTime::currentMSecsSinceEpoch();
-
-    SetDACBlocked(0xFFFF, 0, true, true);
-
-    if (terminate_) {
-        emit EndTest();
-        return;
-    }
-
-    quint64 forward_time = QDateTime::currentMSecsSinceEpoch() - start_time - 2500;
-
-    start_time = QDateTime::currentMSecsSinceEpoch();
-
-    SetDACBlocked(0, 0, true, true);
-
-    if (terminate_) {
-        emit EndTest();
-        return;
-    }
-
-    quint64 backward_time = QDateTime::currentMSecsSinceEpoch() - start_time - 2500;
-
-    emit Results(forward_time, backward_time);
-
-    emit EndTest();
-}
-
-OptionTest::OptionTest(QObject *parent, bool end_test_after_process)
-    : Test(parent)
-    , end_test_after_process_(end_test_after_process)
-{}
-
-void OptionTest::Process()
-{
-    if (task_.value.empty()) {
-        emit EndTest();
-        return;
-    }
-
-    SetDACBlocked(task_.value.first(), 10000, true);
-
-    if (terminate_) {
-        emit EndTest();
-        return;
-    }
-
-    emit SetStartTime();
-
-    graph_timer_->start(50);
-
-    for (const auto value : task_.value) {
-        SetDACBlocked(value, task_.delay);
-
-        if (terminate_) {
-            emit EndTest();
-            return;
-        }
-    }
-    if (end_test_after_process_) {
-        emit EndTest();
-    }
-}
-
-void OptionTest::SetTask(Task task)
-{
-    task_ = task;
-}
-
-StepTest::StepTest(QObject *parent)
-    : OptionTest(parent, false)
-{}
-
-void StepTest::Process()
-{
-    OptionTest::Process();
-    if (terminate_) {
-        emit EndTest();
-        return;
-    }
-    QVector<QVector<QPointF>> points;
-    emit GetPoints(points);
-    emit Results(CalculateResult(points), T_value_);
-    emit EndTest();
-}
-
-void StepTest::Set_T_value(quint32 T_value)
-{
-    T_value_ = T_value;
-}
-
-QVector<StepTest::TestResult> StepTest::CalculateResult(const QVector<QVector<QPointF>> &points) const
-{
-    QVector<TestResult> result;
-    const QVector<QPointF> &line = points.at(0);
-    const QVector<QPointF> &task = points.at(1);
-
-    qreal from = 0;
-    qreal prev_task = task.first().y();
-    qreal time_start;
-    quint64 t86_time = 0;
-    qreal threshold;
-    qreal overshoot = 0;
-    bool have_t86 = false;
-    bool first = true;
-    bool up;
-    for (int i = 0; i < line.size(); ++i) {
-        qreal curr_task = task.at(i).y();
-        if (!qFuzzyCompare(curr_task, prev_task)) {
-            if (first) {
-                first = false;
-            } else {
-                result.push_back({static_cast<quint16>(qRound(from)),
-                                  static_cast<quint16>(qRound(prev_task)),
-                                  have_t86 ? t86_time : 0,
-                                  overshoot});
-            }
-            from = prev_task;
-            time_start = task.at(i).x();
-            threshold = (curr_task - prev_task) * T_value_ / 100 + prev_task;
-            up = (curr_task > prev_task);
-            overshoot = -1000;
-            have_t86 = false;
-            prev_task = curr_task;
-        } else {
-            if (first) {
-                continue;
-            }
-            overshoot = qMax(overshoot, (line.at(i).y() - curr_task) / (curr_task - from) * 100);
-            if (!have_t86) {
-                if ((line.at(i).y() - threshold) * (up ? 1 : -1) > 0) {
-                    t86_time = qRound(line.at(i).x() - time_start);
-                    have_t86 = true;
-                }
-            }
-        }
-    }
-    result.push_back({static_cast<quint16>(qRound(from)),
-                      static_cast<quint16>(qRound(prev_task)),
-                      have_t86 ? t86_time : 0,
-                      overshoot});
-    return result;
-}
-
-CyclicTest::CyclicTest(QObject *parent)
-    : MainTest(parent, false)
-{}
-
-void CyclicTest::Process()
-{
-    cyclic_graph_timer_ = new QTimer(this);
-    connect(cyclic_graph_timer_, &QTimer::timeout, this, [&] { emit UpdateCyclicTred(); });
-
-    emit SetStartTime();
-    cyclic_graph_timer_->start(500);
-    MainTest::Process();
-
-    for (int i = 0; i < parameters_.num_cycles; ++i) {
-        if (terminate_) {
-            emit EndTest();
-            return;
-        }
-        SetDACBlocked(0xFFFF, 0, true, true);
-        if (terminate_) {
-            emit EndTest();
-            return;
-        }
-        SetDACBlocked(0, 0, true, true);
-    }
-
-    if (terminate_) {
-        emit EndTest();
-        return;
-    }
-
-    MainTest::Process();
-    emit EndTest();
 }

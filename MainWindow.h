@@ -55,8 +55,6 @@ private slots:
     void ButtonStartMain();
     void ButtonStartStroke();
     void ButtonStartOptional();
-    void SetButtonsDOChecked(quint8 status);
-    void SetCheckboxDIChecked(quint8 status);
 
 private:
     Ui::MainWindow *ui;

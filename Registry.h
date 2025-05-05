@@ -44,21 +44,22 @@ struct ValveInfo
     QString serialNumber;
     QString manufacturer;
     QString valveModel;
-
-    quint32 DN;
-    quint32 CV;
-    quint32 PN;
-
     QString stroke;
     QString positioner;
     QString dinamicError;
     QString modelDrive;
     QString range;
-    qreal diameter;
+
+    quint32 DN;
+    quint32 CV;
+    quint32 PN;
+
     quint32 safePosition;
     quint32 driveType;
     quint32 strokeMovement;
     quint32 toolNumber;
+
+    qreal diameter;
     qreal pulley;
 };
 

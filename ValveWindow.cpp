@@ -1,6 +1,6 @@
 #include "ui_ValveWindow.h"
 #include "ValveWindow.h"
-#include "ValidatorFactory.h"
+#include "./Src/ValidatorFactory/ValidatorFactory.h"
 
 ValveWindow::ValveWindow(QWidget *parent)
     : QDialog(parent)
