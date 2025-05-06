@@ -553,7 +553,7 @@ void MainWindow::InitCharts()
     m_charts[Charts::Stroke] = ui->Chart_stroke;
     m_charts[Charts::Step] = ui->Chart_step;
     m_charts[Charts::Trend] = ui->Chart_trend;
-    m_charts[Charts::Cyclic] = ui->Chart_cyclic;
+    // m_charts[Charts::Cyclic] = ui->Chart_cyclic;
 
     m_charts[Charts::Task]->setname("Task");
     m_charts[Charts::Friction]->setname("Friction");
@@ -562,7 +562,7 @@ void MainWindow::InitCharts()
     m_charts[Charts::Response]->setname("Response");
     m_charts[Charts::Stroke]->setname("Stroke");
     m_charts[Charts::Step]->setname("Step");
-    m_charts[Charts::Cyclic]->setname("Cyclic");
+    // m_charts[Charts::Cyclic]->setname("Cyclic");
 
     m_charts[Charts::Task]->useTimeaxis(false);
     m_charts[Charts::Task]->addAxis("%.2f bar");
@@ -624,10 +624,10 @@ void MainWindow::InitCharts()
     m_charts[Charts::Trend]->addSeries(0, "Датчик линейных перемещений", QColor::fromRgb(255, 0, 0));
     m_charts[Charts::Trend]->setMaxRange(60000);
 
-    m_charts[Charts::Cyclic]->useTimeaxis(true);
-    m_charts[Charts::Cyclic]->addAxis("%.2f%%");
-    m_charts[Charts::Cyclic]->addSeries(0, "Задание", QColor::fromRgb(0, 0, 0));
-    m_charts[Charts::Cyclic]->addSeries(0, "Датчик линейных перемещений", QColor::fromRgb(255, 0, 0));
+    // m_charts[Charts::Cyclic]->useTimeaxis(true);
+    // m_charts[Charts::Cyclic]->addAxis("%.2f%%");
+    // m_charts[Charts::Cyclic]->addSeries(0, "Задание", QColor::fromRgb(0, 0, 0));
+    // m_charts[Charts::Cyclic]->addSeries(0, "Датчик линейных перемещений", QColor::fromRgb(255, 0, 0));
 
     connect(m_program, &Program::AddPoints, this, &MainWindow::AddPoints);
     connect(m_program, &Program::ClearPoints, this, &MainWindow::ClearPoints);
@@ -709,7 +709,6 @@ void MainWindow::SaveChart(Charts chart)
         ui->label_pixmap1->setPixmap(pix);
 
     case Charts::Trend:
-    case Charts::Cyclic:
     case Charts::Solenoid:
         break;
     default:

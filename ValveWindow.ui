@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>700</width>
-    <height>914</height>
+    <height>966</height>
    </rect>
   </property>
   <property name="font">
@@ -149,6 +149,35 @@
         </layout>
        </item>
        <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_33">
+         <property name="spacing">
+          <number>15</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_serial_2">
+           <property name="minimumSize">
+            <size>
+             <width>272</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>230</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Серия клапана</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout_valveModel">
          <property name="spacing">
           <number>15</number>
@@ -171,6 +200,9 @@
             <string>Модель клапана</string>
            </property>
           </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEdit_serial_2"/>
          </item>
          <item>
           <widget class="QComboBox" name="comboBox_valveModel">
@@ -421,6 +453,35 @@
         </layout>
        </item>
        <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_13">
+         <property name="spacing">
+          <number>15</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_16">
+           <property name="minimumSize">
+            <size>
+             <width>272</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>230</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Динамическая ошибка</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEdit_dinamicError"/>
+         </item>
+        </layout>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout_20">
          <property name="spacing">
           <number>15</number>
@@ -486,35 +547,6 @@
          </item>
          <item>
           <widget class="QLineEdit" name="lineEdit_valveStroke"/>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_13">
-         <property name="spacing">
-          <number>15</number>
-         </property>
-         <item>
-          <widget class="QLabel" name="label_16">
-           <property name="minimumSize">
-            <size>
-             <width>272</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>230</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Динамическая ошибка</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEdit_dinamicError"/>
          </item>
         </layout>
        </item>
