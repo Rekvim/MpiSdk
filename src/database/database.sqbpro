@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="database.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="3081"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="sqlite_sequence" custom_title="0" dock_id="2" table="4,15:mainsqlite_sequence"/><dock_state state="000000ff00000000fd0000000100000002000005c100000398fc0100000002fb000000160064006f0063006b00420072006f00770073006500310100000000000005c10000000000000000fb000000160064006f0063006b00420072006f00770073006500320100000000000005c10000012e00ffffff000002790000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="sqlite_sequence" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="40"/><column index="2" value="35"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1*">-- Таблица производителей
+CREATE TABLE manufacturers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL
+);
+
+-- Таблица серий клапанов
+CREATE TABLE valve_series (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    manufacturer_id INTEGER,
+    name TEXT NOT NULL,
+    FOREIGN KEY (manufacturer_id) REFERENCES manufacturers(id)
+);
+
+-- Таблица материалов сидений
+CREATE TABLE saddle_materials (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL
+);
+
+-- Таблица материалов корпуса
+CREATE TABLE body_materials (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL
+);
+
+-- Таблица моделей клапанов
+CREATE TABLE valve_models (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    series_id INTEGER,
+    name TEXT NOT NULL,
+    FOREIGN KEY (series_id) REFERENCES valve_series(id)
+);
+
+-- Таблица размеров клапанов (DN)
+CREATE TABLE valve_dn_sizes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    valve_model_id INTEGER,
+    dn_size INTEGER NOT NULL,
+    cv REAL NOT NULL,
+    FOREIGN KEY (valve_model_id) REFERENCES valve_models(id)
+);
+
+-- Таблица компонентов клапанов
+CREATE TABLE valve_components (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    valve_dn_size_id INTEGER,
+    saddle_material_id INTEGER,
+    body_material_id INTEGER,
+    plunger TEXT,
+    saddle TEXT,
+    bushing TEXT,
+    oRingSealingRing TEXT,
+    stuffingBoxSeal TEXT,
+    driveDiaphragm TEXT,
+    setOfCovers TEXT,
+    shaft TEXT,
+    saddleLock TEXT,
+    FOREIGN KEY (valve_dn_size_id) REFERENCES valve_dn_sizes(id),
+    FOREIGN KEY (saddle_material_id) REFERENCES saddle_materials(id),
+    FOREIGN KEY (body_material_id) REFERENCES body_materials(id)
+);
+</sql><current_tab id="0"/></tab_sql></sqlb_project>
