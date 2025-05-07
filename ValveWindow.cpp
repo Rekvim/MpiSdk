@@ -1,10 +1,12 @@
 #include "ui_ValveWindow.h"
 #include "ValveWindow.h"
+
 #include "./Src/ValidatorFactory/ValidatorFactory.h"
 
 ValveWindow::ValveWindow(QWidget *parent)
     : QDialog(parent)
-    , ui(new Ui::ValveWindow)
+    , ui(new Ui::ValveWindow),
+    m_db()
 {
     ui->setupUi(this);
 
@@ -54,45 +56,84 @@ ValveWindow::ValveWindow(QWidget *parent)
 
     DiameterChanged(ui->doubleSpinBox_diameter->value());
 
-    ui->comboBox_manufacturer->clear();
-    ui->comboBox_manufacturer->addItems(m_loader.getManufacturers());
-
-    ui->comboBox_valveModel->clear();
-    ui->comboBox_valveModel->addItems(m_loader.getValveModels());
-
-    ui->comboBox_driveModel->clear();
-    ui->comboBox_driveModel->addItems(m_loader.getDriveModels());
-
-    ui->comboBox_materialSaddle->clear();
-    ui->comboBox_materialSaddle->addItems(m_loader.getSaddleMaterials());
-
-    ui->comboBox_materialBody->clear();
-    ui->comboBox_materialBody->addItems(m_loader.getBodyMaterials());
-
-    m_valveDataObj = m_loader.getValveData();
-
-    ui->comboBox_DN->clear();
-    ui->comboBox_DN->addItems(m_loader.getDNList());
-
-    m_partFields.insert("plunger", ui->lineEdit_plunger);
-    m_partFields.insert("saddle", ui->lineEdit_saddle);
-    m_partFields.insert("bushing", ui->lineEdit_bushing);
+    m_partFields.insert("plunger",          ui->lineEdit_plunger);
+    m_partFields.insert("saddle",           ui->lineEdit_saddle);
+    m_partFields.insert("bushing",          ui->lineEdit_bushing);
     m_partFields.insert("oRingSealingRing", ui->lineEdit_oRing);
-    m_partFields.insert("stuffingBoxSeal", ui->lineEdit_stuffingSeal);
-    m_partFields.insert("driveDiaphragm", ui->lineEdit_diaphragm);
-    m_partFields.insert("setOfCovers", ui->lineEdit_covers);
-    m_partFields.insert("shaft", ui->lineEdit_shaft);
-    m_partFields.insert("saddleLock", ui->lineEdit_saddleLock);
+    m_partFields.insert("stuffingBoxSeal",  ui->lineEdit_stuffingSeal);
+    m_partFields.insert("driveDiaphragm",   ui->lineEdit_diaphragm);
+    m_partFields.insert("setOfCovers",      ui->lineEdit_covers);
+    m_partFields.insert("shaft",            ui->lineEdit_shaft);
+    m_partFields.insert("saddleLock",       ui->lineEdit_saddleLock);
 
-    connect(ui->comboBox_DN, &QComboBox::currentTextChanged,
+    ui->comboBox_manufacturer->clear();
+    for ( auto [id, name] : m_db.getManufacturers() ) {
+        ui->comboBox_manufacturer->addItem(name, id);
+    }
+
+    auto allSeries = m_db.getAllSeries();
+    qDebug() << "All valve_series in DB:";
+    for (auto [id, name] : allSeries) {
+        qDebug() << "  id =" << id << ", name =" << name;
+    }
+
+    connect(ui->lineEdit_valveSeries, &QLineEdit::editingFinished,
+            this, &ValveWindow::onSeriesEditingFinished);
+
+    QString seriesName = ui->lineEdit_valveSeries->text().trimmed();
+    int seriesId = m_db.getSeriesIdByName(seriesName);
+
+    // MODELS (после SERIES)
+    ui->comboBox_valveModel->clear();
+    for (auto [id, name] : m_db.getValveModels(seriesId)) {
+        ui->comboBox_valveModel->addItem(name, id);
+    }
+
+    // DN-sizes
+    ui->comboBox_DN->clear();
+    for (auto [dnId, dnSize] : m_db.getValveDnSizes(seriesId)) {
+        ui->comboBox_DN->addItem(QString::number(dnSize), dnId);
+    }
+
+    int dnSizeId = ui->comboBox_DN->currentData().toInt();
+    // CV (после DN)
+    ui->comboBox_CV->clear();
+    for (auto [cvId, cv] : m_db.getCvValues(dnSizeId)) {
+        ui->comboBox_CV->addItem(QString::number(cv), cvId);
+    }
+
+    // Saddle Materials
+    ui->comboBox_materialSaddle->clear();
+    for (auto [id, name] : m_db.getSaddleMaterials()) {
+        ui->comboBox_materialSaddle->addItem(name, id);
+    }
+
+    // Drive Model
+    ui->comboBox_materialSaddle->clear();
+    for (const auto &[id, name] : m_db.getDriveModel()) {
+        ui->comboBox_driveModel->addItem(name, id);
+    }
+
+    // BODY MATERIALS
+    ui->comboBox_materialBody->clear();
+    for (auto [id, name] : m_db.getBodyMaterials()) {
+        ui->comboBox_materialBody->addItem(name, id);
+    }
+
+    connect(ui->lineEdit_valveSeries, &QLineEdit::editingFinished,
+            this, &ValveWindow::onSeriesEditingFinished);
+
+    // Сигнал выбора DN (index)
+    connect(ui->comboBox_DN, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &ValveWindow::onDNChanged);
-    connect(ui->comboBox_CV, &QComboBox::currentTextChanged,
+    // Сигналы для CV и SaddleMaterial
+    connect(ui->comboBox_CV, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &ValveWindow::updatePartNumbers);
-    connect(ui->comboBox_materialSaddle, &QComboBox::currentTextChanged,
+    connect(ui->comboBox_materialSaddle, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &ValveWindow::updatePartNumbers);
 
     if (ui->comboBox_DN->count() > 0)
-        onDNChanged(ui->comboBox_DN->currentText());
+        onDNChanged(0);
 }
 
 ValveWindow::~ValveWindow()
@@ -100,15 +141,58 @@ ValveWindow::~ValveWindow()
     delete ui;
 }
 
-void ValveWindow::onDNChanged(const QString &dn)
+void ValveWindow::populateModelsAndDn(int seriesId)
 {
-    ui->comboBox_CV->clear();
-    auto variants = m_valveDataObj.value(dn).toArray();
-    for (auto vv : variants) {
-        double cv = vv.toObject().value("CV").toDouble();
-        ui->comboBox_CV->addItem(QString::number(cv));
+    // Модели
+    ui->comboBox_valveModel->clear();
+    for (auto [id, name] : m_db.getValveModels(seriesId)) {
+        ui->comboBox_valveModel->addItem(name, id);
     }
-    if (ui->comboBox_CV->count()>0)
+
+    // DN
+    ui->comboBox_DN->clear();
+    for (auto [dnId, dnSize] : m_db.getValveDnSizes(seriesId)) {
+        ui->comboBox_DN->addItem(QString::number(dnSize), dnId);
+    }
+
+    // И сразу подгрузим CV для первого DN, если он есть
+    if (ui->comboBox_DN->count() > 0)
+        onDNChanged(0);
+}
+
+void ValveWindow::onSeriesEditingFinished()
+{
+    QString seriesName = ui->lineEdit_valveSeries->text().trimmed();
+    if (seriesName.isEmpty())
+        return;
+
+    int seriesId = m_db.getSeriesIdByName(seriesName);
+    if (seriesId < 0) {
+        QMessageBox::warning(this,
+                             tr("Серия не найдена"),
+                             tr("Серия \"%1\" отсутствует в базе данных.").arg(seriesName));
+        ui->comboBox_valveModel->clear();
+        ui->comboBox_DN->clear();
+        ui->comboBox_CV->clear();
+        return;
+    }
+
+    // Теперь мы точно знаем seriesId — можем заполнить модели и DN
+    populateModelsAndDn(seriesId);
+}
+
+void ValveWindow::onDNChanged(int index)
+{
+    qDebug() << "onDNChanged index =" << index;
+
+    int dnSizeId = ui->comboBox_DN->itemData(index).toInt();
+
+    // Заполняем CV
+    ui->comboBox_CV->clear();
+    for (auto [cvId, cv] : m_db.getCvValues(dnSizeId)) {
+        ui->comboBox_CV->addItem(QString::number(cv), cvId);
+    }
+    if (ui->comboBox_CV->count() > 0)
         ui->comboBox_CV->setCurrentIndex(0);
 
     updatePartNumbers();
@@ -116,31 +200,32 @@ void ValveWindow::onDNChanged(const QString &dn)
 
 void ValveWindow::updatePartNumbers()
 {
-    QString dn  = ui->comboBox_DN->currentText();
-    double cv   = ui->comboBox_CV->currentText().toDouble();
-    QString mat = ui->comboBox_materialSaddle->currentText();
+    int dnSizeId         = ui->comboBox_DN->currentData().toInt();
+    int cvValueId        = ui->comboBox_CV->currentData().toInt();
+    int saddleMaterialId = ui->comboBox_materialSaddle->currentData().toInt();
 
-    auto parts = m_loader.materialsFor(dn, cv, mat);
+    auto parts = m_db.getValveComponents(dnSizeId, cvValueId, saddleMaterialId);
 
     static const QMap<QString, QString> displayNames = {
-        {"plunger", "Плунжер"},
-        {"saddle", "Седло"},
-        {"bushing", "Втулка"},
-        {"oRingSealingRing", "Уплотнительное кольцо"},
-        {"stuffingBoxSeal", "Манжета"},
-        {"driveDiaphragm", "Диафрагма привода"},
-        {"setOfCovers", "Крышки"},
-        {"shaft", "Вал"},
-        {"saddleLock", "Фиксатор седла"}
+        { "plunger",           "Плунжер"               },
+        { "saddle",            "Седло"                 },
+        { "bushing",           "Втулка"                },
+        { "oRingSealingRing",  "Уплотнительное кольцо" },
+        { "stuffingBoxSeal",   "Манжета"               },
+        { "driveDiaphragm",    "Диафрагма привода"     },
+        { "setOfCovers",       "Крышки"                },
+        { "shaft",             "Вал"                   },
+        { "saddleLock",        "Фиксатор седла"        }
     };
 
-    for (const auto &key : m_partFields.keys()) {
-        QString code = parts.value(key, QString());
+    for (auto key : m_partFields.keys()) {
+        auto *le   = m_partFields[key];
+        QString code = parts.value(key);
         if (code.isEmpty()) {
-            m_partFields[key]->clear();
+            le->clear();
         } else {
-            QString name = displayNames.value(key, key);
-            m_partFields[key]->setText(code + ": " + name);
+            QString label = displayNames.value(key, key);
+            le->setText(QString("%1: %2").arg(code, label));
         }
     }
 }

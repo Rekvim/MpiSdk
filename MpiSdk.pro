@@ -1,4 +1,4 @@
-QT       += core gui
+QT += core gui sql
 QT += serialport charts
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -40,7 +40,8 @@ SOURCES += \
     src/Uart/UartMessage.cpp \
     src/Uart/UartReader.cpp \
     src/ValidatorFactory/ValidatorFactory.cpp \
-    src/ValveСonfig/ValveDataLoader.cpp
+    src/ValveСonfig/ValveDataLoader.cpp \
+    src/database/ValveDatabase.cpp
 
 HEADERS += \
     MainTestSettings.h \
@@ -67,7 +68,8 @@ HEADERS += \
     src/Uart/UartMessage.h \
     src/Uart/UartReader.h \
     src/ValidatorFactory/ValidatorFactory.h \
-    src/ValveСonfig/ValveDataLoader.h
+    src/ValveСonfig/ValveDataLoader.h \
+    src/database/ValveDatabase.h
 
 FORMS += \
     MainTestSettings.ui \
