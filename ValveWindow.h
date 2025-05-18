@@ -22,7 +22,7 @@ class ValveWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit ValveWindow(QWidget *parent = nullptr);
+    explicit ValveWindow(ValveDatabase& db, QWidget *parent = nullptr);
     ~ValveWindow();
     void SetRegistry(Registry *registry);
     void fillReport(ReportSaver::Report &report);
@@ -38,7 +38,7 @@ private:
     MaterialsOfComponentParts *m_materialsOfComponentParts;
     QJsonObject m_valveDataObj;
     ValveDataLoader m_loader;
-    ValveDatabase m_db;
+    ValveDatabase& m_db;
     QMap<QString, QLineEdit*> m_partFields;
     const QString m_manualInput = "Ручной ввод";
     static constexpr qreal m_diameter[] = {50.0, 86.0, 108.0, 125.0};

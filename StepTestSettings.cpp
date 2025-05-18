@@ -30,13 +30,13 @@ StepTestSettings::StepTestSettings(QWidget *parent) :
     connect(ui->pushButton_change_value, &QPushButton::clicked, this, [=]() {
         bool ok;
         double d = QInputDialog::getDouble(this,
-                                           "Ввод числа",
-                                           "Значение:",
-                                           ui->listWidget_value->currentItem()->text().toDouble(),
-                                           0.0,
-                                           100.0,
-                                           1,
-                                           &ok);
+            "Ввод числа",
+            "Значение:",
+            ui->listWidget_value->currentItem()->text().toDouble(),
+            0.0,
+            100.0,
+            1,
+            &ok);
 
         if (ok) {
             ui->listWidget_value->currentItem()->setText(QString::asprintf("%.1f", d));

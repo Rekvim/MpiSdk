@@ -9,11 +9,11 @@
 #include <QMessageBox>
 #include <QTimer>
 
-#include "Mpi.h"
 #include "OtherTestSettings.h"
 #include "Registry.h"
 #include "StepTestSettings.h"
 
+#include "./Src/Mpi/Mpi.h"
 #include "./Src/Tests/StepTest.h"
 #include "./Src/Tests/MainTest.h"
 
@@ -73,7 +73,7 @@ enum class Charts {
 
 struct Point
 {
-    quint8 series_num;
+    quint8 seriesNum;
     qreal X;
     qreal Y;
 };
@@ -84,18 +84,6 @@ class Program : public QObject
 public:
     explicit Program(QObject *parent = nullptr);
     void SetRegistry(Registry *registry);
-
-private:
-    Registry *m_registry;
-    MPI m_mpi;
-    QTimer *m_timerSensors;
-    QTimer *m_timerDI;
-    quint64 m_startTime;
-    quint64 m_initTime;
-    bool m_testing;
-    QEventLoop *m_dacEventloop;
-    bool m_stopSetDac;
-    bool m_waitForButton = false;
 
 signals:
     void SetText(const TextObjects object, const QString &text);
@@ -123,20 +111,6 @@ signals:
     void SetButtonsDOChecked(quint8 status);
     void SetCheckboxDIChecked(quint8 status);
 
-private slots:
-    void UpdateSensors();
-    void UpdateCharts_maintest();
-    void UpdateCharts_stroketest();
-    void UpdateCharts_optiontest(Charts chart);
-    void UpdateCharts_CyclicTred();
-    void MainTestResults(MainTest::TestResults results);
-    void StepTestResults(QVector<StepTest::TestResult> results, quint32 T_value);
-    void SetDAC(quint16 dac,
-                quint32 sleep_ms = 0,
-                bool wait_for_stop = false,
-                bool wait_for_start = false);
-    void SetTimeStart();
-    void StrokeTestResults(quint64 forward_time, quint64 backward_time);
 public slots:
     void AddRegression(const QVector<QPointF> &points);
     void AddFriction(const QVector<QPointF> &points);
@@ -158,6 +132,34 @@ public slots:
     void button_set_position();
     void button_DO(quint8 DO_num, bool state);
     void checkbox_autoinit(int state);
+
+private:
+    Registry *m_registry;
+    MPI m_mpi;
+    QTimer *m_timerSensors;
+    QTimer *m_timerDI;
+    quint64 m_startTime;
+    quint64 m_initTime;
+    bool m_testing;
+    QEventLoop *m_dacEventloop;
+    bool m_stopSetDac;
+    bool m_waitForButton = false;
+
+private slots:
+    void UpdateSensors();
+    void UpdateCharts_maintest();
+    void UpdateCharts_stroketest();
+    void UpdateCharts_optiontest(Charts chart);
+    void UpdateCharts_CyclicTred();
+    void MainTestResults(MainTest::TestResults results);
+    void StepTestResults(QVector<StepTest::TestResult> results, quint32 T_value);
+    void SetDac(quint16 dac,
+                quint32 sleepMs = 0,
+                bool waitForStop = false,
+                bool waitForStart = false);
+    void SetTimeStart();
+    void StrokeTestResults(quint64 forward_time, quint64 backward_time);
+
 };
 
 #endif // PROGRAM_H

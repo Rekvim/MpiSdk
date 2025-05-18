@@ -91,7 +91,7 @@ void Registry::SaveValveInfo()
     m_settings.setValue("strokeMovement", m_valveInfo.strokeMovement);
     m_settings.setValue("toolNumber", m_valveInfo.toolNumber);
     m_settings.setValue("pulley", m_valveInfo.pulley);
-    m_settings.setValue("materialStuffingBoxSeal", m_materialsOfComponentParts.materialStuffingBoxSeal);
+    m_settings.setValue("materialStuffingBoxSeal", m_materialsOfComponentParts.stuffingBoxSeal);
 
     m_settings.endGroup();
     m_settings.endGroup();
@@ -106,15 +106,15 @@ MaterialsOfComponentParts *Registry::GetMaterialsOfComponentParts() {
     m_settings.beginGroup(m_objectInfo.department);
     m_settings.beginGroup(m_valveInfo.positionNumber);
 
-    m_materialsOfComponentParts.materialStuffingBoxSeal = m_settings.value("materialStuffingBoxSeal", "").toString();
-    m_materialsOfComponentParts.materialCorpus = m_settings.value("materialCorpus", "").toString();
-    m_materialsOfComponentParts.materialCap = m_settings.value("materialCap", "").toString();
-    m_materialsOfComponentParts.materialBall = m_settings.value("materialBall", "").toString();
-    m_materialsOfComponentParts.materialDisk = m_settings.value("materialDisk", "").toString();
-    m_materialsOfComponentParts.materialPlunger = m_settings.value("materialPlunger", "").toString();
-    m_materialsOfComponentParts.materialShaft = m_settings.value("materialShaft", "").toString();
-    m_materialsOfComponentParts.materialStock = m_settings.value("materialStock", "").toString();
-    m_materialsOfComponentParts.materialGuideSleeve = m_settings.value("materialGuideSleeve", "").toString();
+    m_materialsOfComponentParts.stuffingBoxSeal = m_settings.value("materialStuffingBoxSeal", "").toString();
+    m_materialsOfComponentParts.corpus = m_settings.value("materialCorpus", "").toString();
+    m_materialsOfComponentParts.cap = m_settings.value("materialCap", "").toString();
+    m_materialsOfComponentParts.ball = m_settings.value("materialBall", "").toString();
+    m_materialsOfComponentParts.disk = m_settings.value("materialDisk", "").toString();
+    m_materialsOfComponentParts.plunger = m_settings.value("materialPlunger", "").toString();
+    m_materialsOfComponentParts.shaft = m_settings.value("materialShaft", "").toString();
+    m_materialsOfComponentParts.stock = m_settings.value("materialStock", "").toString();
+    m_materialsOfComponentParts.guideSleeve = m_settings.value("materialGuideSleeve", "").toString();
 
     m_settings.endGroup();
     m_settings.endGroup();
@@ -126,24 +126,24 @@ MaterialsOfComponentParts *Registry::GetMaterialsOfComponentParts() {
 
 void Registry::SaveMaterialsOfComponentParts()
 {
-    const auto &mat = m_materialsOfComponentParts;
+    const MaterialsOfComponentParts &material = m_materialsOfComponentParts;
 
     m_settings.beginGroup(m_objectInfo.object);
     m_settings.beginGroup(m_objectInfo.manufactory);
     m_settings.beginGroup(m_objectInfo.department);
 
-    QString pos = m_valveInfo.positionNumber;
-    m_settings.beginGroup(pos);
+    QString positionNumber = m_valveInfo.positionNumber;
+    m_settings.beginGroup(positionNumber);
 
-    m_settings.setValue("materialStuffingBoxSeal", mat.materialStuffingBoxSeal);
-    m_settings.setValue("materialCorpus", mat.materialCorpus);
-    m_settings.setValue("materialCap", mat.materialCap);
-    m_settings.setValue("materialBall", mat.materialBall);
-    m_settings.setValue("materialDisk", mat.materialDisk);
-    m_settings.setValue("materialPlunger", mat.materialPlunger);
-    m_settings.setValue("materialShaft", mat.materialShaft);
-    m_settings.setValue("materialStock", mat.materialStock);
-    m_settings.setValue("materialGuideSleeve", mat.materialGuideSleeve);
+    m_settings.setValue("StuffingBoxSeal", material.stuffingBoxSeal);
+    m_settings.setValue("Corpus", material.corpus);
+    m_settings.setValue("Cap", material.cap);
+    m_settings.setValue("Ball", material.ball);
+    m_settings.setValue("Disk", material.disk);
+    m_settings.setValue("Plunger", material.plunger);
+    m_settings.setValue("Shaft", material.shaft);
+    m_settings.setValue("Stock", material.stock);
+    m_settings.setValue("GuideSleeve", material.guideSleeve);
 
     m_settings.endGroup();
     m_settings.endGroup();

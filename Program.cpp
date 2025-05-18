@@ -27,7 +27,7 @@ void Program::SetRegistry(Registry *registry)
     m_registry = registry;
 }
 
-void Program::SetDAC(quint16 dac, quint32 sleep_ms, bool wait_for_stop, bool wait_for_start)
+void Program::SetDac(quint16 dac, quint32 sleepMs, bool waitForStop, bool waitForStart)
 {
     m_stopSetDac = false;
 
@@ -38,7 +38,7 @@ void Program::SetDAC(quint16 dac, quint32 sleep_ms, bool wait_for_stop, bool wai
 
     m_mpi.SetDAC_Raw(dac);
 
-    if (wait_for_start) {
+    if (waitForStart) {
         QTimer timer;
         timer.setInterval(50);
 
@@ -65,10 +65,10 @@ void Program::SetDAC(quint16 dac, quint32 sleep_ms, bool wait_for_stop, bool wai
         return;
     }
 
-    if (sleep_ms > 20) {
+    if (sleepMs > 20) {
         QTimer timer;
         connect(&timer, &QTimer::timeout, m_dacEventloop, &QEventLoop::quit);
-        timer.start(sleep_ms);
+        timer.start(sleepMs);
         m_dacEventloop->exec();
         timer.stop();
     }
@@ -78,7 +78,7 @@ void Program::SetDAC(quint16 dac, quint32 sleep_ms, bool wait_for_stop, bool wai
         return;
     }
 
-    if (wait_for_stop) {
+    if (waitForStop) {
         QTimer timer;
         timer.setInterval(50);
 
@@ -120,11 +120,11 @@ void Program::StrokeTestResults(quint64 forward_time, quint64 backward_time)
 
 void Program::AddRegression(const QVector<QPointF> &points)
 {
-    QVector<Point> chart_points;
+    QVector<Point> chartPoints;
     for (QPointF point : points) {
-        chart_points.push_back({1, point.x(), point.y()});
+        chartPoints.push_back({1, point.x(), point.y()});
     }
-    emit AddPoints(Charts::Pressure, chart_points);
+    emit AddPoints(Charts::Pressure, chartPoints);
 
     //emit SetVisible(Charts::Main_pressure, 1, true);
     emit SetRegressionEnable(true);
@@ -132,16 +132,16 @@ void Program::AddRegression(const QVector<QPointF> &points)
 
 void Program::AddFriction(const QVector<QPointF> &points)
 {
-    QVector<Point> chart_points;
+    QVector<Point> chartPoints;
 
     ValveInfo *valveInfo = m_registry->GetValveInfo();
 
     qreal k = 5 * M_PI * valveInfo->diameter * valveInfo->diameter / 4;
 
     for (QPointF point : points) {
-        chart_points.push_back({0, point.x(), point.y() * k});
+        chartPoints.push_back({0, point.x(), point.y() * k});
     }
-    emit AddPoints(Charts::Friction, chart_points);
+    emit AddPoints(Charts::Friction, chartPoints);
 }
 
 void Program::UpdateSensors()
@@ -405,7 +405,7 @@ void Program::button_init()
     emit SetText(TextObjects::Label_start_value, "Измерение");
     emit SetTextColor(TextObjects::Label_start_value, Qt::darkYellow);
 
-    SetDAC(0, 10000, true);
+    SetDac(0, 10000, true);
 
     QTimer timer(this);
     connect(&timer, &QTimer::timeout, this, [&] {
@@ -429,7 +429,7 @@ void Program::button_init()
     emit SetText(TextObjects::Label_end_value, "Измерение");
     emit SetTextColor(TextObjects::Label_end_value, Qt::darkYellow);
 
-    SetDAC(0xFFFF, 10000, true);
+    SetDac(0xFFFF, 10000, true);
 
     timer.start(50);
     m_dacEventloop->exec();
@@ -453,9 +453,9 @@ void Program::button_init()
     if (normalClosed) {
         emit SetText(TextObjects::Label_range, m_mpi[0]->GetFormatedValue());
         emit SetText(TextObjects::LineEdit_stroke, QString::asprintf("%.2f", m_mpi[0]->GetValue()));
-        SetDAC(0);
+        SetDac(0);
     } else {
-        SetDAC(0, 10000, true);
+        SetDac(0, 10000, true);
         emit SetText(TextObjects::Label_range, m_mpi[0]->GetFormatedValue());
         emit SetText(TextObjects::LineEdit_stroke, QString::asprintf("%.2f", m_mpi[0]->GetValue()));
     }
@@ -515,7 +515,7 @@ void Program::MainTestStart()
     connect(main_test, &MainTest::EndTest, this, &Program::EndTest);
 
     connect(main_test, &MainTest::UpdateGraph, this, &Program::UpdateCharts_maintest);
-    connect(main_test, &MainTest::SetDAC, this, &Program::SetDAC);
+    connect(main_test, &MainTest::SetDAC, this, &Program::SetDac);
 
     connect(main_test, &MainTest::DublSeries, this, [&] { emit DublSeries(); });
     connect(main_test,
@@ -567,7 +567,7 @@ void Program::StrokeTestStart()
     connect(stroke_test, &StrokeTest::EndTest, this, &Program::EndTest);
 
     connect(stroke_test, &StrokeTest::UpdateGraph, this, &Program::UpdateCharts_stroketest);
-    connect(stroke_test, &StrokeTest::SetDAC, this, &Program::SetDAC);
+    connect(stroke_test, &StrokeTest::SetDAC, this, &Program::SetDac);
     connect(stroke_test, &StrokeTest::SetStartTime, this, &Program::SetTimeStart);
     connect(stroke_test, &StrokeTest::Results, this, &Program::StrokeTestResults);
     m_testing = true;
@@ -745,7 +745,7 @@ void Program::OptionalTestStart(quint8 test_num)
 
     connect(optional_test, &OptionTest::EndTest, this, &Program::EndTest);
 
-    connect(optional_test, &OptionTest::SetDAC, this, &Program::SetDAC);
+    connect(optional_test, &OptionTest::SetDAC, this, &Program::SetDac);
     connect(optional_test, &OptionTest::SetStartTime, this, &Program::SetTimeStart);
 
     m_testing = true;

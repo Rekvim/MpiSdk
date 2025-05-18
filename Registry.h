@@ -26,16 +26,16 @@ struct AccessoriesSeries {
     QString saddleLock;
 };
 struct MaterialsOfComponentParts {
-    QString materialSaddle;
-    QString materialCorpus;
-    QString materialCap;
-    QString materialBall;
-    QString materialDisk;
-    QString materialPlunger;
-    QString materialShaft;
-    QString materialStock;
-    QString materialGuideSleeve;
-    QString materialStuffingBoxSeal;
+    QString saddle;
+    QString corpus;
+    QString cap;
+    QString ball;
+    QString disk;
+    QString plunger;
+    QString shaft;
+    QString stock;
+    QString guideSleeve;
+    QString stuffingBoxSeal;
 };
 
 struct ValveInfo

@@ -49,7 +49,7 @@ private slots:
     void GetResolutionTestParameters(OtherTestSettings::TestParameters &parameters);
     void GetResponseTestParameters(OtherTestSettings::TestParameters &parameters);
     void Question(QString title, QString text, bool &result);
-    void GetDirectory(QString current_path, QString &result);
+    void GetDirectory(QString currentPath, QString &result);
     void StartTest();
     void EndTest();
     void ButtonStartMain();

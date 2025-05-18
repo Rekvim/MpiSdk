@@ -17,8 +17,6 @@ include(./QXlsx.pri)
 SOURCES += \
     MainTestSettings.cpp \
     MainWindow.cpp \
-    Mpi.cpp \
-    MpiSettings.cpp \
     MyChart.cpp \
     NotationWindow.cpp \
     ObjectWindow.cpp \
@@ -30,6 +28,8 @@ SOURCES += \
     StepTestSettings.cpp \
     ValveWindow.cpp \
     main.cpp \
+    src/Mpi/Mpi.cpp \
+    src/Mpi/MpiSettings.cpp \
     src/Tests/CyclicTestPositioner.cpp \
     src/Tests/MainTest.cpp \
     src/Tests/OptionTest.cpp \
@@ -46,8 +46,6 @@ SOURCES += \
 HEADERS += \
     MainTestSettings.h \
     MainWindow.h \
-    Mpi.h \
-    MpiSettings.h \
     MyChart.h \
     NotationWindow.h \
     ObjectWindow.h \
@@ -58,6 +56,8 @@ HEADERS += \
     Sensor.h \
     StepTestSettings.h \
     ValveWindow.h \
+    src/Mpi/Mpi.h \
+    src/Mpi/MpiSettings.h \
     src/Tests/CyclicTestPositioner.h \
     src/Tests/MainTest.h \
     src/Tests/OptionTest.h \

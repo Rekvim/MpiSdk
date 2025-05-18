@@ -230,17 +230,21 @@ void MainWindow::SetRegistry(Registry *registry)
 
     m_reportSaver->SetRegistry(registry);
 
-    ObjectInfo *object_info = m_registry->GetObjectInfo();
     ValveInfo *valveInfo = m_registry->GetValveInfo();
-    auto m = m_registry->GetMaterialsOfComponentParts();
 
-    OtherParameters *other_parameters = m_registry->GetOtherParameters();
+    ObjectInfo *objectInfo = m_registry->GetObjectInfo();
 
-    ui->lineEdit_object->setText(object_info->object);
-    ui->lineEdit_manufacture->setText(object_info->manufactory);
-    ui->lineEdit_department->setText(object_info->department);
-    ui->lineEdit_FIO->setText(object_info->FIO);
-    ui->lineEdit_date->setText(other_parameters->date);
+    ui->lineEdit_object->setText(objectInfo->object);
+    ui->lineEdit_manufacture->setText(objectInfo->manufactory);
+    ui->lineEdit_department->setText(objectInfo->department);
+    ui->lineEdit_FIO->setText(objectInfo->FIO);
+
+
+    OtherParameters *otherParameters = m_registry->GetOtherParameters();
+
+    ui->lineEdit_date->setText(otherParameters->date);
+    ui->lineEdit_movement->setText(otherParameters->movement);
+    ui->lineEdit_safePosition->setText(otherParameters->safePosition);
 
     ui->lineEdit_positionNumber->setText(valveInfo->positionNumber);
     ui->lineEdit_serialNumber->setText(valveInfo->serialNumber);
@@ -250,25 +254,26 @@ void MainWindow::SetRegistry(Registry *registry)
     ui->lineEdit_PN->setText(QString::number(valveInfo->PN));
     ui->lineEdit_CV->setText(QString::number(valveInfo->CV));
     ui->lineEdit_positioner->setText(valveInfo->positioner);
-    ui->lineEdit_safePosition->setText(other_parameters->safePosition);
     ui->lineEdit_modelDrive->setText(valveInfo->modelDrive);
-    ui->lineEdit_movement->setText(other_parameters->movement);
 
     ui->lineEdit_dinamicRecomend->setText(valveInfo->dinamicError);
     ui->lineEdit_stroke_recomend->setText(valveInfo->stroke);
     ui->lineEdit_range_recomend->setText(valveInfo->range);
 
-    ui->lineEdit_materialStuffingBoxSeal->setText(m->materialStuffingBoxSeal);
 
-    ui->lineEdit_materialCap-> setText(m->materialCap);
-    ui->lineEdit_materialCorpus-> setText(m->materialCorpus);
-    ui->lineEdit_materialSaddle-> setText(m->materialSaddle);
-    ui->lineEdit_materialBall-> setText(m->materialBall);
-    ui->lineEdit_materialDisk-> setText(m->materialDisk);
-    ui->lineEdit_materialPlunger-> setText(m->materialPlunger);
-    ui->lineEdit_materialShaft-> setText(m->materialShaft);
-    ui->lineEdit_materialStock-> setText(m->materialStock);
-    ui->lineEdit_materialGuideSleeve-> setText(m->materialGuideSleeve);
+    MaterialsOfComponentParts *materialInfo = m_registry->GetMaterialsOfComponentParts();
+
+    ui->lineEdit_materialStuffingBoxSeal->setText(materialInfo->stuffingBoxSeal);
+    ui->lineEdit_materialCap->setText(materialInfo->cap);
+    ui->lineEdit_materialCorpus->setText(materialInfo->corpus);
+    ui->lineEdit_materialSaddle->setText(materialInfo->saddle);
+    ui->lineEdit_materialBall->setText(materialInfo->ball);
+    ui->lineEdit_materialDisk->setText(materialInfo->disk);
+    ui->lineEdit_materialPlunger->setText(materialInfo->plunger);
+    ui->lineEdit_materialShaft->setText(materialInfo->shaft);
+    ui->lineEdit_materialStock->setText(materialInfo->stock);
+    ui->lineEdit_materialGuideSleeve->setText(materialInfo->guideSleeve);
+
 
     if (valveInfo->safePosition != 0) {
         m_stepTestSettings->reverse();
@@ -322,7 +327,7 @@ void MainWindow::SetStepTestResults(QVector<StepTest::TestResult> results, quint
         {QString("T%1").arg(T_value), "Перерегулирование"});
 
     ui->tableWidget_step_results->setRowCount(results.size());
-    QStringList row_names;
+    QStringList rowNames;
     for (int i = 0; i < results.size(); ++i) {
         QString time = results.at(i).T_value == 0
                            ? "Ошибка"
@@ -330,10 +335,10 @@ void MainWindow::SetStepTestResults(QVector<StepTest::TestResult> results, quint
         ui->tableWidget_step_results->setItem(i, 0, new QTableWidgetItem(time));
         QString overshoot = QString("%1%").arg(results.at(i).overshoot, 4, 'f', 2);
         ui->tableWidget_step_results->setItem(i, 1, new QTableWidgetItem(overshoot));
-        QString row_name = QString("%1-%2").arg(results.at(i).from).arg(results.at(i).to);
-        row_names << row_name;
+        QString rowName = QString("%1-%2").arg(results.at(i).from).arg(results.at(i).to);
+        rowNames << rowName;
     }
-    ui->tableWidget_step_results->setVerticalHeaderLabels(row_names);
+    ui->tableWidget_step_results->setVerticalHeaderLabels(rowNames);
     ui->tableWidget_step_results->resizeColumnsToContents();
 }
 
@@ -375,7 +380,7 @@ void MainWindow::SetButtonInitEnabled(bool enable)
 void MainWindow::AddPoints(Charts chart, QVector<Point> points)
 {
     for (const auto point : points)
-        m_charts[chart]->addPoint(point.series_num, point.X, point.Y);
+        m_charts[chart]->addPoint(point.seriesNum, point.X, point.Y);
 }
 
 void MainWindow::ClearPoints(Charts chart)
@@ -413,15 +418,14 @@ void MainWindow::GetPoints(QVector<QVector<QPointF>> &points, Charts chart)
 {
     points.clear();
     if (chart == Charts::Task) {
-        QPair<QList<QPointF>, QList<QPointF>> points_linear = m_charts[Charts::Task]->getpoints(
-            1);
-        QPair<QList<QPointF>, QList<QPointF>> points_pressure = m_charts[Charts::Pressure]
-                                                                    ->getpoints(0);
+        QPair<QList<QPointF>, QList<QPointF>> pointsLinear = m_charts[Charts::Task]->getpoints(1);
 
-        points.push_back({points_linear.first.begin(), points_linear.first.end()});
-        points.push_back({points_linear.second.begin(), points_linear.second.end()});
-        points.push_back({points_pressure.first.begin(), points_pressure.first.end()});
-        points.push_back({points_pressure.second.begin(), points_pressure.second.end()});
+        QPair<QList<QPointF>, QList<QPointF>> pointsPressure = m_charts[Charts::Pressure]->getpoints(0);
+
+        points.push_back({pointsLinear.first.begin(), pointsLinear.first.end()});
+        points.push_back({pointsLinear.second.begin(), pointsLinear.second.end()});
+        points.push_back({pointsPressure.first.begin(), pointsPressure.first.end()});
+        points.push_back({pointsPressure.second.begin(), pointsPressure.second.end()});
     }
     if (chart == Charts::Step) {
         QPair<QList<QPointF>, QList<QPointF>> points_linear = m_charts[Charts::Step]->getpoints(1);
@@ -482,11 +486,11 @@ void MainWindow::Question(QString title, QString text, bool &result)
     result = (QMessageBox::question(NULL, title, text) == QMessageBox::Yes);
 }
 
-void MainWindow::GetDirectory(QString current_path, QString &result)
+void MainWindow::GetDirectory(QString currentPath, QString &result)
 {
     result = QFileDialog::getExistingDirectory(this,
                                                "Выберите папку для сохранения изображений",
-                                               current_path);
+                                               currentPath);
 }
 
 void MainWindow::StartTest()
@@ -542,8 +546,8 @@ void MainWindow::ButtonStartOptional()
 
 void MainWindow::InitCharts()
 {
-    ValveInfo *valve_info = m_registry->GetValveInfo();
-    bool rotate = (valve_info->strokeMovement != 0);
+    ValveInfo *valveInfo = m_registry->GetValveInfo();
+    bool rotate = (valveInfo->strokeMovement != 0);
 
     m_charts[Charts::Task] = ui->Chart_task;
     m_charts[Charts::Friction] = ui->Chart_friction;
@@ -573,9 +577,8 @@ void MainWindow::InitCharts()
         m_charts[Charts::Task]->addAxis("%.2f deg");
 
     m_charts[Charts::Task]->addSeries(1, "Задание", QColor::fromRgb(0, 0, 0));
-    m_charts[Charts::Task]->addSeries(1,
-                                          "Датчик линейных перемещений",
-                                          QColor::fromRgb(255, 0, 0));
+
+    m_charts[Charts::Task]->addSeries(1, "Датчик линейных перемещений", QColor::fromRgb(255, 0, 0));
     m_charts[Charts::Task]->addSeries(0, "Датчик давления 1", QColor::fromRgb(0, 0, 255));
     m_charts[Charts::Task]->addSeries(0, "Датчик давления 2", QColor::fromRgb(0, 200, 0));
     m_charts[Charts::Task]->addSeries(0, "Датчик давления 3", QColor::fromRgb(150, 0, 200));
@@ -587,9 +590,7 @@ void MainWindow::InitCharts()
     else
         m_charts[Charts::Pressure]->addAxis("%.2f deg");
 
-    m_charts[Charts::Pressure]->addSeries(0,
-                                              "Перемещение от давления",
-                                              QColor::fromRgb(255, 0, 0));
+    m_charts[Charts::Pressure]->addSeries(0, "Перемещение от давления", QColor::fromRgb(255, 0, 0));
 
     m_charts[Charts::Pressure]->addSeries(0, "Линейная регрессия", QColor::fromRgb(0, 0, 0));
     m_charts[Charts::Pressure]->visible(1, false);
@@ -607,16 +608,12 @@ void MainWindow::InitCharts()
     m_charts[Charts::Response]->useTimeaxis(true);
     m_charts[Charts::Response]->addAxis("%.2f%%");
     m_charts[Charts::Response]->addSeries(0, "Задание", QColor::fromRgb(0, 0, 0));
-    m_charts[Charts::Response]->addSeries(0,
-                                         "Датчик линейных перемещений",
-                                         QColor::fromRgb(255, 0, 0));
+    m_charts[Charts::Response]->addSeries(0, "Датчик линейных перемещений", QColor::fromRgb(255, 0, 0));
 
     m_charts[Charts::Resolution]->useTimeaxis(true);
     m_charts[Charts::Resolution]->addAxis("%.2f%%");
     m_charts[Charts::Resolution]->addSeries(0, "Задание", QColor::fromRgb(0, 0, 0));
-    m_charts[Charts::Resolution]->addSeries(0,
-                                           "Датчик линейных перемещений",
-                                           QColor::fromRgb(255, 0, 0));
+    m_charts[Charts::Resolution]->addSeries(0, "Датчик линейных перемещений", QColor::fromRgb(255, 0, 0));
 
     m_charts[Charts::Trend]->useTimeaxis(true);
     m_charts[Charts::Trend]->addAxis("%.2f%%");
@@ -667,9 +664,11 @@ void MainWindow::InitCharts()
             Qt::BlockingQueuedConnection);
 
     m_charts[Charts::Friction]->addAxis("%.2f H");
+
     m_charts[Charts::Friction]->addSeries(0,
-                                              "Трение от перемещения",
-                                              QColor::fromRgb(255, 0, 0));
+        "Трение от перемещения",
+        QColor::fromRgb(255, 0, 0));
+
     if (!rotate)
         m_charts[Charts::Friction]->setLabelXformat("%.2f mm");
     else
@@ -727,13 +726,13 @@ void MainWindow::setReport(const ReportSaver::Report &report)
 
 void MainWindow::GetImage(QLabel *label, QImage *image)
 {
-    QString img_path = QFileDialog::getOpenFileName(this,
-                                                    "Выберите файл",
-                                                    m_reportSaver->Directory().absolutePath(),
-                                                    "Изображения (*.jpg *.png *.bmp)");
+    QString imgPath = QFileDialog::getOpenFileName(this,
+        "Выберите файл",
+        m_reportSaver->Directory().absolutePath(),
+        "Изображения (*.jpg *.png *.bmp)");
 
-    if (!img_path.isEmpty()) {
-        QImage img(img_path);
+    if (!imgPath.isEmpty()) {
+        QImage img(imgPath);
         *image = img.scaled(1000, 430, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
         label->setPixmap(QPixmap::fromImage(img));
     }

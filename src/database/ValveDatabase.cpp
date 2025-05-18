@@ -128,16 +128,6 @@ QVector<QPair<int, double>> ValveDatabase::getCvValues(int valveDnSizeId)
     return out;
 }
 
-QVector<QPair<int, QString>> ValveDatabase::getSaddleMaterials()
-{
-    QVector<QPair<int, QString>> out;
-    QSqlQuery q("SELECT id, name FROM saddle_materials");
-    while (q.next()) {
-        out.emplaceBack(q.value(0).toInt(), q.value(1).toString());
-    }
-    return out;
-}
-
 QVector<QPair<int, QString>> ValveDatabase::getDriveModel()
 {
     QVector<QPair<int, QString>> out;
@@ -148,6 +138,15 @@ QVector<QPair<int, QString>> ValveDatabase::getDriveModel()
     return out;
 }
 
+QVector<QPair<int, QString>> ValveDatabase::getSaddleMaterials()
+{
+    QVector<QPair<int, QString>> out;
+    QSqlQuery q("SELECT id, name FROM saddle_materials");
+    while (q.next()) {
+        out.emplaceBack(q.value(0).toInt(), q.value(1).toString());
+    }
+    return out;
+}
 
 QVector<QPair<int, QString>> ValveDatabase::getBodyMaterials()
 {
