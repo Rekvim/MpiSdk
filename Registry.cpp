@@ -25,7 +25,6 @@ void Registry::SaveObjectInfo()
 
 ValveInfo *Registry::GetValveInfo(const QString &positionNumber)
 {
-
     m_settings.beginGroup(m_objectInfo.object);
     m_settings.beginGroup(m_objectInfo.manufactory);
     m_settings.beginGroup(m_objectInfo.department);
@@ -40,7 +39,7 @@ ValveInfo *Registry::GetValveInfo(const QString &positionNumber)
     m_valveInfo.stroke = m_settings.value("stroke", "").toString();
     m_valveInfo.positioner = m_settings.value("positioner", "").toString();
     m_valveInfo.dinamicError = m_settings.value("dinamicError", "").toString();
-    m_valveInfo.modelDrive = m_settings.value("modelDrive", "").toString();
+    m_valveInfo.driveModel = m_settings.value("modelDrive", "").toString();
     m_valveInfo.range = m_settings.value("range", "").toString();
     m_valveInfo.diameter = m_settings.value("diameter", "").toDouble();
     m_valveInfo.safePosition = m_settings.value("safePosition", "").toInt();
@@ -83,7 +82,7 @@ void Registry::SaveValveInfo()
     m_settings.setValue("stroke", m_valveInfo.stroke);
     m_settings.setValue("positioner", m_valveInfo.positioner);
     m_settings.setValue("dinamicError", m_valveInfo.dinamicError);
-    m_settings.setValue("modelDrive", m_valveInfo.modelDrive);
+    m_settings.setValue("modelDrive", m_valveInfo.driveModel);
     m_settings.setValue("range", m_valveInfo.range);
     m_settings.setValue("diameter", m_valveInfo.diameter);
     m_settings.setValue("safePosition", m_valveInfo.safePosition);
@@ -106,15 +105,15 @@ MaterialsOfComponentParts *Registry::GetMaterialsOfComponentParts() {
     m_settings.beginGroup(m_objectInfo.department);
     m_settings.beginGroup(m_valveInfo.positionNumber);
 
-    m_materialsOfComponentParts.stuffingBoxSeal = m_settings.value("materialStuffingBoxSeal", "").toString();
-    m_materialsOfComponentParts.corpus = m_settings.value("materialCorpus", "").toString();
-    m_materialsOfComponentParts.cap = m_settings.value("materialCap", "").toString();
-    m_materialsOfComponentParts.ball = m_settings.value("materialBall", "").toString();
-    m_materialsOfComponentParts.disk = m_settings.value("materialDisk", "").toString();
-    m_materialsOfComponentParts.plunger = m_settings.value("materialPlunger", "").toString();
-    m_materialsOfComponentParts.shaft = m_settings.value("materialShaft", "").toString();
-    m_materialsOfComponentParts.stock = m_settings.value("materialStock", "").toString();
-    m_materialsOfComponentParts.guideSleeve = m_settings.value("materialGuideSleeve", "").toString();
+    m_materialsOfComponentParts.stuffingBoxSeal = m_settings.value("StuffingBoxSeal", "").toString();
+    m_materialsOfComponentParts.corpus = m_settings.value("Corpus", "").toString();
+    m_materialsOfComponentParts.cap = m_settings.value("Cap", "").toString();
+    m_materialsOfComponentParts.ball = m_settings.value("Ball", "").toString();
+    m_materialsOfComponentParts.disk = m_settings.value("Disk", "").toString();
+    m_materialsOfComponentParts.plunger = m_settings.value("Plunger", "").toString();
+    m_materialsOfComponentParts.shaft = m_settings.value("Shaft", "").toString();
+    m_materialsOfComponentParts.stock = m_settings.value("Stock", "").toString();
+    m_materialsOfComponentParts.guideSleeve = m_settings.value("GuideSleeve", "").toString();
 
     m_settings.endGroup();
     m_settings.endGroup();

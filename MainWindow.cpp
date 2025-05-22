@@ -250,11 +250,11 @@ void MainWindow::SetRegistry(Registry *registry)
     ui->lineEdit_serialNumber->setText(valveInfo->serialNumber);
     ui->lineEdit_valveModel->setText(valveInfo->valveModel);
     ui->lineEdit_manufacturer->setText(valveInfo->manufacturer);
-    ui->lineEdit_DNPN->setText(QString::number(valveInfo->DN));
+    ui->lineEdit_DN->setText(QString::number(valveInfo->DN));
     ui->lineEdit_PN->setText(QString::number(valveInfo->PN));
     ui->lineEdit_CV->setText(QString::number(valveInfo->CV));
     ui->lineEdit_positioner->setText(valveInfo->positioner);
-    ui->lineEdit_modelDrive->setText(valveInfo->modelDrive);
+    ui->lineEdit_modelDrive->setText(valveInfo->driveModel);
 
     ui->lineEdit_dinamicRecomend->setText(valveInfo->dinamicError);
     ui->lineEdit_stroke_recomend->setText(valveInfo->stroke);
@@ -330,8 +330,8 @@ void MainWindow::SetStepTestResults(QVector<StepTest::TestResult> results, quint
     QStringList rowNames;
     for (int i = 0; i < results.size(); ++i) {
         QString time = results.at(i).T_value == 0
-                           ? "Ошибка"
-                           : QTime(0, 0).addMSecs(results.at(i).T_value).toString("m:ss.zzz");
+            ? "Ошибка"
+            : QTime(0, 0).addMSecs(results.at(i).T_value).toString("m:ss.zzz");
         ui->tableWidget_step_results->setItem(i, 0, new QTableWidgetItem(time));
         QString overshoot = QString("%1%").arg(results.at(i).overshoot, 4, 'f', 2);
         ui->tableWidget_step_results->setItem(i, 1, new QTableWidgetItem(overshoot));
@@ -344,18 +344,18 @@ void MainWindow::SetStepTestResults(QVector<StepTest::TestResult> results, quint
 
 void MainWindow::SetSensorsNumber(quint8 num)
 {
-    bool no_sensors = num == 0;
+    bool noSensors = num == 0;
 
-    ui->verticalSlider_task->setEnabled(!no_sensors);
-    ui->doubleSpinBox_task->setEnabled(!no_sensors);
+    ui->verticalSlider_task->setEnabled(!noSensors);
+    ui->doubleSpinBox_task->setEnabled(!noSensors);
 
-    ui->pushButton_stroke_start->setEnabled(!no_sensors);
-    ui->pushButton_tests_start->setEnabled(!no_sensors);
+    ui->pushButton_stroke_start->setEnabled(!noSensors);
+    ui->pushButton_tests_start->setEnabled(!noSensors);
     ui->pushButton_main_start->setEnabled(num > 1);
 
     ui->tabWidget->setTabEnabled(1, num > 1);
-    ui->tabWidget->setTabEnabled(2, !no_sensors);
-    ui->tabWidget->setTabEnabled(3, !no_sensors);
+    ui->tabWidget->setTabEnabled(2, !noSensors);
+    ui->tabWidget->setTabEnabled(3, !noSensors);
 
     if (num > 0) {
         ui->checkBox_task->setVisible(num > 1);
@@ -428,12 +428,12 @@ void MainWindow::GetPoints(QVector<QVector<QPointF>> &points, Charts chart)
         points.push_back({pointsPressure.second.begin(), pointsPressure.second.end()});
     }
     if (chart == Charts::Step) {
-        QPair<QList<QPointF>, QList<QPointF>> points_linear = m_charts[Charts::Step]->getpoints(1);
-        QPair<QList<QPointF>, QList<QPointF>> points_task = m_charts[Charts::Step]->getpoints(0);
+        QPair<QList<QPointF>, QList<QPointF>> pointsLinear = m_charts[Charts::Step]->getpoints(1);
+        QPair<QList<QPointF>, QList<QPointF>> pointsTask = m_charts[Charts::Step]->getpoints(0);
 
         points.clear();
-        points.push_back({points_linear.first.begin(), points_linear.first.end()});
-        points.push_back({points_task.first.begin(), points_task.first.end()});
+        points.push_back({pointsLinear.first.begin(), pointsLinear.first.end()});
+        points.push_back({pointsTask.first.begin(), pointsTask.first.end()});
     }
 }
 
@@ -489,8 +489,8 @@ void MainWindow::Question(QString title, QString text, bool &result)
 void MainWindow::GetDirectory(QString currentPath, QString &result)
 {
     result = QFileDialog::getExistingDirectory(this,
-                                               "Выберите папку для сохранения изображений",
-                                               currentPath);
+        "Выберите папку для сохранения изображений",
+        currentPath);
 }
 
 void MainWindow::StartTest()
@@ -557,7 +557,6 @@ void MainWindow::InitCharts()
     m_charts[Charts::Stroke] = ui->Chart_stroke;
     m_charts[Charts::Step] = ui->Chart_step;
     m_charts[Charts::Trend] = ui->Chart_trend;
-    // m_charts[Charts::Cyclic] = ui->Chart_cyclic;
 
     m_charts[Charts::Task]->setname("Task");
     m_charts[Charts::Friction]->setname("Friction");
@@ -566,7 +565,6 @@ void MainWindow::InitCharts()
     m_charts[Charts::Response]->setname("Response");
     m_charts[Charts::Stroke]->setname("Stroke");
     m_charts[Charts::Step]->setname("Step");
-    // m_charts[Charts::Cyclic]->setname("Cyclic");
 
     m_charts[Charts::Task]->useTimeaxis(false);
     m_charts[Charts::Task]->addAxis("%.2f bar");
@@ -657,11 +655,13 @@ void MainWindow::InitCharts()
         m_charts[Charts::Pressure]->visible(1, k != 0);
     });
 
-    connect(m_program,
-            &Program::GetPoints,
-            this,
-            &MainWindow::GetPoints,
-            Qt::BlockingQueuedConnection);
+    connect(
+        m_program,
+        &Program::GetPoints,
+        this,
+        &MainWindow::GetPoints,
+        Qt::BlockingQueuedConnection
+    );
 
     m_charts[Charts::Friction]->addAxis("%.2f H");
 
@@ -754,7 +754,7 @@ void MainWindow::InitReport()
     m_report.data.push_back({7, 13, ui->lineEdit_valveModel->text()});
     m_report.data.push_back({8, 13, ui->lineEdit_manufacturer->text()});
 
-    m_report.data.push_back({9, 13, ui->lineEdit_DNPN->text() + "/" + ui->lineEdit_PN->text()});
+    m_report.data.push_back({9, 13, ui->lineEdit_DN->text() + "/" + ui->lineEdit_PN->text()});
     m_report.data.push_back({10, 13, ui->lineEdit_positioner->text()});
     m_report.data.push_back({11, 13, ui->lineEdit_pressure->text()});
     m_report.data.push_back({12, 13, ui->lineEdit_safePosition->text()});

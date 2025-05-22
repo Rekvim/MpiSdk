@@ -37,7 +37,6 @@ struct MaterialsOfComponentParts {
     QString guideSleeve;
     QString stuffingBoxSeal;
 };
-
 struct ValveInfo
 {
     QString positionNumber;
@@ -47,7 +46,7 @@ struct ValveInfo
     QString stroke;
     QString positioner;
     QString dinamicError;
-    QString modelDrive;
+    QString driveModel;
     QString range;
 
     quint32 DN;

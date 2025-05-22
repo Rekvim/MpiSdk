@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>597</width>
-    <height>335</height>
+    <height>337</height>
    </rect>
   </property>
   <property name="font">
@@ -22,7 +22,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QGroupBox" name="groupBox_3">
+      <widget class="QGroupBox" name="groupBox_color">
        <property name="font">
         <font>
          <pointsize>14</pointsize>
@@ -34,7 +34,7 @@
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
-         <widget class="QFrame" name="frame_pressure_5">
+         <widget class="QFrame" name="frame_pressure_1">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -42,8 +42,7 @@
            </sizepolicy>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: #F0F0F0;
-border-radius: 12px;</string>
+           <string notr="true"/>
           </property>
           <property name="frameShape">
            <enum>QFrame::Shape::StyledPanel</enum>
@@ -68,7 +67,7 @@ border-radius: 12px;</string>
             <number>0</number>
            </property>
            <item>
-            <widget class="QWidget" name="pressure_1_color_2" native="true">
+            <widget class="QWidget" name="widget_colorPressure_1" native="true">
              <property name="minimumSize">
               <size>
                <width>21</width>
@@ -98,6 +97,7 @@ border-radius: 6px;</string>
              <property name="font">
               <font>
                <pointsize>14</pointsize>
+               <bold>false</bold>
               </font>
              </property>
              <property name="text">
@@ -109,7 +109,7 @@ border-radius: 6px;</string>
          </widget>
         </item>
         <item>
-         <widget class="QFrame" name="frame_pressure_7">
+         <widget class="QFrame" name="frame_pressure_2">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -117,8 +117,7 @@ border-radius: 6px;</string>
            </sizepolicy>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: #F0F0F0;
-border-radius: 12px;</string>
+           <string notr="true"/>
           </property>
           <property name="frameShape">
            <enum>QFrame::Shape::StyledPanel</enum>
@@ -140,7 +139,7 @@ border-radius: 12px;</string>
             <number>0</number>
            </property>
            <item>
-            <widget class="QWidget" name="pressure_2_color_2" native="true">
+            <widget class="QWidget" name="widget_colorPressure_2" native="true">
              <property name="minimumSize">
               <size>
                <width>21</width>
@@ -160,7 +159,7 @@ border-radius: 6px;</string>
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_pressure_2">
+            <widget class="QLabel" name="label_colorPressure_2">
              <property name="minimumSize">
               <size>
                <width>0</width>
@@ -170,6 +169,7 @@ border-radius: 6px;</string>
              <property name="font">
               <font>
                <pointsize>14</pointsize>
+               <bold>false</bold>
               </font>
              </property>
              <property name="text">
@@ -181,7 +181,7 @@ border-radius: 6px;</string>
          </widget>
         </item>
         <item>
-         <widget class="QFrame" name="frame_pressure_6">
+         <widget class="QFrame" name="frame_pressure_3">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -189,8 +189,7 @@ border-radius: 6px;</string>
            </sizepolicy>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: #F0F0F0;
-border-radius: 12px;</string>
+           <string notr="true"/>
           </property>
           <property name="frameShape">
            <enum>QFrame::Shape::StyledPanel</enum>
@@ -212,7 +211,7 @@ border-radius: 12px;</string>
             <number>0</number>
            </property>
            <item>
-            <widget class="QWidget" name="pressure_3_color_2" native="true">
+            <widget class="QWidget" name="widget_colorPressure_3" native="true">
              <property name="minimumSize">
               <size>
                <width>21</width>
@@ -242,6 +241,7 @@ border-radius: 6px;</string>
              <property name="font">
               <font>
                <pointsize>14</pointsize>
+               <bold>false</bold>
               </font>
              </property>
              <property name="text">
@@ -255,8 +255,7 @@ border-radius: 6px;</string>
         <item>
          <widget class="QFrame" name="frame_moving">
           <property name="styleSheet">
-           <string notr="true">background-color: #F0F0F0;
-border-radius: 12px;</string>
+           <string notr="true"/>
           </property>
           <property name="frameShape">
            <enum>QFrame::Shape::StyledPanel</enum>
@@ -278,7 +277,7 @@ border-radius: 12px;</string>
             <number>0</number>
            </property>
            <item>
-            <widget class="QWidget" name="moving_color_2" native="true">
+            <widget class="QWidget" name="widget_movingColor" native="true">
              <property name="minimumSize">
               <size>
                <width>21</width>
@@ -302,6 +301,7 @@ border-radius: 6px;</string>
              <property name="font">
               <font>
                <pointsize>14</pointsize>
+               <bold>false</bold>
               </font>
              </property>
              <property name="text">
@@ -315,8 +315,7 @@ border-radius: 6px;</string>
         <item>
          <widget class="QFrame" name="frame_output_4_20_mA">
           <property name="styleSheet">
-           <string notr="true">background-color: #F0F0F0;
-border-radius: 12px;</string>
+           <string notr="true"/>
           </property>
           <property name="frameShape">
            <enum>QFrame::Shape::StyledPanel</enum>
@@ -338,7 +337,7 @@ border-radius: 12px;</string>
             <number>0</number>
            </property>
            <item>
-            <widget class="QWidget" name="output_4_20_mA_color_2" native="true">
+            <widget class="QWidget" name="widget_output_4_20_mA_color" native="true">
              <property name="minimumSize">
               <size>
                <width>21</width>
@@ -362,6 +361,7 @@ border-radius: 6px;</string>
              <property name="font">
               <font>
                <pointsize>14</pointsize>
+               <bold>false</bold>
               </font>
              </property>
              <property name="text">
@@ -375,8 +375,7 @@ border-radius: 6px;</string>
         <item>
          <widget class="QFrame" name="frame_usb">
           <property name="styleSheet">
-           <string notr="true">background-color: #F0F0F0;
-border-radius: 12px;</string>
+           <string notr="true"/>
           </property>
           <property name="frameShape">
            <enum>QFrame::Shape::StyledPanel</enum>
@@ -398,7 +397,7 @@ border-radius: 12px;</string>
             <number>0</number>
            </property>
            <item>
-            <widget class="QWidget" name="usb_color_2" native="true">
+            <widget class="QWidget" name="widget_colorUsb" native="true">
              <property name="minimumSize">
               <size>
                <width>21</width>
@@ -422,6 +421,7 @@ border-radius: 6px;</string>
              <property name="font">
               <font>
                <pointsize>14</pointsize>
+               <bold>false</bold>
               </font>
              </property>
              <property name="text">
@@ -438,7 +438,7 @@ border-radius: 6px;</string>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
-        <widget class="QGroupBox" name="groupBox">
+        <widget class="QGroupBox" name="groupBox_pressureSensors">
          <property name="font">
           <font>
            <pointsize>14</pointsize>
@@ -450,7 +450,7 @@ border-radius: 6px;</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <widget class="QFrame" name="frame_pressure_4">
+           <widget class="QFrame" name="frame_pressureSensor_4">
             <property name="frameShape">
              <enum>QFrame::Shape::StyledPanel</enum>
             </property>
@@ -471,7 +471,7 @@ border-radius: 6px;</string>
               <number>0</number>
              </property>
              <item>
-              <widget class="QCheckBox" name="checkBox_pressure_4">
+              <widget class="QCheckBox" name="checkBox_pressureSensor_4">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -487,7 +487,7 @@ border-radius: 6px;</string>
            </widget>
           </item>
           <item>
-           <widget class="QFrame" name="frame_pressure_3">
+           <widget class="QFrame" name="frame_pressureSensor_3">
             <property name="frameShape">
              <enum>QFrame::Shape::StyledPanel</enum>
             </property>
@@ -508,7 +508,7 @@ border-radius: 6px;</string>
               <number>0</number>
              </property>
              <item>
-              <widget class="QCheckBox" name="checkBox_pressure_3">
+              <widget class="QCheckBox" name="checkBox_pressureSensor_3">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -524,7 +524,7 @@ border-radius: 6px;</string>
            </widget>
           </item>
           <item>
-           <widget class="QFrame" name="frame_pressure_1">
+           <widget class="QFrame" name="frame_pressureSensor_1">
             <property name="frameShape">
              <enum>QFrame::Shape::StyledPanel</enum>
             </property>
@@ -545,7 +545,7 @@ border-radius: 6px;</string>
               <number>0</number>
              </property>
              <item>
-              <widget class="QCheckBox" name="checkBox_pressure_1">
+              <widget class="QCheckBox" name="checkBox_pressureSensor_1">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -561,7 +561,7 @@ border-radius: 6px;</string>
            </widget>
           </item>
           <item>
-           <widget class="QFrame" name="frame_pressure_2">
+           <widget class="QFrame" name="frame_pressureSensor_2">
             <property name="frameShape">
              <enum>QFrame::Shape::StyledPanel</enum>
             </property>
@@ -582,7 +582,7 @@ border-radius: 6px;</string>
               <number>0</number>
              </property>
              <item>
-              <widget class="QCheckBox" name="checkBox_pressure_2">
+              <widget class="QCheckBox" name="checkBox_pressureSensor_2">
                <property name="font">
                 <font>
                  <pointsize>14</pointsize>
@@ -601,7 +601,7 @@ border-radius: 6px;</string>
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_2">
+        <widget class="QGroupBox" name="groupBox_movings">
          <property name="title">
           <string>Датчик ленейных перемещений</string>
          </property>

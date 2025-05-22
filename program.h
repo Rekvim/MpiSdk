@@ -93,6 +93,7 @@ signals:
     void SetButtonInitEnabled(bool enable);
     void SetGroupDOVisible(bool visible);
     void StopTest();
+
     void AddPoints(Charts chart, QVector<Point> points);
     void SetVisible(Charts chart, quint16 series, bool visible);
     void ClearPoints(Charts chart);
@@ -102,11 +103,13 @@ signals:
     void GetPoints(QVector<QVector<QPointF>> &points, Charts chart);
     void ReleaseBlock();
     void SetRegressionEnable(bool enable);
+
     void GetMainTestParameters(MainTestSettings::TestParameters &parameters);
     void GetStepTestParameters(StepTestSettings::TestParameters &parameters);
     void GetResolutionTestParameters(OtherTestSettings::TestParameters &parameters);
     void GetResponseTestParameters(OtherTestSettings::TestParameters &parameters);
     void Question(QString title, QString text, bool &result);
+
     void SetStepResults(QVector<StepTest::TestResult> results, quint32 T_value);
     void SetButtonsDOChecked(quint8 status);
     void SetCheckboxDIChecked(quint8 status);
@@ -117,13 +120,16 @@ public slots:
     void GetPoints_maintest(QVector<QVector<QPointF>> &points);
     void GetPoints_steptest(QVector<QVector<QPointF>> &points);
     void EndTest();
+
     void SetDAC_real(qreal value);
     void SetDAC_int(quint16 value);
+
     void button_init();
     void MainTestStart();
     void StrokeTestStart();
     void OptionalTestStart(quint8 test_num);
     void TerminateTest();
+
     void button_open();
     void button_report();
     void button_pixmap1();
@@ -150,16 +156,17 @@ private slots:
     void UpdateCharts_maintest();
     void UpdateCharts_stroketest();
     void UpdateCharts_optiontest(Charts chart);
-    void UpdateCharts_CyclicTred();
+
     void MainTestResults(MainTest::TestResults results);
     void StepTestResults(QVector<StepTest::TestResult> results, quint32 T_value);
+    void StrokeTestResults(quint64 forwardTime, quint64 backwardTime);
+
+    void SetTimeStart();
+
     void SetDac(quint16 dac,
                 quint32 sleepMs = 0,
                 bool waitForStop = false,
                 bool waitForStart = false);
-    void SetTimeStart();
-    void StrokeTestResults(quint64 forward_time, quint64 backward_time);
-
 };
 
 #endif // PROGRAM_H

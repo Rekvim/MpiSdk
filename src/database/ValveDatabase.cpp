@@ -52,6 +52,26 @@ QVector<QPair<int, QString>> ValveDatabase::getValveSeries(int manufacturerId)
     return out;
 }
 
+int ValveDatabase::getSeriesIdByName(int manufacturerId, const QString &seriesName)
+{
+    QSqlQuery q(m_db);
+    q.prepare(R"sql(
+        SELECT id
+          FROM valve_series
+         WHERE name = ?
+           AND manufacturer_id = ?
+    )sql");
+    q.addBindValue(seriesName);
+    q.addBindValue(manufacturerId);
+    if (!q.exec()) {
+        qWarning() << "getSeriesIdByName exec error:" << q.lastError().text();
+        return -1;
+    }
+    if (q.next())
+        return q.value(0).toInt();
+    return -1;
+}
+
 QVector<QPair<int, QString>> ValveDatabase::getAllSeries()
 {
     QVector<QPair<int, QString>> out;
@@ -64,20 +84,6 @@ QVector<QPair<int, QString>> ValveDatabase::getAllSeries()
         out.emplaceBack(q.value(0).toInt(), q.value(1).toString());
     }
     return out;
-}
-
-int ValveDatabase::getSeriesIdByName(const QString &seriesName)
-{
-    QSqlQuery q;
-    q.prepare("SELECT id FROM valve_series WHERE name = ?");
-    q.addBindValue(seriesName);
-    if (!q.exec()) {
-        qWarning() << "getSeriesIdByName exec error:" << q.lastError().text();
-        return -1;
-    }
-    if (q.next())
-        return q.value(0).toInt();
-    return -1;
 }
 
 QVector<QPair<int, QString>> ValveDatabase::getValveModels(int seriesId)
@@ -96,6 +102,66 @@ QVector<QPair<int, QString>> ValveDatabase::getValveModels(int seriesId)
     return out;
 }
 
+QVector<QPair<int, QString>> ValveDatabase::getSaddleMaterialsForModel(int valveModelId)
+{
+    QVector<QPair<int, QString>> out;
+    QSqlQuery q(m_db);
+    q.prepare(R"sql(
+        SELECT sm.id, sm.name
+          FROM valve_models AS vm
+          JOIN saddle_materials AS sm
+            ON sm.id = vm.saddle_material_1
+            OR sm.id = vm.saddle_material_2
+         WHERE vm.id = ?
+    )sql");
+    q.addBindValue(valveModelId);
+    if (!q.exec()) {
+        qWarning() << "getSaddleMaterialsForModel failed:" << q.lastError().text();
+        return out;
+    }
+    while (q.next()) {
+        out.emplaceBack(q.value(0).toInt(), q.value(1).toString());
+    }
+    return out;
+}
+
+int ValveDatabase::getValveModelIdByName(int seriesId, const QString &modelName)
+{
+    QSqlQuery q(m_db);
+    q.prepare(R"sql(
+        SELECT id
+          FROM valve_models
+         WHERE series_id = ?
+           AND name      = ?
+    )sql");
+    q.addBindValue(seriesId);
+    q.addBindValue(modelName);
+    if (!q.exec()) {
+        qWarning() << "getValveModelIdByName(exec) failed:" << q.lastError().text();
+        return -1;
+    }
+    if (q.next())
+        return q.value(0).toInt();
+    return -1;
+}
+
+QVector<QPair<int, qreal>> ValveDatabase::getDynamicErrors(int valveModelId)
+{
+    QVector<QPair<int, qreal>> out;
+    QSqlQuery q(m_db);
+    q.prepare("SELECT id, value FROM dinamic_error WHERE valve_model_id = ?");
+    q.addBindValue(valveModelId);
+    if (!q.exec()) {
+        qWarning() << "getDynamicErrors failed:" << q.lastError().text();
+        return out;
+    }
+    while (q.next()) {
+        int id     = q.value(0).toInt();
+        qreal val  = q.value(1).toReal();
+        out.append(qMakePair(id, val));
+    }
+    return out;
+}
 QVector<QPair<int, int>> ValveDatabase::getValveDnSizes(int seriesId)
 {
     QVector<QPair<int, int>> out;

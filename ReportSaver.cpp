@@ -20,11 +20,11 @@ void ReportSaver::SaveImage(MyChart *chart)
     if (!m_created)
         CreateDir();
 
-    static QMap<QString, quint16> chart_num;
+    static QMap<QString, quint16> chartNum;
 
     QString name = chart->getname();
 
-    ++chart_num[name];
+    ++chartNum[name];
 
     QPixmap p = chart->grab();
     QOpenGLWidget *glWidget = chart->findChild<QOpenGLWidget *>();
@@ -37,9 +37,9 @@ void ReportSaver::SaveImage(MyChart *chart)
         painter.end();
     }
 
-    p.save(m_dir.filePath(name + "_" + QString::number(chart_num[name]) + ".bmp"));
+    p.save(m_dir.filePath(name + "_" + QString::number(chartNum[name]) + ".bmp"));
 
-    QFile out(m_dir.filePath(name + "_" + QString::number(chart_num[name]) + ".data"));
+    QFile out(m_dir.filePath(name + "_" + QString::number(chartNum[name]) + ".data"));
 
     if (out.open(QIODevice::WriteOnly)) {
         QDataStream stream(&out);
@@ -93,11 +93,11 @@ bool ReportSaver::SaveReport(const Report &report)
 
 void ReportSaver::CreateDir()
 {
-    ObjectInfo *object_info = m_registry->GetObjectInfo();
-    ValveInfo *valve_info = m_registry->GetValveInfo();
+    ObjectInfo *objectInfo = m_registry->GetObjectInfo();
+    ValveInfo *valveInfo = m_registry->GetValveInfo();
 
-    QString path = object_info->object + "/" + object_info->manufactory + "/"
-                   + object_info->department + "/" + valve_info->positionNumber;
+    QString path = objectInfo->object + "/" + objectInfo->manufactory + "/"
+                   + objectInfo->department + "/" + valveInfo->positionNumber;
     QString date = QDate::currentDate().toString("dd_MM_yyyy");
 
     m_dir.setPath(QCoreApplication::applicationDirPath());

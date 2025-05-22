@@ -16,10 +16,10 @@ NotationWindow::NotationWindow(QWidget *parent)
     onCheckBoxChanged();
 
     connect(ui->comboBox_movings, &QComboBox::currentIndexChanged, this, &NotationWindow::onComboBoxIndexChanged);
-    connect(ui->checkBox_pressure_1, &QCheckBox::toggled, this, &NotationWindow::onCheckBoxChanged);
-    connect(ui->checkBox_pressure_2, &QCheckBox::toggled, this, &NotationWindow::onCheckBoxChanged);
-    connect(ui->checkBox_pressure_3, &QCheckBox::toggled, this, &NotationWindow::onCheckBoxChanged);
-    connect(ui->checkBox_pressure_4, &QCheckBox::toggled, this, &NotationWindow::onCheckBoxChanged);
+    connect(ui->checkBox_pressureSensor_1, &QCheckBox::toggled, this, &NotationWindow::onCheckBoxChanged);
+    connect(ui->checkBox_pressureSensor_2, &QCheckBox::toggled, this, &NotationWindow::onCheckBoxChanged);
+    connect(ui->checkBox_pressureSensor_3, &QCheckBox::toggled, this, &NotationWindow::onCheckBoxChanged);
+    connect(ui->checkBox_pressureSensor_4, &QCheckBox::toggled, this, &NotationWindow::onCheckBoxChanged);
 
     onComboBoxIndexChanged(ui->comboBox_movings->currentIndex());
 }
@@ -31,27 +31,26 @@ void NotationWindow::loadSettings()
     int idx = m_settings.value("comboIndex", 0).toInt();
     ui->comboBox_movings->setCurrentIndex(idx);
 
-    ui->checkBox_pressure_1->setChecked(
-        m_settings.value("pressure1", false).toBool());
-    ui->checkBox_pressure_2->setChecked(
-        m_settings.value("pressure2", false).toBool());
-    ui->checkBox_pressure_3->setChecked(
-        m_settings.value("pressure3", false).toBool());
-    ui->checkBox_pressure_4->setChecked(
-        m_settings.value("pressure4", false).toBool());
+    ui->checkBox_pressureSensor_1->setChecked(
+        m_settings.value("pressureSensor_1", false).toBool());
+    ui->checkBox_pressureSensor_2->setChecked(
+        m_settings.value("pressureSensor_2", false).toBool());
+    ui->checkBox_pressureSensor_3->setChecked(
+        m_settings.value("pressureSensor_3", false).toBool());
+    ui->checkBox_pressureSensor_4->setChecked(
+        m_settings.value("pressureSensor_4", false).toBool());
 
     m_settings.endGroup();
 
-    // После установки checked-настроек обновляем поля:
-    m_pressureSensor1 = ui->checkBox_pressure_1->isChecked()
-                            ? ui->checkBox_pressure_1->text() : "";
-    m_pressureSensor2 = ui->checkBox_pressure_2->isChecked()
-                            ? ui->checkBox_pressure_2->text() : "";
-    m_pressureSensor3 = ui->checkBox_pressure_3->isChecked()
-                            ? ui->checkBox_pressure_3->text() : "";
-    m_pressureSensor4 = ui->checkBox_pressure_4->isChecked()
-                            ? ui->checkBox_pressure_4->text() : "";
-    // То же для линейного сенсора, если нужно:
+    m_pressureSensor1 = ui->checkBox_pressureSensor_1->isChecked()
+                            ? ui->checkBox_pressureSensor_1->text() : "";
+    m_pressureSensor2 = ui->checkBox_pressureSensor_2->isChecked()
+                            ? ui->checkBox_pressureSensor_2->text() : "";
+    m_pressureSensor3 = ui->checkBox_pressureSensor_3->isChecked()
+                            ? ui->checkBox_pressureSensor_3->text() : "";
+    m_pressureSensor4 = ui->checkBox_pressureSensor_4->isChecked()
+                            ? ui->checkBox_pressureSensor_4->text() : "";
+
     m_linearMotionSensor = ui->comboBox_movings->currentText();
 
 }
@@ -63,14 +62,14 @@ void NotationWindow::saveSettings()
     m_settings.setValue("comboIndex",
                         ui->comboBox_movings->currentIndex());
 
-    m_settings.setValue("pressure1",
-                        ui->checkBox_pressure_1->isChecked());
-    m_settings.setValue("pressure2",
-                        ui->checkBox_pressure_2->isChecked());
-    m_settings.setValue("pressure3",
-                        ui->checkBox_pressure_3->isChecked());
-    m_settings.setValue("pressure4",
-                        ui->checkBox_pressure_4->isChecked());
+    m_settings.setValue("pressureSensor_1",
+                        ui->checkBox_pressureSensor_1->isChecked());
+    m_settings.setValue("pressureSensor_2",
+                        ui->checkBox_pressureSensor_2->isChecked());
+    m_settings.setValue("pressureSensor_3",
+                        ui->checkBox_pressureSensor_3->isChecked());
+    m_settings.setValue("pressureSensor_4",
+                        ui->checkBox_pressureSensor_4->isChecked());
 
     m_settings.endGroup();
 }
@@ -83,10 +82,10 @@ void NotationWindow::onComboBoxIndexChanged(int index)
 
 void NotationWindow::onCheckBoxChanged()
 {
-    m_pressureSensor1 = ui->checkBox_pressure_1->isChecked() ? ui->checkBox_pressure_1->text() : "";
-    m_pressureSensor2 = ui->checkBox_pressure_2->isChecked() ? ui->checkBox_pressure_2->text() : "";
-    m_pressureSensor3 = ui->checkBox_pressure_3->isChecked() ? ui->checkBox_pressure_3->text() : "";
-    m_pressureSensor4 = ui->checkBox_pressure_4->isChecked() ? ui->checkBox_pressure_4->text() : "";
+    m_pressureSensor1 = ui->checkBox_pressureSensor_1->isChecked() ? ui->checkBox_pressureSensor_1->text() : "";
+    m_pressureSensor2 = ui->checkBox_pressureSensor_2->isChecked() ? ui->checkBox_pressureSensor_2->text() : "";
+    m_pressureSensor3 = ui->checkBox_pressureSensor_3->isChecked() ? ui->checkBox_pressureSensor_3->text() : "";
+    m_pressureSensor4 = ui->checkBox_pressureSensor_4->isChecked() ? ui->checkBox_pressureSensor_4->text() : "";
     saveSettings();
 }
 

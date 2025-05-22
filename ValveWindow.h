@@ -46,6 +46,9 @@ private:
 private slots:
     void onSeriesEditingFinished();
     void onDNChanged(int index);
+    void onModelEditingFinished();
+    void onManufacturerChanged(int index);
+
     void PositionChanged(const QString &position);
     void ButtonClick();
     void updatePartNumbers();
@@ -53,6 +56,33 @@ private slots:
     void ToolChanged(quint16 n);
     void DiameterChanged(qreal value);
     void Clear();
+
+protected:
+    // Заполнение QComboBox из контейнера пар <int, QString>
+    template<typename Container>
+    void populateCombo(QComboBox* cb, const Container& items, bool includeManual = false)
+    {
+        cb->clear();
+        for (const auto& [id, text] : items) {
+            cb->addItem(text, id);
+        }
+        if (includeManual) {
+            cb->addItem(m_manualInput);
+        }
+    }
+
+    // Заполнение QComboBox из контейнера пар <int, int>
+    template<typename Container>
+    void populateComboInts(QComboBox* cb, const Container& items, bool includeManual = false)
+    {
+        cb->clear();
+        for (const auto& [id, val] : items) {
+            cb->addItem(QString::number(val), id);
+        }
+        if (includeManual) {
+            cb->addItem(m_manualInput);
+        }
+    }
 };
 
 #endif // VALVEWINDOW_H

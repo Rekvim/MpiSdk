@@ -67,6 +67,7 @@ HEADERS += \
     src/Uart/Uart.h \
     src/Uart/UartMessage.h \
     src/Uart/UartReader.h \
+    src/ValidatorFactory/RegexPatterns.h \
     src/ValidatorFactory/ValidatorFactory.h \
     src/ValveСonfig/ValveDataLoader.h \
     src/database/ValveDatabase.h

@@ -12,18 +12,45 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
 
     auto* validatorDigits = ValidatorFactory::create(ValidatorFactory::Type::Digits, this);
 
-    // auto* validatorLettersHyphens = ValidatorFactory::create(ValidatorFactory::Type::LettersHyphens, this);
+    auto* validatorDigitsHyphens = ValidatorFactory::create(ValidatorFactory::Type::DigitsHyphens, this);
 
     auto* noSpecialChars = ValidatorFactory::create(ValidatorFactory::Type::NoSpecialChars, this);
 
+    ui->lineEdit_valveSeries->setValidator(validatorDigits);
+    ui->lineEdit_valveModel->setValidator(validatorDigitsHyphens);
+
     ui->lineEdit_positionNumber->setValidator(noSpecialChars);
+
     ui->lineEdit_manufacturer->setValidator(noSpecialChars);
+    ui->lineEdit_manufacturer->setEnabled(false);
+
+    connect(ui->comboBox_manufacturer,
+            QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, [this](int idx){
+                bool manual = ui->comboBox_manufacturer->itemText(idx) == m_manualInput;
+                ui->lineEdit_manufacturer->setEnabled(manual);
+                if (manual) ui->lineEdit_manufacturer->setFocus();
+            });
+
+
     ui->lineEdit_serial->setValidator(noSpecialChars);
     ui->lineEdit_PN->setValidator(validatorDigits);
     ui->lineEdit_valveStroke->setValidator(noSpecialChars);
     ui->lineEdit_positioner->setValidator(noSpecialChars);
+
+
     ui->lineEdit_dinamicError->setValidator(noSpecialChars);
-    ui->lineEdit_modelDrive->setValidator(noSpecialChars);
+    ui->lineEdit_dinamicError->setEnabled(false);
+
+    connect(ui->comboBox_dinamicError,
+            QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, [this](int idx){
+                bool manual = ui->comboBox_dinamicError->itemText(idx) == m_manualInput;
+                ui->lineEdit_dinamicError->setEnabled(manual);
+                if (manual) ui->lineEdit_dinamicError->setFocus();
+            });
+
+    ui->lineEdit_driveModel->setValidator(noSpecialChars);
     ui->lineEdit_range->setValidator(noSpecialChars);
 
     ui->lineEdit_materialStuffingBoxSeal->setValidator(noSpecialChars);
@@ -66,52 +93,30 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
     m_partFields.insert("shaft", ui->lineEdit_shaft);
     m_partFields.insert("saddleLock", ui->lineEdit_saddleLock);
 
-    ui->comboBox_manufacturer->clear();
-    for (const auto &[id, name] : m_db.getManufacturers() ) {
-        ui->comboBox_manufacturer->addItem(name, id);
-    }
+    populateCombo(ui->comboBox_manufacturer, m_db.getManufacturers(), true);
 
-    auto allSeries = m_db.getAllSeries();
-    qDebug() << "All valve_series in DB:";
-    for (const auto &[id, name] : allSeries) {
-        qDebug() << "  id =" << id << ", name =" << name;
-    }
-
-    connect(ui->lineEdit_valveSeries, &QLineEdit::editingFinished,
+    connect(ui->lineEdit_valveSeries, &QLineEdit::textEdited,
             this, &ValveWindow::onSeriesEditingFinished);
 
+    int manufacturerId = ui->comboBox_manufacturer->currentData().toInt();
     QString seriesName = ui->lineEdit_valveSeries->text().trimmed();
-    int seriesId = m_db.getSeriesIdByName(seriesName);
+    int seriesId = m_db.getSeriesIdByName(manufacturerId, seriesName);
 
-    ui->comboBox_DN->clear();
-    for (const auto &[dnId, dnSize] : m_db.getValveDnSizes(seriesId)) {
-        ui->comboBox_DN->addItem(QString::number(dnSize), dnId);
-    }
+    populateComboInts(ui->comboBox_DN, m_db.getValveDnSizes(seriesId));
 
-    int dnSizeId = ui->comboBox_DN->currentData().toInt();
+    int currentDnSizeId = ui->comboBox_DN->currentData().toInt();
 
-    ui->comboBox_CV->clear();
-    for (const auto &[cvId, cv] : m_db.getCvValues(dnSizeId)) {
-        ui->comboBox_CV->addItem(QString::number(cv), cvId);
-    }
+    populateComboInts(ui->comboBox_CV, m_db.getCvValues(currentDnSizeId));
 
-    ui->comboBox_materialSaddle->clear();
-    for (const auto &[id, name] : m_db.getSaddleMaterials()) {
-        ui->comboBox_materialSaddle->addItem(name, id);
-    }
+    populateCombo(ui->comboBox_driveModel, m_db.getDriveModel(), true);
 
-    ui->comboBox_driveModel->clear();
-    for (const auto &[id, name] : m_db.getDriveModel()) {
-        ui->comboBox_driveModel->addItem(name, id);
-    }
-
-    ui->comboBox_materialBody->clear();
-    for (const auto &[id, name] : m_db.getBodyMaterials()) {
-        ui->comboBox_materialBody->addItem(name, id);
-    }
+    populateCombo(ui->comboBox_materialBody, m_db.getBodyMaterials());
 
     connect(ui->lineEdit_valveSeries, &QLineEdit::editingFinished,
             this, &ValveWindow::onSeriesEditingFinished);
+
+    connect(ui->lineEdit_valveModel,  &QLineEdit::textEdited,
+            this, &ValveWindow::onModelEditingFinished);
 
     connect(ui->comboBox_DN, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &ValveWindow::onDNChanged);
@@ -122,8 +127,55 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
     connect(ui->comboBox_materialSaddle, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &ValveWindow::updatePartNumbers);
 
+    connect(ui->comboBox_manufacturer,
+            QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this,
+            &ValveWindow::onManufacturerChanged);
+
     if (ui->comboBox_DN->count() > 0)
         onDNChanged(0);
+
+    connect(ui->comboBox_manufacturer, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, [this](int){
+                ui->lineEdit_valveSeries->clear();
+                ui->comboBox_DN->clear();
+                ui->comboBox_CV->clear();
+                ui->lineEdit_valveModel->clear();
+                ui->comboBox_dinamicError->clear();
+                ui->comboBox_materialSaddle->clear();
+            });
+
+    connect(ui->comboBox_manufacturer,
+            QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this,
+            [this](int){
+                ui->lineEdit_valveSeries->clear();
+                ui->comboBox_DN->clear();
+                ui->comboBox_CV->clear();
+            });
+
+    ui->lineEdit_driveModel->setEnabled(false);
+    ui->comboBox_driveModel->addItem(m_manualInput);
+
+
+    connect(ui->comboBox_driveModel,
+        QOverload<int>::of(&QComboBox::currentIndexChanged),
+        this,
+        [this](int idx){
+            bool manual = (ui->comboBox_driveModel->itemText(idx) == m_manualInput);
+            ui->lineEdit_driveModel->setEnabled(manual);
+            if (manual)
+                ui->lineEdit_driveModel->setFocus();
+    });
+
+    QString driveModel;
+    if (ui->comboBox_driveModel->currentText() == m_manualInput) {
+        driveModel = ui->lineEdit_driveModel->text().trimmed();
+        ui->lineEdit_driveModel->setEnabled(true);
+
+    } else {
+        driveModel = ui->comboBox_driveModel->currentText();
+    }
 }
 
 ValveWindow::~ValveWindow()
@@ -131,15 +183,39 @@ ValveWindow::~ValveWindow()
     delete ui;
 }
 
+void ValveWindow::onManufacturerChanged(int /*index*/)
+{
+    ui->lineEdit_valveSeries->clear();
+    ui->comboBox_DN->clear();
+    ui->comboBox_CV->clear();
+}
+
 void ValveWindow::populateModelsAndDn(int seriesId)
 {
-    ui->comboBox_DN->clear();
-    for (auto [dnId, dnSize] : m_db.getValveDnSizes(seriesId)) {
-        ui->comboBox_DN->addItem(QString::number(dnSize), dnId);
+    populateComboInts(ui->comboBox_DN, m_db.getValveDnSizes(seriesId));
+    onDNChanged(0);
+}
+
+void ValveWindow::onModelEditingFinished()
+{
+    ui->comboBox_dinamicError->clear();
+
+    QString seriesName = ui->lineEdit_valveSeries->text().trimmed();
+    int manId = ui->comboBox_manufacturer->currentData().toInt();
+    int seriesId = m_db.getSeriesIdByName(manId, seriesName);
+
+    QString model = ui->lineEdit_valveModel->text().trimmed();
+    int modelId = m_db.getValveModelIdByName(seriesId, model);
+
+    if (seriesId < 0 || modelId < 0) {
+        ui->comboBox_dinamicError->clear();
+        ui->comboBox_materialSaddle->clear();
+        return;
     }
 
-    if (ui->comboBox_DN->count() > 0)
-        onDNChanged(0);
+    populateComboInts(ui->comboBox_dinamicError, m_db.getDynamicErrors(modelId), true);
+
+    populateCombo(ui->comboBox_materialSaddle, m_db.getSaddleMaterialsForModel(modelId));
 }
 
 void ValveWindow::onSeriesEditingFinished()
@@ -148,31 +224,35 @@ void ValveWindow::onSeriesEditingFinished()
     if (seriesName.isEmpty())
         return;
 
-    int seriesId = m_db.getSeriesIdByName(seriesName);
+    int manId = ui->comboBox_manufacturer->currentData().toInt();
+    int seriesId = m_db.getSeriesIdByName(manId, seriesName);
     if (seriesId < 0) {
-        QMessageBox::warning(this,
-                             tr("Серия не найдена"),
-                             tr("Серия \"%1\" отсутствует в базе данных.").arg(seriesName));
         ui->comboBox_DN->clear();
         ui->comboBox_CV->clear();
+        ui->lineEdit_valveModel->clear();
+        ui->comboBox_dinamicError->clear();
+        ui->comboBox_materialSaddle->clear();
         return;
     }
 
-    // Теперь мы точно знаем seriesId — можем заполнить модели и DN
+    if (seriesName.length() >= 2) {
+        QString prefix = seriesName.left(2);
+        ui->lineEdit_valveModel->setText(prefix + "-");
+    } else {
+        ui->lineEdit_valveModel->clear();
+    }
+
     populateModelsAndDn(seriesId);
 }
 
 void ValveWindow::onDNChanged(int index)
 {
-    qDebug() << "onDNChanged index =" << index;
-
     int dnSizeId = ui->comboBox_DN->itemData(index).toInt();
 
-    // Заполняем CV
     ui->comboBox_CV->clear();
-    for (auto [cvId, cv] : m_db.getCvValues(dnSizeId)) {
-        ui->comboBox_CV->addItem(QString::number(cv), cvId);
-    }
+
+    populateComboInts(ui->comboBox_CV, m_db.getCvValues(dnSizeId));
+
     if (ui->comboBox_CV->count() > 0)
         ui->comboBox_CV->setCurrentIndex(0);
 
@@ -199,8 +279,10 @@ void ValveWindow::updatePartNumbers()
         { "saddleLock", "Фиксатор седла"}
     };
 
-    for (auto key : m_partFields.keys()) {
-        auto *le = m_partFields[key];
+    auto keys = m_partFields.keys();
+    for (int i = 0, n = keys.size(); i < n; ++i) {
+        const QString& key = keys.at(i);
+        QLineEdit* le = m_partFields.value(key);
         QString code = parts.value(key);
         if (code.isEmpty()) {
             le->clear();
@@ -240,12 +322,25 @@ void ValveWindow::SaveValveInfo()
     if (ui->comboBox_positionNumber->currentText() == m_manualInput)
         m_valveInfo = m_registry->GetValveInfo(ui->lineEdit_positionNumber->text());
 
-    m_valveInfo->manufacturer = ui->lineEdit_manufacturer->text();
+    if (ui->comboBox_driveModel->currentText() == m_manualInput)
+        m_valveInfo->driveModel = ui->lineEdit_driveModel->text().trimmed();
+    else
+        m_valveInfo->driveModel = ui->comboBox_driveModel->currentText();
+
+    if (ui->comboBox_manufacturer->currentText() == m_manualInput)
+        m_valveInfo->manufacturer = ui->lineEdit_manufacturer->text();
+    else
+        m_valveInfo->manufacturer = ui->comboBox_manufacturer->currentText();
+
+    if (ui->comboBox_dinamicError->currentText() == m_manualInput)
+        m_valveInfo->dinamicError = ui->lineEdit_dinamicError->text();
+    else
+        m_valveInfo->dinamicError = ui->comboBox_dinamicError->currentText();
+
     m_valveInfo->serialNumber = ui->lineEdit_serial->text();
     m_valveInfo->stroke = ui->lineEdit_valveStroke->text();
     m_valveInfo->positioner = ui->lineEdit_positioner->text();
-    m_valveInfo->dinamicError = ui->lineEdit_dinamicError->text();
-    m_valveInfo->modelDrive = ui->lineEdit_modelDrive->text();
+
     m_valveInfo->range = ui->lineEdit_range->text();
     m_valveInfo->manufacturer = ui->lineEdit_manufacturer->text();
     m_valveInfo->valveModel = ui->lineEdit_valveModel->text();
@@ -296,7 +391,22 @@ void ValveWindow::PositionChanged(const QString &position)
     ui->lineEdit_valveStroke->setText(m_valveInfo->stroke);
     ui->lineEdit_positioner->setText(m_valveInfo->positioner);
     ui->lineEdit_dinamicError->setText(m_valveInfo->dinamicError);
-    ui->lineEdit_modelDrive->setText(m_valveInfo->modelDrive);
+
+    const QString loaded = m_valveInfo->driveModel;
+    int idx = ui->comboBox_driveModel->findText(loaded);
+    if (idx >= 0) {
+        // это одна из стандартных моделей
+        ui->comboBox_driveModel->setCurrentIndex(idx);
+        ui->lineEdit_driveModel->clear();
+        ui->lineEdit_driveModel->setEnabled(false);
+    } else {
+        // неизвестная модель — переводим в ручной ввод
+        int manualIdx = ui->comboBox_driveModel->findText(m_manualInput);
+        ui->comboBox_driveModel->setCurrentIndex(manualIdx);
+        ui->lineEdit_driveModel->setText(loaded);
+        ui->lineEdit_driveModel->setEnabled(true);
+    }
+
     ui->lineEdit_range->setText(m_valveInfo->range);
 
 
@@ -321,36 +431,6 @@ void ValveWindow::PositionChanged(const QString &position)
     ui->lineEdit_materialShaft->setText(m_materialsOfComponentParts->shaft);
     ui->lineEdit_materialStock->setText(m_materialsOfComponentParts->stock);
     ui->lineEdit_materialGuideSleeve->setText(m_materialsOfComponentParts->guideSleeve);
-}
-
-void ValveWindow::ButtonClick()
-{
-    if (ui->lineEdit_positionNumber->text().isEmpty()) {
-        QMessageBox::warning(this, "Ошибка", "Введите номер позиции");
-        return;
-    }
-
-    if ((ui->lineEdit_manufacturer->text().isEmpty()) or (ui->lineEdit_serial->text().isEmpty())
-        or (ui->lineEdit_PN->text().isEmpty()) or (ui->lineEdit_valveStroke->text().isEmpty())
-        or (ui->lineEdit_positioner->text().isEmpty()) or (ui->lineEdit_dinamicError->text().isEmpty())
-        or (ui->lineEdit_modelDrive->text().isEmpty()) or (ui->lineEdit_range->text().isEmpty())
-        or (ui->lineEdit_materialStuffingBoxSeal->text().isEmpty())) {
-        QMessageBox::StandardButton button
-            = QMessageBox::question(this,
-                                    "Предупреждение",
-                                    "Введены не все данные, вы действительно хотите продолжить?");
-
-        if (button == QMessageBox::StandardButton::No) {
-            return;
-        }
-    }
-
-    OtherParameters *otherParameters = m_registry->GetOtherParameters();
-    otherParameters->safePosition = ui->comboBox_safePosition->currentText();
-    otherParameters->movement = ui->comboBox_stroke_movement->currentText();
-
-    SaveValveInfo();
-    accept();
 }
 
 void ValveWindow::StrokeChanged(quint16 n)
@@ -405,7 +485,7 @@ void ValveWindow::Clear()
     ui->lineEdit_valveStroke->setText("");
     ui->lineEdit_positioner->setText("");
     ui->lineEdit_dinamicError->setText("");
-    ui->lineEdit_modelDrive->setText("");
+    ui->lineEdit_driveModel->setText("");
     ui->lineEdit_range->setText("");
     ui->lineEdit_materialStuffingBoxSeal->setText("");
     ui->lineEdit_valveModel->setText("");
@@ -427,6 +507,33 @@ void ValveWindow::Clear()
 
     ui->doubleSpinBox_diameter->setValue(1.0);
     ui->doubleSpinBox_diameter_pulley->setValue(m_diameter[0]);
+}
 
+void ValveWindow::ButtonClick()
+{
+    if (ui->lineEdit_positionNumber->text().isEmpty()) {
+        QMessageBox::warning(this, "Ошибка", "Введите номер позиции");
+        return;
+    }
 
+    if ((ui->lineEdit_manufacturer->text().isEmpty()) or (ui->lineEdit_serial->text().isEmpty())
+        or (ui->lineEdit_PN->text().isEmpty()) or (ui->lineEdit_valveStroke->text().isEmpty())
+        or (ui->lineEdit_positioner->text().isEmpty()) or (ui->lineEdit_dinamicError->text().isEmpty())
+        or (ui->lineEdit_range->text().isEmpty()) or (ui->lineEdit_materialStuffingBoxSeal->text().isEmpty())) {
+        QMessageBox::StandardButton button
+            = QMessageBox::question(this,
+                                    "Предупреждение",
+                                    "Введены не все данные, вы действительно хотите продолжить?");
+
+        if (button == QMessageBox::StandardButton::No) {
+            return;
+        }
+    }
+
+    OtherParameters *otherParameters = m_registry->GetOtherParameters();
+    otherParameters->safePosition = ui->comboBox_safePosition->currentText();
+    otherParameters->movement = ui->comboBox_stroke_movement->currentText();
+
+    SaveValveInfo();
+    accept();
 }
