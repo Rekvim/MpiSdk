@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>858</width>
-    <height>961</height>
+    <width>1050</width>
+    <height>1027</height>
    </rect>
   </property>
   <property name="font">
@@ -43,7 +43,7 @@
           <widget class="QLabel" name="label_positionNumber">
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -52,6 +52,11 @@
              <width>230</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
            </property>
            <property name="text">
             <string>Номер позиции:</string>
@@ -65,6 +70,11 @@
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
            </property>
            <item>
             <property name="text">
@@ -80,6 +90,11 @@
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
            </property>
           </widget>
          </item>
@@ -100,7 +115,7 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -110,6 +125,11 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>Производитель ЗРА (торговая марка)</string>
            </property>
@@ -118,7 +138,7 @@
          <item>
           <widget class="QComboBox" name="comboBox_manufacturer">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -144,6 +164,11 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
           </widget>
          </item>
         </layout>
@@ -157,7 +182,7 @@
           <widget class="QLabel" name="label_valveSeries">
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -167,13 +192,24 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>Серия клапана</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_valveSeries"/>
+          <widget class="QLineEdit" name="lineEdit_valveSeries">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -186,7 +222,7 @@
           <widget class="QLabel" name="label_valveModel">
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -196,13 +232,24 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>Модель клапана</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_valveModel"/>
+          <widget class="QLineEdit" name="lineEdit_valveModel">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -215,7 +262,7 @@
           <widget class="QLabel" name="label_serial">
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -225,13 +272,24 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>Серийный номер</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_serial"/>
+          <widget class="QLineEdit" name="lineEdit_serial">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -244,7 +302,7 @@
           <widget class="QLabel" name="label_materialBody">
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -253,6 +311,11 @@
              <width>230</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
            </property>
            <property name="text">
             <string>Материал корпуса</string>
@@ -267,6 +330,11 @@
              <height>0</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
           </widget>
          </item>
         </layout>
@@ -280,7 +348,7 @@
           <widget class="QLabel" name="label_material_saddleMaterials">
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -290,13 +358,24 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>Материал седла</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox_materialSaddle"/>
+          <widget class="QComboBox" name="comboBox_materialSaddle">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -309,7 +388,7 @@
           <widget class="QLabel" name="label_DN">
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -318,6 +397,11 @@
              <width>230</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
            </property>
            <property name="text">
             <string>ДУ (DN)</string>
@@ -338,6 +422,11 @@
              <height>0</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
           </widget>
          </item>
         </layout>
@@ -351,7 +440,7 @@
           <widget class="QLabel" name="label_CV">
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -361,13 +450,24 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>CV</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox_CV"/>
+          <widget class="QComboBox" name="comboBox_CV">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -380,7 +480,7 @@
           <widget class="QLabel" name="label_PN">
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -389,6 +489,11 @@
              <width>230</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
            </property>
            <property name="text">
             <string>РУ (PN)</string>
@@ -403,6 +508,11 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
           </widget>
          </item>
         </layout>
@@ -416,7 +526,7 @@
           <widget class="QLabel" name="label_positioner">
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -426,13 +536,24 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>Модель позиционера</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_positioner"/>
+          <widget class="QLineEdit" name="lineEdit_positionerModel">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -445,7 +566,7 @@
           <widget class="QLabel" name="label_16">
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -455,9 +576,44 @@
              <height>16777215</height>
             </size>
            </property>
-           <property name="text">
-            <string>Динамическая ошибка</string>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
            </property>
+           <property name="text">
+            <string>Тип позиционера / Динамическая ошибка</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboBox_positionerType">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <item>
+            <property name="text">
+             <string>Интеллектуальный ЭПП</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>ЭПП</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>ПП</string>
+            </property>
+           </item>
           </widget>
          </item>
          <item>
@@ -468,10 +624,22 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <item>
+            <property name="text">
+             <string>1,5</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>2,5</string>
+            </property>
+           </item>
           </widget>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="lineEdit_dinamicError"/>
          </item>
         </layout>
        </item>
@@ -484,7 +652,7 @@
           <widget class="QLabel" name="label_17">
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -494,6 +662,11 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>Движение хода клапана</string>
            </property>
@@ -501,6 +674,11 @@
          </item>
          <item>
           <widget class="QComboBox" name="comboBox_stroke_movement">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <item>
             <property name="text">
              <string>Возвратно-поступательное</string>
@@ -524,7 +702,7 @@
           <widget class="QLabel" name="label_valveStroke">
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -534,13 +712,24 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>Ход клапана</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_valveStroke"/>
+          <widget class="QLineEdit" name="lineEdit_valveStroke">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -553,7 +742,7 @@
           <widget class="QLabel" name="label_20">
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -562,6 +751,11 @@
              <width>230</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
            </property>
            <property name="text">
             <string>Модель привода</string>
@@ -582,10 +776,21 @@
              <height>0</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_driveModel"/>
+          <widget class="QLineEdit" name="lineEdit_driveModel">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -598,7 +803,7 @@
           <widget class="QLabel" name="label_safePosition">
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -608,6 +813,11 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>Безопасное положение привода</string>
            </property>
@@ -615,6 +825,11 @@
          </item>
          <item>
           <widget class="QComboBox" name="comboBox_safePosition">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <item>
             <property name="text">
              <string>Нормально закрыт</string>
@@ -638,7 +853,7 @@
           <widget class="QLabel" name="label_12">
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -648,6 +863,11 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>Тип привода</string>
            </property>
@@ -655,6 +875,11 @@
          </item>
          <item>
           <widget class="QComboBox" name="comboBox_driveType">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <item>
             <property name="text">
              <string>Пружинно-мембранный</string>
@@ -678,7 +903,7 @@
           <widget class="QLabel" name="label_13">
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -688,13 +913,24 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>Диапазон привода</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_range"/>
+          <widget class="QLineEdit" name="lineEdit_range">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -707,7 +943,7 @@
           <widget class="QLabel" name="label_14">
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -724,6 +960,11 @@
          </item>
          <item>
           <widget class="QDoubleSpinBox" name="doubleSpinBox_diameter">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="buttonSymbols">
             <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
            </property>
@@ -746,7 +987,7 @@
           <widget class="QLabel" name="label_square_2">
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -756,6 +997,11 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>Эффективная площадь привода</string>
            </property>
@@ -763,6 +1009,11 @@
          </item>
          <item>
           <widget class="QLabel" name="label_square">
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>0 см</string>
            </property>
@@ -779,7 +1030,7 @@
           <widget class="QLabel" name="label_toolNumber">
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -788,6 +1039,11 @@
              <width>230</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
            </property>
            <property name="text">
             <string>Номер поворотного шкива</string>
@@ -798,6 +1054,11 @@
           <widget class="QComboBox" name="comboBox_toolNumber">
            <property name="enabled">
             <bool>false</bool>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
            </property>
            <item>
             <property name="text">
@@ -837,7 +1098,7 @@
           <widget class="QLabel" name="label_21">
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -846,6 +1107,11 @@
              <width>230</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
            </property>
            <property name="text">
             <string>Диаметр шкива (мм)</string>
@@ -856,6 +1122,11 @@
           <widget class="QDoubleSpinBox" name="doubleSpinBox_diameter_pulley">
            <property name="enabled">
             <bool>false</bool>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
            </property>
            <property name="buttonSymbols">
             <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
@@ -882,7 +1153,7 @@
           <widget class="QLabel" name="label_materialStuffingBoxSeal">
            <property name="minimumSize">
             <size>
-             <width>330</width>
+             <width>370</width>
              <height>0</height>
             </size>
            </property>
@@ -892,15 +1163,65 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>Материал сальникового уплотнения</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_materialStuffingBoxSeal"/>
+          <widget class="QLineEdit" name="lineEdit_materialStuffingBoxSeal">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboBox_materialStuffingBoxSeal">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <item>
+            <property name="text">
+             <string>PTFE</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Graphite</string>
+            </property>
+           </item>
+          </widget>
          </item>
         </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>

@@ -25,30 +25,42 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
     ui->lineEdit_manufacturer->setEnabled(false);
 
     connect(ui->comboBox_manufacturer,
-            QOverload<int>::of(&QComboBox::currentIndexChanged),
-            this, [this](int idx){
-                bool manual = ui->comboBox_manufacturer->itemText(idx) == m_manualInput;
-                ui->lineEdit_manufacturer->setEnabled(manual);
-                if (manual) ui->lineEdit_manufacturer->setFocus();
-            });
-
+        QOverload<int>::of(&QComboBox::currentIndexChanged),
+        this, [this](int idx){
+            bool manual = ui->comboBox_manufacturer->itemText(idx) == m_manualInput;
+            if (manual) {
+                ui->lineEdit_manufacturer->setEnabled(true);
+                ui->lineEdit_manufacturer->setFocus();
+            }
+            else {
+                ui->lineEdit_manufacturer->clear();
+                ui->lineEdit_manufacturer->setEnabled(false);
+            }
+        }
+    );
 
     ui->lineEdit_serial->setValidator(noSpecialChars);
     ui->lineEdit_PN->setValidator(validatorDigits);
     ui->lineEdit_valveStroke->setValidator(noSpecialChars);
-    ui->lineEdit_positioner->setValidator(noSpecialChars);
+    ui->lineEdit_positionerModel->setValidator(noSpecialChars);
 
 
-    ui->lineEdit_dinamicError->setValidator(noSpecialChars);
-    ui->lineEdit_dinamicError->setEnabled(false);
+    // ui->lineEdit_dinamicError->setValidator(noSpecialChars);
+    // ui->lineEdit_dinamicError->setEnabled(false);
 
-    connect(ui->comboBox_dinamicError,
-            QOverload<int>::of(&QComboBox::currentIndexChanged),
-            this, [this](int idx){
-                bool manual = ui->comboBox_dinamicError->itemText(idx) == m_manualInput;
-                ui->lineEdit_dinamicError->setEnabled(manual);
-                if (manual) ui->lineEdit_dinamicError->setFocus();
-            });
+    // connect(ui->comboBox_dinamicError,
+    //     QOverload<int>::of(&QComboBox::currentIndexChanged),
+    //     this, [this](int idx){
+    //         bool manual = ui->comboBox_dinamicError->itemText(idx) == m_manualInput;
+    //         if (manual) {
+    //             ui->lineEdit_dinamicError->setEnabled(true);
+    //             ui->lineEdit_dinamicError->setFocus();
+    //         }
+    //         else {
+    //             ui->lineEdit_dinamicError->clear();
+    //             ui->lineEdit_dinamicError->setEnabled(false);
+    //         }
+    // });
 
     ui->lineEdit_driveModel->setValidator(noSpecialChars);
     ui->lineEdit_range->setValidator(noSpecialChars);
@@ -155,18 +167,21 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
             });
 
     ui->lineEdit_driveModel->setEnabled(false);
-    ui->comboBox_driveModel->addItem(m_manualInput);
-
 
     connect(ui->comboBox_driveModel,
-        QOverload<int>::of(&QComboBox::currentIndexChanged),
-        this,
-        [this](int idx){
-            bool manual = (ui->comboBox_driveModel->itemText(idx) == m_manualInput);
-            ui->lineEdit_driveModel->setEnabled(manual);
-            if (manual)
-                ui->lineEdit_driveModel->setFocus();
-    });
+            QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this,
+            [this](int idx){
+                bool manual = (ui->comboBox_driveModel->itemText(idx) == m_manualInput);
+                if (manual) {
+                    ui->lineEdit_driveModel->setEnabled(true);
+                    ui->lineEdit_driveModel->setFocus();
+                }
+                else {
+                    ui->lineEdit_driveModel->clear();
+                    ui->lineEdit_driveModel->setEnabled(false);
+                }
+            });
 
     QString driveModel;
     if (ui->comboBox_driveModel->currentText() == m_manualInput) {
@@ -332,14 +347,14 @@ void ValveWindow::SaveValveInfo()
     else
         m_valveInfo->manufacturer = ui->comboBox_manufacturer->currentText();
 
-    if (ui->comboBox_dinamicError->currentText() == m_manualInput)
-        m_valveInfo->dinamicError = ui->lineEdit_dinamicError->text();
-    else
-        m_valveInfo->dinamicError = ui->comboBox_dinamicError->currentText();
+    // if (ui->comboBox_dinamicError->currentText() == m_manualInput)
+    //     m_valveInfo->dinamicError = ui->lineEdit_dinamicError->text();
+    // else
+    //     m_valveInfo->dinamicError = ui->comboBox_dinamicError->currentText();
 
     m_valveInfo->serialNumber = ui->lineEdit_serial->text();
     m_valveInfo->stroke = ui->lineEdit_valveStroke->text();
-    m_valveInfo->positioner = ui->lineEdit_positioner->text();
+    m_valveInfo->positioner = ui->lineEdit_positionerModel->text();
 
     m_valveInfo->range = ui->lineEdit_range->text();
     m_valveInfo->manufacturer = ui->lineEdit_manufacturer->text();
@@ -389,18 +404,16 @@ void ValveWindow::PositionChanged(const QString &position)
     ui->lineEdit_serial->setText(m_valveInfo->serialNumber);
     ui->lineEdit_PN->setText(QString::number(m_valveInfo->PN));
     ui->lineEdit_valveStroke->setText(m_valveInfo->stroke);
-    ui->lineEdit_positioner->setText(m_valveInfo->positioner);
-    ui->lineEdit_dinamicError->setText(m_valveInfo->dinamicError);
+    ui->lineEdit_positionerModel->setText(m_valveInfo->positioner);
+    // ui->lineEdit_dinamicError->setText(m_valveInfo->dinamicError);
 
     const QString loaded = m_valveInfo->driveModel;
     int idx = ui->comboBox_driveModel->findText(loaded);
     if (idx >= 0) {
-        // это одна из стандартных моделей
         ui->comboBox_driveModel->setCurrentIndex(idx);
         ui->lineEdit_driveModel->clear();
         ui->lineEdit_driveModel->setEnabled(false);
     } else {
-        // неизвестная модель — переводим в ручной ввод
         int manualIdx = ui->comboBox_driveModel->findText(m_manualInput);
         ui->comboBox_driveModel->setCurrentIndex(manualIdx);
         ui->lineEdit_driveModel->setText(loaded);
@@ -483,8 +496,8 @@ void ValveWindow::Clear()
     ui->lineEdit_serial->setText("");
     ui->lineEdit_PN->setText("");
     ui->lineEdit_valveStroke->setText("");
-    ui->lineEdit_positioner->setText("");
-    ui->lineEdit_dinamicError->setText("");
+    ui->lineEdit_positionerModel->setText("");
+    // ui->lineEdit_dinamicError->setText("");
     ui->lineEdit_driveModel->setText("");
     ui->lineEdit_range->setText("");
     ui->lineEdit_materialStuffingBoxSeal->setText("");
@@ -516,9 +529,8 @@ void ValveWindow::ButtonClick()
         return;
     }
 
-    if ((ui->lineEdit_manufacturer->text().isEmpty()) or (ui->lineEdit_serial->text().isEmpty())
-        or (ui->lineEdit_PN->text().isEmpty()) or (ui->lineEdit_valveStroke->text().isEmpty())
-        or (ui->lineEdit_positioner->text().isEmpty()) or (ui->lineEdit_dinamicError->text().isEmpty())
+    if ((ui->lineEdit_serial->text().isEmpty()) or (ui->lineEdit_PN->text().isEmpty())
+        or (ui->lineEdit_valveStroke->text().isEmpty()) or (ui->lineEdit_positionerModel->text().isEmpty())
         or (ui->lineEdit_range->text().isEmpty()) or (ui->lineEdit_materialStuffingBoxSeal->text().isEmpty())) {
         QMessageBox::StandardButton button
             = QMessageBox::question(this,

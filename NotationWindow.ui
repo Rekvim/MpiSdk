@@ -610,7 +610,7 @@ border-radius: 6px;</string>
            <widget class="QComboBox" name="comboBox_movings">
             <property name="font">
              <font>
-              <pointsize>12</pointsize>
+              <pointsize>14</pointsize>
              </font>
             </property>
             <item>
