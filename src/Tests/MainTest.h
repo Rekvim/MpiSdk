@@ -53,11 +53,11 @@ private:
     Regression CalculateRegression(QVector<QPointF> &points, Limits limits);
     Limits GetLimits(const QVector<QPointF> &points1, const QVector<QPointF> &points2);
     QVector<QPointF> GetRegressionPoints(Regression regression, Limits limits);
-    QVector<QPointF> GetFrictionPoints(QVector<QPointF> &points1,
-                                       QVector<QPointF> &points2,
+    QVector<QPointF> GetFrictionPoints(QVector<QPointF> &pointsForward,
+                                       QVector<QPointF> &pointsBackward,
                                        Limits limits);
-    QPair<qreal, qreal> GetMeanMax(QVector<QPointF> &points_forward,
-                                   QVector<QPointF> &points_backward);
+    QPair<qreal, qreal> GetMeanMax(QVector<QPointF> &pointsForward,
+                                   QVector<QPointF> &pointsBackward);
 
     QPair<qreal, qreal> GetRangeLimits(Regression regression1,
                                        Regression regression2,

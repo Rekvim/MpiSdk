@@ -35,3 +35,16 @@ MainTestSettings::TestParameters MainTestSettings::getParameters() const
 
     return parameters;
 }
+
+qint64 MainTestSettings::totalTestTimeMillis() const
+{
+    TestParameters p = getParameters();
+
+    if (p.continuous) {
+        return ui->timeEdit->time().msecsSinceStartOfDay();
+    } else {
+        qint64 forwardTime = qint64(p.pointNumbers * p.response);
+        qint64 backwardTime = forwardTime;
+        return p.delay + forwardTime + p.delay + backwardTime;
+    }
+}

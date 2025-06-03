@@ -84,6 +84,10 @@ private:
     void SaveChart(Charts chart);
     void GetImage(QLabel *label, QImage *image);
     void InitReport();
+
+
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override;
 signals:
     void SetDAC(qreal value);
     void StartMainTest();

@@ -45,9 +45,11 @@ private:
 
 private slots:
     void onSeriesEditingFinished();
-    void onDNChanged(int index);
     void onModelEditingFinished();
+
+    void onDNChanged(int index);
     void onManufacturerChanged(int index);
+    void onPositionerTypeChanged(int index);
 
     void PositionChanged(const QString &position);
     void ButtonClick();

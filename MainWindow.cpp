@@ -22,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tabWidget->setTabEnabled(2, false);
     ui->tabWidget->setTabEnabled(3, false);
 
+    ui->groupBox_SettingCurrentSignal->setEnabled(false);
+
     m_labels[TextObjects::Label_status] = ui->label_status;
     m_labels[TextObjects::Label_init] = ui->label_init;
     m_labels[TextObjects::Label_sensors] = ui->label_sensors;
@@ -146,6 +148,28 @@ MainWindow::MainWindow(QWidget *parent)
         }
     });
 
+    connect(ui->pushButton_signal_4mA, &QPushButton::clicked, this, [this]() {
+        ui->doubleSpinBox_task->setValue(4.0);
+    });
+    connect(ui->pushButton_signal_8mA, &QPushButton::clicked, this, [this]() {
+        ui->doubleSpinBox_task->setValue(8.0);
+    });
+    connect(ui->pushButton_signal_12mA, &QPushButton::clicked, this, [this]() {
+        ui->doubleSpinBox_task->setValue(12.0);
+    });
+    connect(ui->pushButton_signal_16mA, &QPushButton::clicked, this, [this]() {
+        ui->doubleSpinBox_task->setValue(16.0);
+    });
+    connect(ui->pushButton_signal_20mA, &QPushButton::clicked, this, [this]() {
+        ui->doubleSpinBox_task->setValue(20.0);
+    });
+
+    ui->label_arrowUp->setCursor(Qt::PointingHandCursor);
+    ui->label_arrowDown->setCursor(Qt::PointingHandCursor);
+
+    ui->label_arrowUp->installEventFilter(this);
+    ui->label_arrowDown->installEventFilter(this);
+
     connect(m_program, &Program::SetTask, this, &MainWindow::SetTask);
     connect(m_program, &Program::SetSensorNumber, this, &MainWindow::SetSensorsNumber);
     connect(m_program, &Program::SetButtonInitEnabled, this, &MainWindow::SetButtonInitEnabled);
@@ -209,12 +233,24 @@ MainWindow::MainWindow(QWidget *parent)
         ui->pushButton_set->setEnabled(state == Qt::Unchecked);
     });
 
-    // InitReport();
     SetSensorsNumber(0);
 
     ui->tableWidget_step_results->setColumnCount(2);
     ui->tableWidget_step_results->setHorizontalHeaderLabels({"T86", "Перерегулирование"});
     ui->tableWidget_step_results->resizeColumnsToContents();
+
+    ui->label_arrowUp->setCursor(Qt::PointingHandCursor);
+    ui->label_arrowDown->setCursor(Qt::PointingHandCursor);
+
+    ui->label_arrowUp->installEventFilter(this);
+    ui->label_arrowDown->installEventFilter(this);
+
+    ui->label_arrowUp->setCursor(Qt::PointingHandCursor);
+    ui->label_arrowDown->setCursor(Qt::PointingHandCursor);
+
+    ui->label_arrowUp->installEventFilter(this);
+    ui->label_arrowDown->installEventFilter(this);
+
 }
 
 MainWindow::~MainWindow()
@@ -222,6 +258,55 @@ MainWindow::~MainWindow()
     delete ui;
     m_programThread->quit();
     m_programThread->wait();
+}
+
+bool MainWindow::eventFilter(QObject *watched, QEvent *event)
+{
+    if (auto w = qobject_cast<QWidget*>(watched)) {
+        if (!w->isEnabled()) {
+            return false;
+        }
+    }
+    // 1) Обработка клика (MouseButtonRelease) — уже была, оставляем как есть:
+    if (watched == ui->label_arrowUp && event->type() == QEvent::MouseButtonRelease) {
+        double cur = ui->doubleSpinBox_task->value();
+        double nxt = cur + 0.05;
+        if (nxt > ui->doubleSpinBox_task->maximum())
+            nxt = ui->doubleSpinBox_task->maximum();
+        ui->doubleSpinBox_task->setValue(nxt);
+        return true;
+    }
+    if (watched == ui->label_arrowDown && event->type() == QEvent::MouseButtonRelease) {
+        double cur = ui->doubleSpinBox_task->value();
+        double nxt = cur - 0.05;
+        if (nxt < ui->doubleSpinBox_task->minimum())
+            nxt = ui->doubleSpinBox_task->minimum();
+        ui->doubleSpinBox_task->setValue(nxt);
+        return true;
+    }
+    if (watched == ui->label_arrowUp) {
+        if (event->type() == QEvent::Enter) {
+            ui->label_arrowUp->setPixmap(QPixmap(":/src/img/arrowUpHover.png"));
+            return true;
+        }
+        if (event->type() == QEvent::Leave) {
+            ui->label_arrowUp->setPixmap(QPixmap(":/src/img/arrowUp.png"));
+            return true;
+        }
+    }
+    if (watched == ui->label_arrowDown) {
+        if (event->type() == QEvent::Enter) {
+            ui->label_arrowDown->setPixmap(QPixmap(":/src/img/arrowDownHover.png"));
+            return true;
+        }
+        if (event->type() == QEvent::Leave) {
+            ui->label_arrowDown->setPixmap(QPixmap(":/src/img/arrowDown.png"));
+            return true;
+        }
+    }
+
+    // Всё остальное обычным путём:
+    return QMainWindow::eventFilter(watched, event);
 }
 
 void MainWindow::SetRegistry(Registry *registry)
@@ -349,9 +434,11 @@ void MainWindow::SetSensorsNumber(quint8 num)
     ui->verticalSlider_task->setEnabled(!noSensors);
     ui->doubleSpinBox_task->setEnabled(!noSensors);
 
+    ui->groupBox_SettingCurrentSignal->setEnabled(!noSensors);
+
     ui->pushButton_stroke_start->setEnabled(!noSensors);
     ui->pushButton_tests_start->setEnabled(!noSensors);
-    ui->pushButton_main_start->setEnabled(num > 1);
+    ui->pushButton_main_start->setEnabled(num > 1);    
 
     ui->tabWidget->setTabEnabled(1, num > 1);
     ui->tabWidget->setTabEnabled(2, !noSensors);
@@ -447,6 +534,12 @@ void MainWindow::GetMainTestParameters(MainTestSettings::TestParameters &paramet
 {
     if (m_mainTestSettings->exec() == QDialog::Accepted) {
         parameters = m_mainTestSettings->getParameters();
+
+        qint64 totalMs = m_mainTestSettings->totalTestTimeMillis();
+
+        QTime t = QTime(0, 0).addMSecs(totalMs);
+        ui->lineEdit_testDuration->setText(t.toString("hh:mm:ss.zzz"));
+
         return;
     }
 

@@ -91,4 +91,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     Excel.qrc \
     Translations.qrc \
-    db_valveData.qrc
+    db_valveData.qrc \
+    img.qrc
