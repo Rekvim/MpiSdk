@@ -22,8 +22,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tabWidget->setTabEnabled(2, false);
     ui->tabWidget->setTabEnabled(3, false);
 
-    ui->groupBox_SettingCurrentSignal->setEnabled(false);
-
     m_labels[TextObjects::Label_status] = ui->label_status;
     m_labels[TextObjects::Label_init] = ui->label_init;
     m_labels[TextObjects::Label_sensors] = ui->label_sensors;
