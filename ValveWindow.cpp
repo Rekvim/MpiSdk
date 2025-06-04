@@ -12,13 +12,28 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
 
     auto* validatorDigits = ValidatorFactory::create(ValidatorFactory::Type::Digits, this);
 
+    auto* validatorDigitsDot = ValidatorFactory::create(ValidatorFactory::Type::DigitsDot, this);
+
     auto* validatorDigitsHyphens = ValidatorFactory::create(ValidatorFactory::Type::DigitsHyphens, this);
 
     auto* noSpecialChars = ValidatorFactory::create(ValidatorFactory::Type::NoSpecialChars, this);
 
     ui->lineEdit_valveSeries->setValidator(validatorDigits);
     ui->lineEdit_valveModel->setValidator(validatorDigitsHyphens);
-
+    ui->lineEdit_range->setValidator(validatorDigitsDot);
+    ui->lineEdit_serial->setValidator(noSpecialChars);
+    ui->lineEdit_PN->setValidator(validatorDigits);
+    ui->lineEdit_valveStroke->setValidator(noSpecialChars);
+    ui->lineEdit_positionerModel->setValidator(noSpecialChars);
+    ui->lineEdit_driveModel->setValidator(noSpecialChars);
+    ui->lineEdit_materialCorpus->setValidator(noSpecialChars);
+    ui->lineEdit_materialCap->setValidator(noSpecialChars);
+    ui->lineEdit_materialBall->setValidator(noSpecialChars);
+    ui->lineEdit_materialDisk->setValidator(noSpecialChars);
+    ui->lineEdit_materialPlunger->setValidator(noSpecialChars);
+    ui->lineEdit_materialShaft->setValidator(noSpecialChars);
+    ui->lineEdit_materialStock->setValidator(noSpecialChars);
+    ui->lineEdit_materialGuideSleeve->setValidator(noSpecialChars);
     ui->lineEdit_positionNumber->setValidator(noSpecialChars);
 
     ui->lineEdit_manufacturer->setValidator(noSpecialChars);
@@ -39,25 +54,7 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
         }
     );
 
-    ui->lineEdit_serial->setValidator(noSpecialChars);
-    ui->lineEdit_PN->setValidator(validatorDigits);
-    ui->lineEdit_valveStroke->setValidator(noSpecialChars);
-    ui->lineEdit_positionerModel->setValidator(noSpecialChars);
-
-
-    ui->lineEdit_driveModel->setValidator(noSpecialChars);
-    ui->lineEdit_range->setValidator(noSpecialChars);
-
-    ui->lineEdit_materialCorpus->setValidator(noSpecialChars);
-    ui->lineEdit_materialCap->setValidator(noSpecialChars);
-    ui->lineEdit_materialBall->setValidator(noSpecialChars);
-    ui->lineEdit_materialDisk->setValidator(noSpecialChars);
-    ui->lineEdit_materialPlunger->setValidator(noSpecialChars);
-    ui->lineEdit_materialShaft->setValidator(noSpecialChars);
-    ui->lineEdit_materialStock->setValidator(noSpecialChars);
-    ui->lineEdit_materialGuideSleeve->setValidator(noSpecialChars);
-
-    ui->doubleSpinBox_diameter_pulley->setValue(m_diameter[0]);
+    ui->doubleSpinBox_diameterPulley->setValue(m_diameter[0]);
 
     connect(ui->comboBox_stroke_movement,
             &QComboBox::currentIndexChanged,
@@ -203,11 +200,11 @@ void ValveWindow::onPositionerTypeChanged(int index)
     ui->comboBox_dinamicError->clear();
 
     if (selected == QStringLiteral("Интеллектуальный ЭПП")) {
-        ui->comboBox_dinamicError->addItem(QStringLiteral("1,5"));
+        ui->comboBox_dinamicError->addItem(QStringLiteral("1.5"));
         ui->comboBox_dinamicError->setCurrentIndex(0);
     }
     else if (selected == QStringLiteral("ЭПП") || selected == QStringLiteral("ПП")) {
-        ui->comboBox_dinamicError->addItem(QStringLiteral("2,5"));
+        ui->comboBox_dinamicError->addItem(QStringLiteral("2.5"));
         ui->comboBox_dinamicError->setCurrentIndex(0);
     }
 }
@@ -370,7 +367,7 @@ void ValveWindow::SaveValveInfo()
     m_valveInfo->valveModel = ui->lineEdit_valveModel->text();
 
     m_valveInfo->diameter = ui->doubleSpinBox_diameter->value();
-    m_valveInfo->pulley = ui->doubleSpinBox_diameter_pulley->value();
+    m_valveInfo->pulley = ui->doubleSpinBox_diameterPulley->value();
 
     m_valveInfo->DN = ui->comboBox_DN->currentText().toInt();
     m_valveInfo->CV = ui->comboBox_CV->currentText().toInt();
@@ -434,15 +431,12 @@ void ValveWindow::PositionChanged(const QString &position)
 
     ui->doubleSpinBox_diameter->setValue(m_valveInfo->diameter);
 
-    // ui->comboBox_DN->setCurrentIndex(m_valveInfo->DN);
-    // ui->comboBox_valveModel->currentText(m_valveInfo->valveModel);
-
     ui->comboBox_safePosition->setCurrentIndex(m_valveInfo->safePosition);
     ui->comboBox_driveType->setCurrentIndex(m_valveInfo->driveType);
     ui->comboBox_stroke_movement->setCurrentIndex(m_valveInfo->strokeMovement);
     ui->comboBox_toolNumber->setCurrentIndex(m_valveInfo->toolNumber);
 
-    ui->doubleSpinBox_diameter_pulley->setValue(m_valveInfo->pulley);
+    ui->doubleSpinBox_diameterPulley->setValue(m_valveInfo->pulley);
 
     // ui->lineEdit_materialStuffingBoxSeal->setText(m_materialsOfComponentParts->stuffingBoxSeal);
     ui->lineEdit_materialCorpus->setText(m_materialsOfComponentParts->corpus);
@@ -458,7 +452,7 @@ void ValveWindow::PositionChanged(const QString &position)
 void ValveWindow::StrokeChanged(quint16 n)
 {
     ui->comboBox_toolNumber->setEnabled(n == 1);
-    ui->doubleSpinBox_diameter_pulley->setEnabled(
+    ui->doubleSpinBox_diameterPulley->setEnabled(
         (n == 1)
         && (ui->comboBox_toolNumber->currentIndex() == ui->comboBox_toolNumber->count() - 1));
 }
@@ -466,10 +460,10 @@ void ValveWindow::StrokeChanged(quint16 n)
 void ValveWindow::ToolChanged(quint16 n)
 {
     if (n == ui->comboBox_toolNumber->count() - 1) {
-        ui->doubleSpinBox_diameter_pulley->setEnabled(true);
+        ui->doubleSpinBox_diameterPulley->setEnabled(true);
     } else {
-        ui->doubleSpinBox_diameter_pulley->setEnabled(false);
-        ui->doubleSpinBox_diameter_pulley->setValue(m_diameter[n]);
+        ui->doubleSpinBox_diameterPulley->setEnabled(false);
+        ui->doubleSpinBox_diameterPulley->setValue(m_diameter[n]);
     }
 }
 
@@ -532,7 +526,7 @@ void ValveWindow::Clear()
     ui->comboBox_toolNumber->setCurrentIndex(0);
 
     ui->doubleSpinBox_diameter->setValue(1.0);
-    ui->doubleSpinBox_diameter_pulley->setValue(m_diameter[0]);
+    ui->doubleSpinBox_diameterPulley->setValue(m_diameter[0]);
 }
 
 void ValveWindow::ButtonClick()

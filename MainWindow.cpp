@@ -34,9 +34,6 @@ MainWindow::MainWindow(QWidget *parent)
     if (idxOptional != -1)
         ui->tabWidget->setTabEnabled(idxOptional, false);
 
-    ui->tabWidget->setTabEnabled(2, false);
-    ui->tabWidget->setTabEnabled(3, false);
-
     m_labels[TextObjects::Label_status] = ui->label_status;
     m_labels[TextObjects::Label_init] = ui->label_init;
     m_labels[TextObjects::Label_sensors] = ui->label_sensors;
@@ -460,6 +457,7 @@ void MainWindow::SetStepTestResults(QVector<StepTest::TestResult> results, quint
 
 void MainWindow::SetSensorsNumber(quint8 num)
 {
+    num = 3;
     bool noSensors = num == 0;
 
     ui->verticalSlider_task->setEnabled(!noSensors);
