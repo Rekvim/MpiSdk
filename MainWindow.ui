@@ -23,11 +23,8 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-<<<<<<< HEAD
        <number>4</number>
-=======
        <number>1</number>
->>>>>>> c03aeeb2c4cf5fb2394bfe0164679c14067d76a1
       </property>
       <widget class="QWidget" name="tab_manual">
        <attribute name="title">

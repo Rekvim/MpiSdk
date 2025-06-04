@@ -292,19 +292,12 @@ void ValveWindow::updatePartNumbers()
     static const QMap<QString, QString> displayNames = {
         { "plunger", "Плунжер" },
         { "saddle", "Седло" },
-<<<<<<< HEAD
         { "UpperBushing", "Втулка (верхняя)" },
         { "LowerBushing", "Втулка (нижняя)" },
         { "UpperORingSealingRing", "О-кольцо (верхнее)" },
         { "LowerORingSealingRing", "О-кольцо (нижнее)" },
         { "stuffingBoxSeal", "Манжета" },
         { "driveDiaphragm", "Диафрагма привода" },
-=======
-        { "bushing", "Втулка" },
-        { "oRingSealingRing", "Уплотнительное кольцо"},
-        { "stuffingBoxSeal", "Сальниковое уплотнение" },
-        { "driveDiaphragm", "Мембрана привода" },
->>>>>>> c03aeeb2c4cf5fb2394bfe0164679c14067d76a1
         { "setOfCovers", "Крышки" },
         { "shaft", "Вал" },
         { "saddleLock", "Фиксатор седла" }
