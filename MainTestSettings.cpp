@@ -15,36 +15,36 @@ MainTestSettings::~MainTestSettings()
 
 MainTestSettings::TestParameters MainTestSettings::getParameters() const
 {
-    TestParameters parameters;
+    TestParameters testParameters;
 
     if (ui->tabWidget->currentIndex() == 0) {
-        parameters.continuous = true;
-        parameters.delay = 50;
-        parameters.response = 50;
-        parameters.pointNumbers = qreal(ui->timeEdit->time().msecsSinceStartOfDay()) / 50;
-        parameters.signal_min = 3.0;
-        parameters.signal_max = 21.0;
-    } else {
-        parameters.continuous = false;
-        parameters.delay = ui->doubleSpinBox_delay->value() * 1000;
-        parameters.pointNumbers = ui->doubleSpinBox_points->value();
-        parameters.signal_min = ui->doubleSpinBox_signal_min->value();
-        parameters.signal_max = ui->doubleSpinBox_signal_max->value();
-        parameters.response = ui->doubleSpinBox_response->value() * 1000;
-    }
+        testParameters.continuous = true;
+        testParameters.delay = 50;
+        testParameters.response = 50;
+        testParameters.pointNumbers = qreal(ui->timeEdit->time().msecsSinceStartOfDay()) / 50;
+        testParameters.signal_min = 3.0;
+        testParameters.signal_max = 21.0;
 
-    return parameters;
+    } else {
+        testParameters.continuous = false;
+        testParameters.delay = ui->doubleSpinBox_delay->value() * 1000;
+        testParameters.pointNumbers = ui->doubleSpinBox_points->value();
+        testParameters.signal_min = ui->doubleSpinBox_signal_min->value();
+        testParameters.signal_max = ui->doubleSpinBox_signal_max->value();
+        testParameters.response = ui->doubleSpinBox_response->value() * 1000;
+    }
+    return testParameters;
 }
 
 qint64 MainTestSettings::totalTestTimeMillis() const
 {
-    TestParameters p = getParameters();
+    TestParameters testParameters = getParameters();
 
-    if (p.continuous) {
+    if (testParameters.continuous) {
         return ui->timeEdit->time().msecsSinceStartOfDay();
     } else {
-        qint64 forwardTime = qint64(p.pointNumbers * p.response);
+        qint64 forwardTime = qint64(testParameters.pointNumbers * testParameters.response);
         qint64 backwardTime = forwardTime;
-        return p.delay + forwardTime + p.delay + backwardTime;
+        return testParameters.delay + forwardTime + testParameters.delay + backwardTime;
     }
 }

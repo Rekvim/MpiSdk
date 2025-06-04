@@ -11,6 +11,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->tabWidget->setCurrentIndex(0);
 
+    m_durationTimer = new QTimer(this);
+    m_durationTimer->setInterval(100);
+    connect(m_durationTimer, &QTimer::timeout, this, &MainWindow::onCountdownTimeout);
+
     m_mainTestSettings = new MainTestSettings(this);
     m_stepTestSettings = new StepTestSettings(this);
     m_responseTestSettings = new OtherTestSettings(this);
@@ -258,6 +262,25 @@ MainWindow::~MainWindow()
     m_programThread->wait();
 }
 
+void MainWindow::onCountdownTimeout()
+{
+    qint64 elapsedMs = m_elapsedTimer.elapsed();
+
+    qint64 remainingMs = m_totalTestMs - elapsedMs;
+    if (remainingMs <= 0) {
+        remainingMs = 0;
+    }
+
+    QTime t(0, 0);
+    t = t.addMSecs(remainingMs);
+
+    ui->lineEdit_testDuration->setText(t.toString("hh:mm:ss.zzz"));
+
+    if (remainingMs == 0) {
+        m_durationTimer->stop();
+    }
+}
+
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
     if (auto w = qobject_cast<QWidget*>(watched)) {
@@ -303,7 +326,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
         }
     }
 
-    // Всё остальное обычным путём:
     return QMainWindow::eventFilter(watched, event);
 }
 
@@ -451,9 +473,9 @@ void MainWindow::SetSensorsNumber(quint8 num)
 
         ui->checkBox_task->setCheckState(num > 1 ? Qt::Checked : Qt::Unchecked);
         ui->checkBox_line->setCheckState(num > 1 ? Qt::Checked : Qt::Unchecked);
-        ui->checkBox_pressure1->setCheckState(num > 1 ? Qt::Checked : Qt::Unchecked);
-        ui->checkBox_pressure2->setCheckState(num > 2 ? Qt::Checked : Qt::Unchecked);
-        ui->checkBox_pressure3->setCheckState(num > 3 ? Qt::Checked : Qt::Unchecked);
+        // ui->checkBox_pressure1->setCheckState(num > 1 ? Qt::Checked : Qt::Unchecked);
+        // ui->checkBox_pressure2->setCheckState(num > 2 ? Qt::Checked : Qt::Unchecked);
+        // ui->checkBox_pressure3->setCheckState(num > 3 ? Qt::Checked : Qt::Unchecked);
     }
 }
 
@@ -534,8 +556,11 @@ void MainWindow::GetMainTestParameters(MainTestSettings::TestParameters &paramet
         parameters = m_mainTestSettings->getParameters();
 
         qint64 totalMs = m_mainTestSettings->totalTestTimeMillis();
-
-        QTime t = QTime(0, 0).addMSecs(totalMs);
+        m_totalTestMs = totalMs;
+        m_elapsedTimer.start();
+        m_durationTimer->start();
+        QTime t(0, 0);
+        t = t.addMSecs(totalMs);
         ui->lineEdit_testDuration->setText(t.toString("hh:mm:ss.zzz"));
 
         return;
@@ -594,6 +619,8 @@ void MainWindow::EndTest()
 {
     m_testing = false;
     ui->statusbar->showMessage("Тест завершен");
+
+    m_durationTimer->stop();
 }
 
 void MainWindow::ButtonStartMain()
@@ -642,19 +669,18 @@ void MainWindow::InitCharts()
 
     m_charts[Charts::Task] = ui->Chart_task;
     m_charts[Charts::Task]->setname("Task");
+    m_charts[Charts::Task]->useTimeaxis(false);
+    m_charts[Charts::Task]->addAxis("%.2f bar");
     if (!rotate)
         m_charts[Charts::Task]->addAxis("%.2f mm");
     else
         m_charts[Charts::Task]->addAxis("%.2f deg");
 
     m_charts[Charts::Task]->addSeries(1, "Задание", QColor::fromRgb(0, 0, 0));
-
     m_charts[Charts::Task]->addSeries(1, "Датчик линейных перемещений", QColor::fromRgb(255, 0, 0));
     m_charts[Charts::Task]->addSeries(0, "Датчик давления 1", QColor::fromRgb(0, 0, 255));
     m_charts[Charts::Task]->addSeries(0, "Датчик давления 2", QColor::fromRgb(0, 200, 0));
     m_charts[Charts::Task]->addSeries(0, "Датчик давления 3", QColor::fromRgb(150, 0, 200));
-    m_charts[Charts::Task]->useTimeaxis(false);
-    m_charts[Charts::Task]->addAxis("%.2f bar");
 
 
     m_charts[Charts::Friction] = ui->Chart_friction;

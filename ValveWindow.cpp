@@ -292,8 +292,8 @@ void ValveWindow::updatePartNumbers()
         { "saddle", "Седло" },
         { "bushing", "Втулка" },
         { "oRingSealingRing", "Уплотнительное кольцо"},
-        { "stuffingBoxSeal", "Манжета" },
-        { "driveDiaphragm", "Диафрагма привода" },
+        { "stuffingBoxSeal", "Сальниковое уплотнение" },
+        { "driveDiaphragm", "Мембрана привода" },
         { "setOfCovers", "Крышки" },
         { "shaft", "Вал" },
         { "saddleLock", "Фиксатор седла"}
@@ -352,17 +352,17 @@ void ValveWindow::SaveValveInfo()
     else
         m_valveInfo->manufacturer = ui->comboBox_manufacturer->currentText();
 
-    // if (ui->comboBox_dinamicError->currentText() == m_manualInput)
-    //     m_valveInfo->dinamicError = ui->lineEdit_dinamicError->text();
-    // else
-    //     m_valveInfo->dinamicError = ui->comboBox_dinamicError->currentText();
-
     m_valveInfo->serialNumber = ui->lineEdit_serial->text();
     m_valveInfo->stroke = ui->lineEdit_valveStroke->text();
     m_valveInfo->positioner = ui->lineEdit_positionerModel->text();
 
     m_valveInfo->range = ui->lineEdit_range->text();
-    m_valveInfo->manufacturer = ui->lineEdit_manufacturer->text();
+
+    if (ui->comboBox_dinamicError->currentText() == m_manualInput)
+        m_valveInfo->manufacturer = ui->lineEdit_manufacturer->text();
+    else
+        m_valveInfo->manufacturer = ui->comboBox_manufacturer->currentText();
+
     m_valveInfo->valveModel = ui->lineEdit_valveModel->text();
 
     m_valveInfo->diameter = ui->doubleSpinBox_diameter->value();

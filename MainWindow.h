@@ -35,6 +35,7 @@ private slots:
     void SetSensorsNumber(quint8 num);
     void SetButtonInitEnabled(bool enable);
 
+    void onCountdownTimeout();
 
     void AddPoints(Charts chart, QVector<Point> points);
     void ClearPoints(Charts chart);
@@ -67,6 +68,10 @@ private:
 
     Program *m_program;
     QThread *m_programThread;
+
+    QTimer* m_durationTimer;
+    QElapsedTimer m_elapsedTimer;
+    qint64 m_totalTestMs;
 
     Registry *m_registry;
 
