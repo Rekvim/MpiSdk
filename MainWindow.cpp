@@ -18,9 +18,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_reportSaver = new ReportSaver(this);
 
-    // ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tab_main), false);
-    // ui->tabWidget->setTabEnabled(2, false);
-    // ui->tabWidget->setTabEnabled(3, false);
+    ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tab_main), false);
+    ui->tabWidget->setTabEnabled(2, false);
+    ui->tabWidget->setTabEnabled(3, false);
 
     m_labels[TextObjects::Label_status] = ui->label_status;
     m_labels[TextObjects::Label_init] = ui->label_init;
@@ -434,13 +434,13 @@ void MainWindow::SetSensorsNumber(quint8 num)
 
     ui->groupBox_SettingCurrentSignal->setEnabled(!noSensors);
 
-    // ui->pushButton_stroke_start->setEnabled(!noSensors);
-    // ui->pushButton_tests_start->setEnabled(!noSensors);
-    // ui->pushButton_main_start->setEnabled(num > 1);
+    ui->pushButton_stroke_start->setEnabled(!noSensors);
+    ui->pushButton_tests_start->setEnabled(!noSensors);
+    ui->pushButton_main_start->setEnabled(num > 1);
 
-    // ui->tabWidget->setTabEnabled(1, num > 1);
-    // ui->tabWidget->setTabEnabled(2, !noSensors);
-    // ui->tabWidget->setTabEnabled(3, !noSensors);
+    ui->tabWidget->setTabEnabled(1, num > 1);
+    ui->tabWidget->setTabEnabled(2, !noSensors);
+    ui->tabWidget->setTabEnabled(3, !noSensors);
 
     if (num > 0) {
         ui->checkBox_task->setVisible(num > 1);
