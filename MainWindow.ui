@@ -23,7 +23,11 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+<<<<<<< HEAD
+       <number>4</number>
+=======
+       <number>1</number>
+>>>>>>> c03aeeb2c4cf5fb2394bfe0164679c14067d76a1
       </property>
       <widget class="QWidget" name="tab_manual">
        <attribute name="title">
@@ -907,7 +911,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_main">
+      <widget class="QWidget" name="tab_mainTest">
        <attribute name="title">
         <string>Основной тест</string>
        </attribute>
@@ -915,7 +919,7 @@
         <item>
          <widget class="QTabWidget" name="tabWidget_maintest">
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tab_task">
            <attribute name="title">
@@ -1479,7 +1483,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_stroke">
+      <widget class="QWidget" name="tab_fullRun">
        <attribute name="title">
         <string>Тест полного хода</string>
        </attribute>
@@ -1582,7 +1586,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_tests">
+      <widget class="QWidget" name="tab_optional">
        <attribute name="title">
         <string>Опциональные тесты</string>
        </attribute>

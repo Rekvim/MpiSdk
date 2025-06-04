@@ -231,13 +231,14 @@ QMap<QString, QString> ValveDatabase::getValveComponents(int valveDnSizeId,
     QMap<QString, QString> m;
     QSqlQuery q;
     q.prepare(QStringLiteral(
-        "SELECT plunger, saddle, bushing, oRingSealingRing, stuffingBoxSeal, "
+        "SELECT plunger, saddle, UpperBushing, LowerBushing, UpperORingSealingRing, LowerORingSealingRing, stuffingBoxSeal, "
         "driveDiaphragm, setOfCovers, shaft, saddleLock "
         "FROM valve_components "
         "WHERE valve_dn_size_id = ? "
         "AND cv_value_id = ? "
         "AND saddle_material_id = ?"
-        ));
+    ));
+
     q.addBindValue(valveDnSizeId);
     q.addBindValue(cvValueId);
     q.addBindValue(saddleMaterialId);
@@ -246,15 +247,17 @@ QMap<QString, QString> ValveDatabase::getValveComponents(int valveDnSizeId,
         return m;
     }
     if (q.next()) {
-        m["plunger"]          = q.value(0).toString();
-        m["saddle"]           = q.value(1).toString();
-        m["bushing"]          = q.value(2).toString();
-        m["oRingSealingRing"] = q.value(3).toString();
-        m["stuffingBoxSeal"]  = q.value(4).toString();
-        m["driveDiaphragm"]   = q.value(5).toString();
-        m["setOfCovers"]      = q.value(6).toString();
-        m["shaft"]            = q.value(7).toString();
-        m["saddleLock"]       = q.value(8).toString();
+        m["plunger"] = q.value(0).toString();
+        m["saddle"] = q.value(1).toString();
+        m["UpperBushing"] = q.value(2).toString();
+        m["LowerBushing"] = q.value(3).toString();
+        m["UpperORingSealingRing"] = q.value(4).toString();
+        m["LowerORingSealingRing"] = q.value(5).toString();
+        m["stuffingBoxSeal"] = q.value(6).toString();
+        m["driveDiaphragm"] = q.value(7).toString();
+        m["setOfCovers"] = q.value(8).toString();
+        m["shaft"] = q.value(9).toString();
+        m["saddleLock"] = q.value(10).toString();
     }
     return m;
 }

@@ -79,10 +79,12 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
 
     m_partFields.insert("plunger", ui->lineEdit_plunger);
     m_partFields.insert("saddle", ui->lineEdit_saddle);
-    m_partFields.insert("bushing", ui->lineEdit_bushing);
-    m_partFields.insert("oRingSealingRing", ui->lineEdit_oRing);
-    m_partFields.insert("stuffingBoxSeal", ui->lineEdit_stuffingSeal);
-    m_partFields.insert("driveDiaphragm", ui->lineEdit_diaphragm);
+    m_partFields.insert("UpperBushing", ui->lineEdit_upperBushing);
+    m_partFields.insert("LowerBushing", ui->lineEdit_lowerBushing);
+    m_partFields.insert("UpperORingSealingRing", ui->lineEdit_upperORing);
+    m_partFields.insert("LowerORingSealingRing", ui->lineEdit_lowerORing);
+    m_partFields.insert("stuffingBoxSeal", ui->lineEdit_stuffingBoxSeal);
+    m_partFields.insert("driveDiaphragm", ui->lineEdit_driveDiaphragm);
     m_partFields.insert("setOfCovers", ui->lineEdit_covers);
     m_partFields.insert("shaft", ui->lineEdit_shaft);
     m_partFields.insert("saddleLock", ui->lineEdit_saddleLock);
@@ -290,13 +292,22 @@ void ValveWindow::updatePartNumbers()
     static const QMap<QString, QString> displayNames = {
         { "plunger", "Плунжер" },
         { "saddle", "Седло" },
-        { "bushing", "Втулка" },
-        { "oRingSealingRing", "Уплотнительное кольцо"},
+<<<<<<< HEAD
+        { "UpperBushing", "Втулка (верхняя)" },
+        { "LowerBushing", "Втулка (нижняя)" },
+        { "UpperORingSealingRing", "О-кольцо (верхнее)" },
+        { "LowerORingSealingRing", "О-кольцо (нижнее)" },
         { "stuffingBoxSeal", "Манжета" },
         { "driveDiaphragm", "Диафрагма привода" },
+=======
+        { "bushing", "Втулка" },
+        { "oRingSealingRing", "Уплотнительное кольцо"},
+        { "stuffingBoxSeal", "Сальниковое уплотнение" },
+        { "driveDiaphragm", "Мембрана привода" },
+>>>>>>> c03aeeb2c4cf5fb2394bfe0164679c14067d76a1
         { "setOfCovers", "Крышки" },
         { "shaft", "Вал" },
-        { "saddleLock", "Фиксатор седла"}
+        { "saddleLock", "Фиксатор седла" }
     };
 
     auto keys = m_partFields.keys();
@@ -352,17 +363,17 @@ void ValveWindow::SaveValveInfo()
     else
         m_valveInfo->manufacturer = ui->comboBox_manufacturer->currentText();
 
-    // if (ui->comboBox_dinamicError->currentText() == m_manualInput)
-    //     m_valveInfo->dinamicError = ui->lineEdit_dinamicError->text();
-    // else
-    //     m_valveInfo->dinamicError = ui->comboBox_dinamicError->currentText();
-
     m_valveInfo->serialNumber = ui->lineEdit_serial->text();
     m_valveInfo->stroke = ui->lineEdit_valveStroke->text();
     m_valveInfo->positioner = ui->lineEdit_positionerModel->text();
 
     m_valveInfo->range = ui->lineEdit_range->text();
-    m_valveInfo->manufacturer = ui->lineEdit_manufacturer->text();
+
+    if (ui->comboBox_dinamicError->currentText() == m_manualInput)
+        m_valveInfo->manufacturer = ui->lineEdit_manufacturer->text();
+    else
+        m_valveInfo->manufacturer = ui->comboBox_manufacturer->currentText();
+
     m_valveInfo->valveModel = ui->lineEdit_valveModel->text();
 
     m_valveInfo->diameter = ui->doubleSpinBox_diameter->value();
@@ -480,13 +491,17 @@ void ValveWindow::fillReport(ReportSaver::Report &report) {
 
     report.data.push_back({57, 10, ui->lineEdit_saddle->text()});
 
-    report.data.push_back({58, 10, ui->lineEdit_bushing->text()});
+    report.data.push_back({58, 10, ui->lineEdit_upperBushing->text()});
 
-    report.data.push_back({59, 10, ui->lineEdit_oRing->text()});
+    report.data.push_back({59, 10, ui->lineEdit_lowerBushing->text()});
 
-    report.data.push_back({60, 10, ui->lineEdit_stuffingSeal->text()});
+    report.data.push_back({60, 10, ui->lineEdit_upperORing->text()});
 
-    report.data.push_back({61, 10, ui->lineEdit_diaphragm->text()});
+    report.data.push_back({61, 10, ui->lineEdit_lowerORing->text()});
+
+    report.data.push_back({60, 10, ui->lineEdit_stuffingBoxSeal->text()});
+
+    report.data.push_back({61, 10, ui->lineEdit_driveDiaphragm->text()});
 
     report.data.push_back({62, 10, ui->lineEdit_covers->text()});
 
