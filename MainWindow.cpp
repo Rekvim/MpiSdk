@@ -360,17 +360,18 @@ void MainWindow::SetRegistry(Registry *registry)
     ui->lineEdit_safePosition->setText(otherParameters->safePosition);
 
     ui->lineEdit_positionNumber->setText(valveInfo->positionNumber);
-    ui->lineEdit_serialNumber->setText(valveInfo->serialNumber);
-    ui->lineEdit_valveModel->setText(valveInfo->valveModel);
     ui->lineEdit_manufacturer->setText(valveInfo->manufacturer);
+    ui->lineEdit_valveSeries->setText(valveInfo->valveSeries);
+    ui->lineEdit_valveModel->setText(valveInfo->valveModel);
+    ui->lineEdit_serialNumber->setText(valveInfo->serialNumber);
     ui->lineEdit_DN->setText(QString::number(valveInfo->DN));
     ui->lineEdit_PN->setText(QString::number(valveInfo->PN));
     ui->lineEdit_CV->setText(QString::number(valveInfo->CV));
-    ui->lineEdit_positioner->setText(valveInfo->positioner);
+    ui->lineEdit_positionerModel->setText(valveInfo->positionerModel);
     ui->lineEdit_modelDrive->setText(valveInfo->driveModel);
 
     ui->lineEdit_dinamicRecomend->setText(valveInfo->dinamicError);
-    ui->lineEdit_stroke_recomend->setText(valveInfo->stroke);
+    ui->lineEdit_stroke_recomend->setText(valveInfo->valveStroke);
     ui->lineEdit_range_recomend->setText(valveInfo->range);
 
 
@@ -895,7 +896,7 @@ void MainWindow::InitReport()
     m_report.data.push_back({8, 13, ui->lineEdit_manufacturer->text()});
 
     m_report.data.push_back({9, 13, ui->lineEdit_DN->text() + "/" + ui->lineEdit_PN->text()});
-    m_report.data.push_back({10, 13, ui->lineEdit_positioner->text()});
+    m_report.data.push_back({10, 13, ui->lineEdit_positionerModel->text()});
     m_report.data.push_back({11, 13, ui->lineEdit_pressure->text()});
     m_report.data.push_back({12, 13, ui->lineEdit_safePosition->text()});
     m_report.data.push_back({13, 6, ui->lineEdit_CV->text()});

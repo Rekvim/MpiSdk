@@ -43,8 +43,9 @@ struct ValveInfo
     QString serialNumber;
     QString manufacturer;
     QString valveModel;
-    QString stroke;
-    QString positioner;
+    QString valveSeries;
+    QString valveStroke;
+    QString positionerModel;
     QString dinamicError;
     QString driveModel;
     QString range;

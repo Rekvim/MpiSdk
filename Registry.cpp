@@ -32,12 +32,14 @@ ValveInfo *Registry::GetValveInfo(const QString &positionNumber)
 
     m_valveInfo.positionNumber = positionNumber;
     m_valveInfo.manufacturer = m_settings.value("manufacturer", "").toString();
+    m_valveInfo.valveSeries = m_settings.value("valveSeries", "").toString();
     m_valveInfo.valveModel = m_settings.value("valveModel", "").toString();
     m_valveInfo.serialNumber = m_settings.value("serialNumber", "").toString();
-    m_valveInfo.DN = m_settings.value("DN", "").toInt();;
+    m_valveInfo.DN = m_settings.value("DN", "").toInt();
+    m_valveInfo.CV = m_settings.value("CV", "").toInt();
     m_valveInfo.PN = m_settings.value("PN", "").toInt();
-    m_valveInfo.stroke = m_settings.value("stroke", "").toString();
-    m_valveInfo.positioner = m_settings.value("positioner", "").toString();
+    m_valveInfo.valveStroke = m_settings.value("valveStroke", "").toString();
+    m_valveInfo.positionerModel = m_settings.value("positionerModel", "").toString();
     m_valveInfo.dinamicError = m_settings.value("dinamicError", "").toString();
     m_valveInfo.driveModel = m_settings.value("modelDrive", "").toString();
     m_valveInfo.range = m_settings.value("range", "").toString();
@@ -47,7 +49,6 @@ ValveInfo *Registry::GetValveInfo(const QString &positionNumber)
     m_valveInfo.strokeMovement = m_settings.value("strokeMovement", "").toInt();
     m_valveInfo.toolNumber = m_settings.value("toolNumber", "").toInt();
     m_valveInfo.pulley = m_settings.value("pulley", "").toInt();
-    m_valveInfo.CV = m_settings.value("CV", "").toInt();
 
 
     m_settings.endGroup();
@@ -74,13 +75,14 @@ void Registry::SaveValveInfo()
     m_settings.beginGroup(m_valveInfo.positionNumber);
 
     m_settings.setValue("manufacturer", m_valveInfo.manufacturer);
+    m_settings.setValue("valveSeries", m_valveInfo.valveSeries);
     m_settings.setValue("valveModel", m_valveInfo.valveModel);
     m_settings.setValue("serialNumber", m_valveInfo.serialNumber);
     m_settings.setValue("DN", m_valveInfo.DN);
     m_settings.setValue("PN", m_valveInfo.PN);
     m_settings.setValue("CV", m_valveInfo.CV);
-    m_settings.setValue("stroke", m_valveInfo.stroke);
-    m_settings.setValue("positioner", m_valveInfo.positioner);
+    m_settings.setValue("valveStroke", m_valveInfo.valveStroke);
+    m_settings.setValue("positionerModel", m_valveInfo.positionerModel);
     m_settings.setValue("dinamicError", m_valveInfo.dinamicError);
     m_settings.setValue("modelDrive", m_valveInfo.driveModel);
     m_settings.setValue("range", m_valveInfo.range);

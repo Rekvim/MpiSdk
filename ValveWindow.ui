@@ -71,7 +71,7 @@
             </font>
            </property>
            <property name="text">
-            <string>Номер позиции:</string>
+            <string>Номер позиции</string>
            </property>
           </widget>
          </item>
@@ -312,7 +312,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_serial">
+          <widget class="QLineEdit" name="lineEdit_serialNumber">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
