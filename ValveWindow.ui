@@ -1013,7 +1013,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_range">
+          <widget class="QLineEdit" name="lineEdit_driveRange">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>

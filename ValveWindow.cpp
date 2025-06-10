@@ -10,17 +10,14 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
 {
     ui->setupUi(this);
 
-    auto* validatorDigits = ValidatorFactory::create(ValidatorFactory::Type::Digits, this);
-
-    auto* validatorDigitsDot = ValidatorFactory::create(ValidatorFactory::Type::DigitsDot, this);
-
-    auto* validatorDigitsHyphens = ValidatorFactory::create(ValidatorFactory::Type::DigitsHyphens, this);
-
-    auto* noSpecialChars = ValidatorFactory::create(ValidatorFactory::Type::NoSpecialChars, this);
+    QValidator* validatorDigits = ValidatorFactory::create(ValidatorFactory::Type::Digits, this);
+    QValidator* validatorDigitsDot = ValidatorFactory::create(ValidatorFactory::Type::DigitsDot, this);
+    QValidator* validatorDigitsHyphens = ValidatorFactory::create(ValidatorFactory::Type::DigitsHyphens, this);
+    QValidator* noSpecialChars = ValidatorFactory::create(ValidatorFactory::Type::NoSpecialChars, this);
 
     ui->lineEdit_valveSeries->setValidator(validatorDigits);
     ui->lineEdit_valveModel->setValidator(validatorDigitsHyphens);
-    ui->lineEdit_range->setValidator(validatorDigitsDot);
+    ui->lineEdit_driveRange->setValidator(validatorDigitsDot);
     ui->lineEdit_serialNumber->setValidator(validatorDigitsHyphens);
     ui->lineEdit_PN->setValidator(validatorDigits);
     ui->lineEdit_valveStroke->setValidator(validatorDigitsDot);
@@ -355,7 +352,7 @@ void ValveWindow::SaveValveInfo()
     m_valveInfo->valveStroke = ui->lineEdit_valveStroke->text();
     m_valveInfo->positionerModel = ui->lineEdit_positionerModel->text();
 
-    m_valveInfo->range = ui->lineEdit_range->text();
+    m_valveInfo->range = ui->lineEdit_driveRange->text();
 
     m_valveInfo->valveSeries = ui->lineEdit_valveSeries->text();
 
@@ -428,7 +425,7 @@ void ValveWindow::PositionChanged(const QString &position)
         ui->lineEdit_driveModel->setEnabled(true);
     }
 
-    ui->lineEdit_range->setText(m_valveInfo->range);
+    ui->lineEdit_driveRange->setText(m_valveInfo->range);
 
 
     ui->doubleSpinBox_diameter->setValue(m_valveInfo->diameter);
@@ -508,7 +505,7 @@ void ValveWindow::Clear()
     ui->lineEdit_positionerModel->setText("");
     // ui->lineEdit_dinamicError->setText("");
     ui->lineEdit_driveModel->setText("");
-    ui->lineEdit_range->setText("");
+    ui->lineEdit_driveRange->setText("");
     ui->lineEdit_valveModel->setText("");
 
     ui->lineEdit_materialCorpus->setText("");
@@ -541,7 +538,7 @@ void ValveWindow::ButtonClick()
 
     if ((ui->lineEdit_serialNumber->text().isEmpty()) or (ui->lineEdit_PN->text().isEmpty())
         or (ui->lineEdit_valveStroke->text().isEmpty()) or (ui->lineEdit_positionerModel->text().isEmpty())
-        or (ui->lineEdit_range->text().isEmpty())) {
+        or (ui->lineEdit_driveRange->text().isEmpty())) {
         QMessageBox::StandardButton button
             = QMessageBox::question(this,
                                     "Предупреждение",
