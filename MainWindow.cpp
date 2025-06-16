@@ -296,7 +296,6 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
             return false;
         }
     }
-    // 1) Обработка клика (MouseButtonRelease) — уже была, оставляем как есть:
     if (watched == ui->label_arrowUp && event->type() == QEvent::MouseButtonRelease) {
         double cur = ui->doubleSpinBox_task->value();
         double nxt = cur + 0.05;
@@ -547,9 +546,9 @@ void MainWindow::GetPoints(QVector<QVector<QPointF>> &points, Charts chart)
 {
     points.clear();
     if (chart == Charts::Task) {
-        QPair<QList<QPointF>, QList<QPointF>> pointsLinear = m_charts[Charts::Task]->getpoints(1);
+        QPair<QList<QPointF>, QList<QPointF>> pointsLinear = m_charts[Charts::Task]->getPoints(1);
 
-        QPair<QList<QPointF>, QList<QPointF>> pointsPressure = m_charts[Charts::Pressure]->getpoints(0);
+        QPair<QList<QPointF>, QList<QPointF>> pointsPressure = m_charts[Charts::Pressure]->getPoints(0);
 
         points.push_back({pointsLinear.first.begin(), pointsLinear.first.end()});
         points.push_back({pointsLinear.second.begin(), pointsLinear.second.end()});
@@ -557,8 +556,8 @@ void MainWindow::GetPoints(QVector<QVector<QPointF>> &points, Charts chart)
         points.push_back({pointsPressure.second.begin(), pointsPressure.second.end()});
     }
     if (chart == Charts::Step) {
-        QPair<QList<QPointF>, QList<QPointF>> pointsLinear = m_charts[Charts::Step]->getpoints(1);
-        QPair<QList<QPointF>, QList<QPointF>> pointsTask = m_charts[Charts::Step]->getpoints(0);
+        QPair<QList<QPointF>, QList<QPointF>> pointsLinear = m_charts[Charts::Step]->getPoints(1);
+        QPair<QList<QPointF>, QList<QPointF>> pointsTask = m_charts[Charts::Step]->getPoints(0);
 
         points.clear();
         points.push_back({pointsLinear.first.begin(), pointsLinear.first.end()});
@@ -690,7 +689,7 @@ void MainWindow::InitCharts()
     bool rotate = (valveInfo->strokeMovement != 0);
 
     m_charts[Charts::Task] = ui->Chart_task;
-    m_charts[Charts::Task]->setname("Task");
+    m_charts[Charts::Task]->setName("Task");
     m_charts[Charts::Task]->useTimeaxis(false);
     m_charts[Charts::Task]->addAxis("%.2f bar");
     if (!rotate)
@@ -706,7 +705,7 @@ void MainWindow::InitCharts()
 
 
     m_charts[Charts::Friction] = ui->Chart_friction;
-    m_charts[Charts::Friction]->setname("Friction");
+    m_charts[Charts::Friction]->setName("Friction");
     m_charts[Charts::Friction]->addAxis("%.2f H");
     m_charts[Charts::Friction]->addSeries(0, "Трение от перемещения", QColor::fromRgb(255, 0, 0));
     if (!rotate) {
@@ -717,7 +716,7 @@ void MainWindow::InitCharts()
 
 
     m_charts[Charts::Pressure] = ui->Chart_pressure;
-    m_charts[Charts::Pressure]->setname("Pressure");
+    m_charts[Charts::Pressure]->setName("Pressure");
     m_charts[Charts::Pressure]->useTimeaxis(false);
     m_charts[Charts::Pressure]->setLabelXformat("%.2f bar");
     if (!rotate) {
@@ -731,7 +730,7 @@ void MainWindow::InitCharts()
 
 
     m_charts[Charts::Resolution] = ui->Chart_resolution;
-    m_charts[Charts::Resolution]->setname("Resolution");
+    m_charts[Charts::Resolution]->setName("Resolution");
     m_charts[Charts::Resolution]->useTimeaxis(true);
     m_charts[Charts::Resolution]->addAxis("%.2f%%");
     m_charts[Charts::Resolution]->addSeries(0, "Задание", QColor::fromRgb(0, 0, 0));
@@ -739,7 +738,7 @@ void MainWindow::InitCharts()
 
 
     m_charts[Charts::Response] = ui->Chart_response;
-    m_charts[Charts::Response]->setname("Response");
+    m_charts[Charts::Response]->setName("Response");
     m_charts[Charts::Response]->useTimeaxis(true);
     m_charts[Charts::Response]->addAxis("%.2f%%");
     m_charts[Charts::Response]->addSeries(0, "Задание", QColor::fromRgb(0, 0, 0));
@@ -747,7 +746,7 @@ void MainWindow::InitCharts()
 
 
     m_charts[Charts::Stroke] = ui->Chart_stroke;
-    m_charts[Charts::Stroke]->setname("Stroke");
+    m_charts[Charts::Stroke]->setName("Stroke");
     m_charts[Charts::Stroke]->useTimeaxis(true);
     m_charts[Charts::Stroke]->addAxis("%.2f%%");
     m_charts[Charts::Stroke]->addSeries(0, "Задание", QColor::fromRgb(0, 0, 0));
@@ -755,7 +754,7 @@ void MainWindow::InitCharts()
 
 
     m_charts[Charts::Step] = ui->Chart_step;
-    m_charts[Charts::Step]->setname("Step");
+    m_charts[Charts::Step]->setName("Step");
     m_charts[Charts::Step]->useTimeaxis(true);
     m_charts[Charts::Step]->addAxis("%.2f%%");
     m_charts[Charts::Step]->addSeries(0, "Задание", QColor::fromRgb(0, 0, 0));
