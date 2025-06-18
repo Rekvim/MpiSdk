@@ -5,7 +5,7 @@
 #include <QDir>
 #include <QObject>
 
-#include "MyChart.h"
+#include "./Src/CustomChart/MyChart.h"
 #include "Registry.h"
 
 class ReportSaver : public QObject

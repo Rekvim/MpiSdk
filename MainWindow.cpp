@@ -34,13 +34,11 @@ MainWindow::MainWindow(QWidget *parent)
     if (idxOptional != -1)
         ui->tabWidget->setTabEnabled(idxOptional, false);
 
-    m_labels[TextObjects::Label_status] = ui->label_status;
-    m_labels[TextObjects::Label_init] = ui->label_init;
-    m_labels[TextObjects::Label_sensors] = ui->label_sensors;
-    m_labels[TextObjects::Label_start_value] = ui->label_start_value;
-    m_labels[TextObjects::Label_end_value] = ui->label_end_value;
-    m_labels[TextObjects::Label_L_limit] = ui->label_low_limit;
-    m_labels[TextObjects::Label_H_limit] = ui->label_high_limit;
+    m_labels[TextObjects::Label_deviceStatusValue] = ui->label_deviceStatusValue;
+    m_labels[TextObjects::Label_deviceInitValue] = ui->label_deviceInitValue;
+    m_labels[TextObjects::Label_connectedSensorsNumber] = ui->label_connectedSensorsNumber;
+    m_labels[TextObjects::Label_startingPositionValue] = ui->label_startingPositionValue;
+    m_labels[TextObjects::Label_finalPositionValue] = ui->label_finalPositionValue;
     m_labels[TextObjects::Label_pressure_diff] = ui->label_pressure_diff;
     m_labels[TextObjects::Label_friction] = ui->label_friction;
     m_labels[TextObjects::Label_friction_percent] = ui->label_friction_percent;

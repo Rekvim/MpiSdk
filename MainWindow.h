@@ -9,7 +9,7 @@
 #include <QThread>
 
 #include "ReportSaver.h"
-#include "MyChart.h"
+#include "./Src/CustomChart/MyChart.h"
 #include "Program.h"
 #include "Registry.h"
 
@@ -89,8 +89,6 @@ private:
     void SaveChart(Charts chart);
     void GetImage(QLabel *label, QImage *image);
     void InitReport();
-
-
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override;
 signals:

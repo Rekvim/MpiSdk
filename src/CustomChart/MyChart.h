@@ -4,17 +4,7 @@
 #pragma once
 #include <QObject>
 #include <QtCharts>
-
-class MySeries : public QLineSeries
-{
-    Q_OBJECT
-private:
-    quint8 m_axisN;
-
-public:
-    explicit MySeries(QObject *parent = nullptr, quint8 axN = 0);
-    quint8 getAxisN() const;
-};
+#include "MySeries.h"
 
 class MyChart : public QChartView
 {
@@ -64,9 +54,6 @@ private:
     void zoomOut();
 
     void autoScale(qreal min, qreal max);
-
-    void setFixedXRange(qreal min, qreal max, const QList<quint8> &seriesIdx);
-    void clearFixedXRange();
 
 public:
     MyChart(QWidget *parent = nullptr);

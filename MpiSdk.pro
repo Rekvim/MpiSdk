@@ -17,7 +17,6 @@ include(./QXlsx.pri)
 SOURCES += \
     MainTestSettings.cpp \
     MainWindow.cpp \
-    MyChart.cpp \
     NotationWindow.cpp \
     ObjectWindow.cpp \
     OtherTestSettings.cpp \
@@ -28,6 +27,8 @@ SOURCES += \
     StepTestSettings.cpp \
     ValveWindow.cpp \
     main.cpp \
+    src/CustomChart/MyChart.cpp \
+    src/CustomChart/MySeries.cpp \
     src/Mpi/Mpi.cpp \
     src/Mpi/MpiSettings.cpp \
     src/Tests/CyclicTestPositioner.cpp \
@@ -46,7 +47,6 @@ SOURCES += \
 HEADERS += \
     MainTestSettings.h \
     MainWindow.h \
-    MyChart.h \
     NotationWindow.h \
     ObjectWindow.h \
     OtherTestSettings.h \
@@ -56,6 +56,8 @@ HEADERS += \
     Sensor.h \
     StepTestSettings.h \
     ValveWindow.h \
+    src/CustomChart/MyChart.h \
+    src/CustomChart/MySeries.h \
     src/Mpi/Mpi.h \
     src/Mpi/MpiSettings.h \
     src/Tests/CyclicTestPositioner.h \
@@ -80,6 +82,8 @@ FORMS += \
     OtherTestSettings.ui \
     StepTestSettings.ui \
     ValveWindow.ui
+
+INCLUDEPATH += ./Src/CustomChart
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
