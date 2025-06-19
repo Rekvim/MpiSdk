@@ -23,7 +23,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_manual">
        <attribute name="title">
@@ -915,7 +915,7 @@
         <item>
          <widget class="QTabWidget" name="tabWidget_maintest">
           <property name="currentIndex">
-           <number>1</number>
+           <number>3</number>
           </property>
           <widget class="QWidget" name="tab_task">
            <attribute name="title">
@@ -1778,7 +1778,7 @@
         <item>
          <widget class="QTabWidget" name="tab_widget">
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="general">
            <attribute name="title">
