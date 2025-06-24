@@ -1059,28 +1059,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_diameter">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-            </font>
-           </property>
-           <property name="buttonSymbols">
-            <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
-           </property>
-           <property name="minimum">
-            <double>1.000000000000000</double>
-           </property>
-           <property name="maximum">
-            <double>100.000000000000000</double>
-           </property>
-          </widget>
+          <widget class="QLineEdit" name="lineEdit_diameter"/>
          </item>
         </layout>
        </item>
@@ -1231,32 +1210,15 @@
           </widget>
          </item>
          <item>
-          <widget class="QDoubleSpinBox" name="doubleSpinBox_diameterPulley">
+          <widget class="QLineEdit" name="lineEdit_diameterPulley">
            <property name="enabled">
             <bool>false</bool>
            </property>
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>12</pointsize>
-            </font>
-           </property>
-           <property name="buttonSymbols">
-            <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
-           </property>
-           <property name="minimum">
-            <double>0.000000000000000</double>
-           </property>
-           <property name="maximum">
-            <double>200.000000000000000</double>
-           </property>
-           <property name="value">
-            <double>10.000000000000000</double>
            </property>
           </widget>
          </item>

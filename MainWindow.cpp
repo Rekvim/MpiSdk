@@ -39,24 +39,24 @@ MainWindow::MainWindow(QWidget *parent)
     m_labels[TextObjects::Label_connectedSensorsNumber] = ui->label_connectedSensorsNumber;
     m_labels[TextObjects::Label_startingPositionValue] = ui->label_startingPositionValue;
     m_labels[TextObjects::Label_finalPositionValue] = ui->label_finalPositionValue;
-    m_labels[TextObjects::Label_pressure_diff] = ui->label_pressure_diff;
-    m_labels[TextObjects::Label_friction] = ui->label_friction;
-    m_labels[TextObjects::Label_friction_percent] = ui->label_friction_percent;
-    m_labels[TextObjects::Label_din_error_mean] = ui->label_din_error_mean;
-    m_labels[TextObjects::Label_din_error_mean_percent] = ui->label_din_error_mean_percent;
-    m_labels[TextObjects::Label_din_error_max] = ui->label_din_error_max;
-    m_labels[TextObjects::Label_din_error_max_percent] = ui->label_din_error_max_percent;
-    m_labels[TextObjects::Label_range] = ui->label_range;
-    m_labels[TextObjects::Label_low_limit] = ui->label_low_limit;
-    m_labels[TextObjects::Label_high_limit] = ui->label_high_limit;
+    m_labels[TextObjects::Label_pressureDifferenceValue] = ui->label_pressureDifferenceValue;
+    m_labels[TextObjects::Label_frictionForceValue] = ui->label_frictionForceValue;
+    m_labels[TextObjects::Label_frictionPercentValue] = ui->label_frictionPercentValue;
+    m_labels[TextObjects::Label_dynamicErrorMean] = ui->label_dynamicErrorMean;
+    m_labels[TextObjects::Label_dynamicErrorMeanPercent] = ui->label_dynamicErrorMeanPercent;
+    m_labels[TextObjects::Label_dynamicErrorMax] = ui->label_dynamicErrorMax;
+    m_labels[TextObjects::Label_dynamicErrorMaxPercent] = ui->label_dynamicErrorMaxPercent;
+    m_labels[TextObjects::Label_valveStroke_range] = ui->label_valveStroke_range;
+    m_labels[TextObjects::Label_lowLimitValue] = ui->label_lowLimitValue;
+    m_labels[TextObjects::Label_highLimitValue] = ui->label_highLimitValue;
     m_labels[TextObjects::Label_forward] = ui->label_forward;
     m_labels[TextObjects::Label_backward] = ui->label_backward;
 
-    m_lineEdits[TextObjects::LineEdit_linear_sensor] = ui->lineEdit_linear_sensor;
-    m_lineEdits[TextObjects::LineEdit_linear_sensor_percent] = ui->lineEdit_linear_sensor_percent;
-    m_lineEdits[TextObjects::LineEdit_pressure_sensor1] = ui->lineEdit_pressure_sensor1;
-    m_lineEdits[TextObjects::LineEdit_pressure_sensor2] = ui->lineEdit_pressure_sensor2;
-    m_lineEdits[TextObjects::LineEdit_pressure_sensor3] = ui->lineEdit_pressure_sensor3;
+    m_lineEdits[TextObjects::LineEdit_linearSensor] = ui->lineEdit_linearSensor;
+    m_lineEdits[TextObjects::LineEdit_linearSensorPercent] = ui->lineEdit_linearSensorPercent;
+    m_lineEdits[TextObjects::LineEdit_pressureSensor_1] = ui->lineEdit_pressureSensor_1;
+    m_lineEdits[TextObjects::LineEdit_pressureSensor_2] = ui->lineEdit_pressureSensor_2;
+    m_lineEdits[TextObjects::LineEdit_pressureSensor_3] = ui->lineEdit_pressureSensor_3;
     m_lineEdits[TextObjects::LineEdit_dinamic_error] = ui->lineEdit_dinamic_real;
     m_lineEdits[TextObjects::LineEdit_stroke] = ui->lineEdit_stroke_real;
     m_lineEdits[TextObjects::LineEdit_range] = ui->lineEdit_range_real;
@@ -455,13 +455,10 @@ void MainWindow::SetStepTestResults(QVector<StepTest::TestResult> results, quint
 
 void MainWindow::SetSensorsNumber(quint8 num)
 {
-    num = 3;
     bool noSensors = num == 0;
 
     ui->verticalSlider_task->setEnabled(!noSensors);
     ui->doubleSpinBox_task->setEnabled(!noSensors);
-
-    ui->groupBox_SettingCurrentSignal->setEnabled(!noSensors);
 
     ui->pushButton_stroke_start->setEnabled(!noSensors);
     ui->pushButton_tests_start->setEnabled(!noSensors);
@@ -489,6 +486,8 @@ void MainWindow::SetSensorsNumber(quint8 num)
         ui->checkBox_pressure1->setVisible(num > 1);
         ui->checkBox_pressure2->setVisible(num > 2);
         ui->checkBox_pressure3->setVisible(num > 3);
+
+        ui->groupBox_SettingCurrentSignal->setEnabled(num > 1);
 
         ui->checkBox_task->setCheckState(num > 1 ? Qt::Checked : Qt::Unchecked);
         ui->checkBox_line->setCheckState(num > 1 ? Qt::Checked : Qt::Unchecked);

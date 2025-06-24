@@ -56,7 +56,7 @@ private slots:
     void updatePartNumbers();
     void StrokeChanged(quint16 n);
     void ToolChanged(quint16 n);
-    void DiameterChanged(qreal value);
+    void DiameterChanged(const QString &text);
     void Clear();
 
 protected:

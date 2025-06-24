@@ -18,11 +18,11 @@
 #include "./Src/Tests/MainTest.h"
 
 enum class TextObjects {
-    LineEdit_linear_sensor,
-    LineEdit_linear_sensor_percent,
-    LineEdit_pressure_sensor1,
-    LineEdit_pressure_sensor2,
-    LineEdit_pressure_sensor3,
+    LineEdit_linearSensor,
+    LineEdit_linearSensorPercent,
+    LineEdit_pressureSensor_1,
+    LineEdit_pressureSensor_2,
+    LineEdit_pressureSensor_3,
 
     Label_deviceStatusValue,
     Label_deviceInitValue,
@@ -30,21 +30,19 @@ enum class TextObjects {
     Label_startingPositionValue,
     Label_finalPositionValue,
 
-    Label_L_limit,
-    Label_H_limit,
+    Label_pressureDifferenceValue,
+    Label_frictionForceValue,
+    Label_frictionPercentValue,
 
-    Label_pressure_diff,
-    Label_friction,
-    Label_friction_percent,
+    Label_dynamicErrorMean,
+    Label_dynamicErrorMeanPercent,
 
-    Label_din_error_mean,
-    Label_din_error_mean_percent,
+    Label_dynamicErrorMax,
+    Label_dynamicErrorMaxPercent,
 
-    Label_din_error_max,
-    Label_din_error_max_percent,
-    Label_range,
-    Label_low_limit,
-    Label_high_limit,
+    Label_valveStroke_range,
+    Label_lowLimitValue,
+    Label_highLimitValue,
 
     Label_forward,
     Label_backward,

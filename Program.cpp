@@ -149,17 +149,17 @@ void Program::UpdateSensors()
     for (quint8 i = 0; i < m_mpi.SensorCount(); ++i) {
         switch (i) {
         case 0:
-            emit SetText(TextObjects::LineEdit_linear_sensor, m_mpi[i]->GetFormatedValue());
-            emit SetText(TextObjects::LineEdit_linear_sensor_percent, m_mpi[i]->GetPersentFormated());
+            emit SetText(TextObjects::LineEdit_linearSensor, m_mpi[i]->GetFormatedValue());
+            emit SetText(TextObjects::LineEdit_linearSensorPercent, m_mpi[i]->GetPersentFormated());
             break;
         case 1:
-            emit SetText(TextObjects::LineEdit_pressure_sensor1, m_mpi[i]->GetFormatedValue());
+            emit SetText(TextObjects::LineEdit_pressureSensor_1, m_mpi[i]->GetFormatedValue());
             break;
         case 2:
-            emit SetText(TextObjects::LineEdit_pressure_sensor2, m_mpi[i]->GetFormatedValue());
+            emit SetText(TextObjects::LineEdit_pressureSensor_2, m_mpi[i]->GetFormatedValue());
             break;
         case 3:
-            emit SetText(TextObjects::LineEdit_pressure_sensor3, m_mpi[i]->GetFormatedValue());
+            emit SetText(TextObjects::LineEdit_pressureSensor_3, m_mpi[i]->GetFormatedValue());
             break;
         }
     }
@@ -256,22 +256,23 @@ void Program::MainTestResults(MainTest::TestResults results)
 
     qreal k = 5 * M_PI * valveInfo->diameter * valveInfo->diameter / 4;
 
-    emit SetText(TextObjects::Label_pressure_diff,
+    emit SetText(TextObjects::Label_pressureDifferenceValue,
                  QString::asprintf("%.3f bar", results.pressureDiff));
-    emit SetText(TextObjects::Label_friction,
+    emit SetText(TextObjects::Label_frictionForceValue,
                  QString::asprintf("%.3f H", results.pressureDiff * k));
-    emit SetText(TextObjects::Label_din_error_mean,
-                 QString::asprintf("%.3f mA", results.dinErrorMean));
-    emit SetText(TextObjects::Label_din_error_mean_percent,
-                 QString::asprintf("%.2f %%", results.dinErrorMean / 0.16));
-    emit SetText(TextObjects::Label_din_error_max,
-                 QString::asprintf("%.3f mA", results.dinErrorMax));
-    emit SetText(TextObjects::Label_din_error_max_percent,
-                 QString::asprintf("%.2f %%", results.dinErrorMax / 0.16));
-    emit SetText(TextObjects::Label_friction_percent,
+    emit SetText(TextObjects::Label_frictionPercentValue,
                  QString::asprintf("%.2f %%", results.friction));
-    emit SetText(TextObjects::Label_low_limit, QString::asprintf("%.2f bar", results.lowLimit));
-    emit SetText(TextObjects::Label_high_limit, QString::asprintf("%.2f bar", results.highLimit));
+    emit SetText(TextObjects::Label_dynamicErrorMax,
+                 QString::asprintf("%.3f mA", results.dinErrorMean));
+    emit SetText(TextObjects::Label_dynamicErrorMax,
+                 QString::asprintf("%.2f %%", results.dinErrorMean / 0.16));
+    emit SetText(TextObjects::Label_dynamicErrorMean,
+                 QString::asprintf("%.3f mA", results.dinErrorMax));
+    emit SetText(TextObjects::Label_dynamicErrorMeanPercent,
+                 QString::asprintf("%.2f %%", results.dinErrorMax / 0.16));
+
+    emit SetText(TextObjects::Label_lowLimitValue, QString::asprintf("%.2f bar", results.lowLimit));
+    emit SetText(TextObjects::Label_highLimitValue, QString::asprintf("%.2f bar", results.highLimit));
 
     emit SetText(TextObjects::LineEdit_dinamic_error,
                  QString::asprintf("%.2f", results.dinErrorMean / 0.16));
@@ -431,12 +432,12 @@ void Program::button_init()
     m_mpi[0]->CorrectCoefficients(correctCoefficient);
 
     if (normalClosed) {
-        emit SetText(TextObjects::Label_range, m_mpi[0]->GetFormatedValue());
+        emit SetText(TextObjects::Label_valveStroke_range, m_mpi[0]->GetFormatedValue());
         emit SetText(TextObjects::LineEdit_stroke, QString::asprintf("%.2f", m_mpi[0]->GetValue()));
         SetDac(0);
     } else {
         SetDac(0, 10000, true);
-        emit SetText(TextObjects::Label_range, m_mpi[0]->GetFormatedValue());
+        emit SetText(TextObjects::Label_valveStroke_range, m_mpi[0]->GetFormatedValue());
         emit SetText(TextObjects::LineEdit_stroke, QString::asprintf("%.2f", m_mpi[0]->GetValue()));
     }
 
