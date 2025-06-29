@@ -37,8 +37,7 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
     ui->lineEdit_manufacturer->setValidator(noSpecialChars);
     ui->lineEdit_manufacturer->setEnabled(false);
 
-    connect(ui->comboBox_manufacturer,
-            QOverload<int>::of(&QComboBox::currentIndexChanged),
+    connect(ui->comboBox_manufacturer, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, [this](int idx){
                 bool manual = ui->comboBox_manufacturer->itemText(idx) == m_manualInput;
                 if (manual) {
@@ -54,23 +53,20 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
 
     ui->lineEdit_diameterPulley->setText(QString::number(m_diameter[0]));
 
-    connect(ui->comboBox_stroke_movement,
-            &QComboBox::currentIndexChanged,
-            this,
-            &ValveWindow::StrokeChanged);
+    connect(ui->comboBox_stroke_movement, &QComboBox::currentIndexChanged,
+            this, &ValveWindow::StrokeChanged);
 
-    connect(ui->comboBox_toolNumber,
-            &QComboBox::currentIndexChanged,
-            this,
-            &ValveWindow::ToolChanged);
+    connect(ui->comboBox_toolNumber, &QComboBox::currentIndexChanged,
+            this, &ValveWindow::ToolChanged);
 
-    connect(ui->lineEdit_diameter,
-            &QLineEdit::textChanged,
-            this,
-            &ValveWindow::DiameterChanged);
+    connect(ui->lineEdit_diameter, &QLineEdit::textChanged,
+            this, &ValveWindow::DiameterChanged);
 
-    connect(ui->pushButton, &QPushButton::clicked, this, &ValveWindow::ButtonClick);
-    connect(ui->pushButton_clear, &QPushButton::clicked, this, &ValveWindow::Clear);
+    connect(ui->pushButton, &QPushButton::clicked,
+            this, &ValveWindow::ButtonClick);
+
+    connect(ui->pushButton_clear, &QPushButton::clicked,
+            this, &ValveWindow::Clear);
 
     DiameterChanged(ui->lineEdit_diameter->text());
 
@@ -120,10 +116,8 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
     connect(ui->comboBox_materialSaddle, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &ValveWindow::updatePartNumbers);
 
-    connect(ui->comboBox_manufacturer,
-            QOverload<int>::of(&QComboBox::currentIndexChanged),
-            this,
-            &ValveWindow::onManufacturerChanged);
+    connect(ui->comboBox_manufacturer, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &ValveWindow::onManufacturerChanged);
 
     if (ui->comboBox_DN->count() > 0)
         onDNChanged(0);
@@ -164,10 +158,8 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
         driveModel = ui->comboBox_driveModel->currentText();
     }
 
-    connect(ui->comboBox_positionerType,
-            QOverload<int>::of(&QComboBox::currentIndexChanged),
-            this,
-            &ValveWindow::onPositionerTypeChanged);
+    connect(ui->comboBox_positionerType, QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this, &ValveWindow::onPositionerTypeChanged);
 
     onPositionerTypeChanged(ui->comboBox_positionerType->currentIndex());
 }
