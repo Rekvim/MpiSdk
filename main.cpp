@@ -45,6 +45,7 @@ int main(int argc, char *argv[])
 
     MainWindow mainWindow;
     mainWindow.SetRegistry(&registry);
+
     mainWindow.setReport(report);
     mainWindow.show();
 
