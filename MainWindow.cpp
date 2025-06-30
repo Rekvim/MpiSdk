@@ -115,13 +115,13 @@ MainWindow::MainWindow(QWidget *parent)
         ui->pushButton_open->setEnabled(ok);
     });
 
-    connect(ui->pushButton_pixmap1, &QPushButton::clicked,
+    connect(ui->pushButton_imageChartTask, &QPushButton::clicked,
             m_program, &Program::button_pixmap1);
 
-    connect(ui->pushButton_pixmap2, &QPushButton::clicked,
+    connect(ui->pushButton_imageChartPressure, &QPushButton::clicked,
             m_program, &Program::button_pixmap2);
 
-    connect(ui->pushButton_pixmap3, &QPushButton::clicked,
+    connect(ui->pushButton_imageChartFriction, &QPushButton::clicked,
             m_program, &Program::button_pixmap3);
 
     connect(this, &MainWindow::StartMainTest,
@@ -237,16 +237,16 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::GetDirectory,
             Qt::DirectConnection);
 
-    connect(ui->pushButton_pixmap1, &QPushButton::clicked, this, [&] {
-        GetImage(ui->label_pixmap1, &m_report.image1);
+    connect(ui->pushButton_imageChartTask, &QPushButton::clicked, this, [&] {
+        GetImage(ui->label_imageChartTask, &m_report.image1);
     });
 
-    connect(ui->pushButton_pixmap2, &QPushButton::clicked, this, [&] {
-        GetImage(ui->label_pixmap2, &m_report.image2);
+    connect(ui->pushButton_imageChartPressure, &QPushButton::clicked, this, [&] {
+        GetImage(ui->label_imageChartPressure, &m_report.image2);
     });
 
-    connect(ui->pushButton_pixmap3, &QPushButton::clicked, this, [&] {
-        GetImage(ui->label_pixmap3, &m_report.image3);
+    connect(ui->pushButton_imageChartFriction, &QPushButton::clicked, this, [&] {
+        GetImage(ui->label_imageChartFriction, &m_report.image3);
     });
 
     connect(ui->pushButton_report, &QPushButton::clicked, this, [&] {
@@ -841,28 +841,33 @@ void MainWindow::SaveChart(Charts chart)
 
     switch (chart) {
     case Charts::Task:
-        ui->label_pixmap3->setPixmap(pix);
+        ui->label_imageChartTask->setPixmap(pix);
         break;
     case Charts::Stroke:
         break;
     case Charts::Response:
+        break;
     case Charts::Resolution:
+        break;
     case Charts::Step:
+        break;
     case Charts::Pressure:
-        ui->label_pixmap2->setPixmap(pix);
+        ui->label_imageChartPressure->setPixmap(pix);
+        break;
     case Charts::Friction:
-        ui->label_pixmap1->setPixmap(pix);
-
+        ui->label_imageChartFriction->setPixmap(pix);
+        break;
     case Charts::Trend:
+        break;
     case Charts::Solenoid:
         break;
     default:
         break;
     }
 
-    ui->label_pixmap1->setScaledContents(true);
-    ui->label_pixmap2->setScaledContents(true);
-    ui->label_pixmap3->setScaledContents(true);
+    ui->label_imageChartTask->setScaledContents(true);
+    ui->label_imageChartPressure->setScaledContents(true);
+    ui->label_imageChartFriction->setScaledContents(true);
 }
 
 void MainWindow::setReport(const ReportSaver::Report &report)
