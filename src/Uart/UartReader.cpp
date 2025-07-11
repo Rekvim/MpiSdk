@@ -9,6 +9,7 @@ UartReader::UartReader(QObject *parent)
     connect(m_uart, &Uart::Connected,
             this, &UartReader::Connected,
             Qt::DirectConnection);
+
     connect(m_uart, &Uart::Disconnected,
             this, &UartReader::Disconnected,
             Qt::DirectConnection);

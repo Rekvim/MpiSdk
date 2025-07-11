@@ -35,7 +35,6 @@ MainWindow::MainWindow(QWidget *parent)
     m_labels[TextObjects::Label_dynamicErrorMeanPercent] = ui->label_dynamicErrorMeanPercent;
     m_labels[TextObjects::Label_dynamicErrorMax] = ui->label_dynamicErrorMax;
     m_labels[TextObjects::Label_dynamicErrorMaxPercent] = ui->label_dynamicErrorMaxPercent;
-    m_labels[TextObjects::Label_valveStroke_range] = ui->label_valveStroke_range;
     m_labels[TextObjects::Label_lowLimitValue] = ui->label_lowLimitValue;
     m_labels[TextObjects::Label_highLimitValue] = ui->label_highLimitValue;
     m_labels[TextObjects::Label_forward] = ui->label_forward;
@@ -47,7 +46,10 @@ MainWindow::MainWindow(QWidget *parent)
     m_lineEdits[TextObjects::LineEdit_pressureSensor_2] = ui->lineEdit_pressureSensor_2;
     m_lineEdits[TextObjects::LineEdit_pressureSensor_3] = ui->lineEdit_pressureSensor_3;
     m_lineEdits[TextObjects::LineEdit_dinamic_error] = ui->lineEdit_dinamic_real;
+
     m_lineEdits[TextObjects::LineEdit_stroke] = ui->lineEdit_stroke_real;
+    m_labels[TextObjects::Label_valveStroke_range] = ui->label_valveStroke_range;
+
     m_lineEdits[TextObjects::LineEdit_range] = ui->lineEdit_range_real;
     m_lineEdits[TextObjects::LineEdit_friction] = ui->lineEdit_friction;
     m_lineEdits[TextObjects::LineEdit_friction_percent] = ui->lineEdit_friction_percent;
@@ -57,7 +59,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_program = new Program;
     m_programThread = new QThread(this);
-
     m_program->moveToThread(m_programThread);
 
     connect(ui->pushButton_init, &QPushButton::clicked,
@@ -71,7 +72,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->checkBox_autoinit, &QCheckBox::checkStateChanged,
             m_program, &Program::checkbox_autoinit);
 
-    connect(this, &MainWindow::SetDO, m_program, &Program::button_DO);
+    connect(this, &MainWindow::SetDO,
+            m_program, &Program::button_DO);
+
+    connect(ui->pushButton_mainTest_start, &QPushButton::clicked,
+            this, &MainWindow::ButtonStartMain);
 
     connect(ui->pushButton_mainTest_save, &QPushButton::clicked, this, [&] {
         if (ui->tabWidget_mainTest->currentWidget() == ui->tab_mainTests_task) {
@@ -83,18 +88,15 @@ MainWindow::MainWindow(QWidget *parent)
         }
     });
 
-    connect(ui->pushButton_mainTest_start, &QPushButton::clicked,
-            this, &MainWindow::ButtonStartMain);
-
     connect(ui->pushButton_strokeTest_start, &QPushButton::clicked,
             this, &MainWindow::ButtonStartStroke);
-
-    connect(ui->pushButton_optionalTests_start, &QPushButton::clicked,
-            this, &MainWindow::ButtonStartOptional);
 
     connect(ui->pushButton_strokeTest_save, &QPushButton::clicked, this, [&] {
         SaveChart(Charts::Stroke);
     });
+
+    connect(ui->pushButton_optionalTests_start, &QPushButton::clicked,
+            this, &MainWindow::ButtonStartOptional);
 
     connect(ui->pushButton_optionalTests_save, &QPushButton::clicked, this, [&] {
         if (ui->tabWidget_optionalTests->currentWidget() == ui->tab_optionalTests_response) {
