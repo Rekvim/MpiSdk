@@ -891,7 +891,6 @@ void MainWindow::GetImage(QLabel *label, QImage *image)
 
 void MainWindow::InitReport()
 {
-
     auto dataFromOtherFiles = m_report.data;
 
     // Общие поля
