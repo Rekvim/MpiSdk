@@ -31,7 +31,6 @@ SOURCES += \
     src/CustomChart/MySeries.cpp \
     src/Mpi/Mpi.cpp \
     src/Mpi/MpiSettings.cpp \
-    src/ReportBuilders/ReportSaver.cpp \
     src/Telemetry/TelemetryStore.cpp \
     src/Tests/CyclicTestPositioner.cpp \
     src/Tests/MainTest.cpp \
@@ -62,7 +61,6 @@ HEADERS += \
     src/CustomChart/MySeries.h \
     src/Mpi/Mpi.h \
     src/Mpi/MpiSettings.h \
-    src/ReportBuilders/ReportSaver.h \
     src/Telemetry/TelemetryStore.h \
     src/Tests/CyclicTestPositioner.h \
     src/Tests/MainTest.h \

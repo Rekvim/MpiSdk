@@ -8,7 +8,7 @@
 #include <QPointF>
 #include <QThread>
 
-#include "ReportSaver.h"
+#include "./ReportSaver.h"
 #include "./Src/CustomChart/MyChart.h"
 #include "Program.h"
 #include "Registry.h"
