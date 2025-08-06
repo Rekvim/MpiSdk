@@ -27,23 +27,23 @@ SOURCES += \
     StepTestSettings.cpp \
     ValveWindow.cpp \
     main.cpp \
-    src/CustomChart/MyChart.cpp \
-    src/CustomChart/MySeries.cpp \
-    src/Mpi/Mpi.cpp \
-    src/Mpi/MpiSettings.cpp \
-    src/Telemetry/TelemetryStore.cpp \
-    src/Tests/CyclicTestPositioner.cpp \
-    src/Tests/MainTest.cpp \
-    src/Tests/OptionTest.cpp \
-    src/Tests/StepTest.cpp \
-    src/Tests/StrokeTest.cpp \
-    src/Tests/Test.cpp \
-    src/Uart/Uart.cpp \
-    src/Uart/UartMessage.cpp \
-    src/Uart/UartReader.cpp \
-    src/ValidatorFactory/ValidatorFactory.cpp \
-    src/ValveСonfig/ValveDataLoader.cpp \
-    src/database/ValveDatabase.cpp
+    Src/CustomChart/MyChart.cpp \
+    Src/CustomChart/MySeries.cpp \
+    Src/Mpi/Mpi.cpp \
+    Src/Mpi/MpiSettings.cpp \
+    Src/Telemetry/TelemetryStore.cpp \
+    Src/Tests/CyclicTestPositioner.cpp \
+    Src/Tests/MainTest.cpp \
+    Src/Tests/OptionTest.cpp \
+    Src/Tests/StepTest.cpp \
+    Src/Tests/StrokeTest.cpp \
+    Src/Tests/Test.cpp \
+    Src/Uart/Uart.cpp \
+    Src/Uart/UartMessage.cpp \
+    Src/Uart/UartReader.cpp \
+    Src/ValidatorFactory/ValidatorFactory.cpp \
+    Src/ValveСonfig/ValveDataLoader.cpp \
+    Src/database/ValveDatabase.cpp
 
 HEADERS += \
     MainTestSettings.h \
@@ -57,24 +57,24 @@ HEADERS += \
     Sensor.h \
     StepTestSettings.h \
     ValveWindow.h \
-    src/CustomChart/MyChart.h \
-    src/CustomChart/MySeries.h \
-    src/Mpi/Mpi.h \
-    src/Mpi/MpiSettings.h \
-    src/Telemetry/TelemetryStore.h \
-    src/Tests/CyclicTestPositioner.h \
-    src/Tests/MainTest.h \
-    src/Tests/OptionTest.h \
-    src/Tests/StepTest.h \
-    src/Tests/StrokeTest.h \
-    src/Tests/Test.h \
-    src/Uart/Uart.h \
-    src/Uart/UartMessage.h \
-    src/Uart/UartReader.h \
-    src/ValidatorFactory/RegexPatterns.h \
-    src/ValidatorFactory/ValidatorFactory.h \
-    src/ValveСonfig/ValveDataLoader.h \
-    src/database/ValveDatabase.h
+    Src/CustomChart/MyChart.h \
+    Src/CustomChart/MySeries.h \
+    Src/Mpi/Mpi.h \
+    Src/Mpi/MpiSettings.h \
+    Src/Telemetry/TelemetryStore.h \
+    Src/Tests/CyclicTestPositioner.h \
+    Src/Tests/MainTest.h \
+    Src/Tests/OptionTest.h \
+    Src/Tests/StepTest.h \
+    Src/Tests/StrokeTest.h \
+    Src/Tests/Test.h \
+    Src/Uart/Uart.h \
+    Src/Uart/UartMessage.h \
+    Src/Uart/UartReader.h \
+    Src/ValidatorFactory/RegexPatterns.h \
+    Src/ValidatorFactory/ValidatorFactory.h \
+    Src/ValveСonfig/ValveDataLoader.h \
+    Src/database/ValveDatabase.h
 
 FORMS += \
     MainTestSettings.ui \

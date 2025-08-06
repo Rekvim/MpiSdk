@@ -718,7 +718,7 @@ void Program::OptionalTestStart(quint8 test_num)
 
     connect(optionalTest, &OptionTest::EndTest, this, &Program::EndTest);
 
-    connect(optionalTest, &OptionTest::, this, &Program::SetDac);
+    connect(optionalTest, &OptionTest::SetDAC, this, &Program::SetDac);
     connect(optionalTest, &OptionTest::SetStartTime, this, &Program::SetTimeStart);
 
     m_testing = true;
