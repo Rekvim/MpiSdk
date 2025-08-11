@@ -10,10 +10,10 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
 {
     ui->setupUi(this);
 
-    QValidator* validatorDigits = ValidatorFactory::create(ValidatorFactory::Type::Digits, this);
-    QValidator* validatorDigitsDot = ValidatorFactory::create(ValidatorFactory::Type::DigitsDot, this);
-    QValidator* validatorDigitsHyphens = ValidatorFactory::create(ValidatorFactory::Type::DigitsHyphens, this);
-    QValidator* noSpecialChars = ValidatorFactory::create(ValidatorFactory::Type::NoSpecialChars, this);
+    QValidator *validatorDigits = ValidatorFactory::create(ValidatorFactory::Type::Digits, this);
+    QValidator *validatorDigitsDot = ValidatorFactory::create(ValidatorFactory::Type::DigitsDot, this);
+    QValidator *validatorDigitsHyphens = ValidatorFactory::create(ValidatorFactory::Type::DigitsHyphens, this);
+    QValidator *noSpecialChars = ValidatorFactory::create(ValidatorFactory::Type::NoSpecialChars, this);
 
     ui->lineEdit_valveSeries->setValidator(validatorDigits);
     ui->lineEdit_valveModel->setValidator(validatorDigitsHyphens);
@@ -101,10 +101,7 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
 
     populateCombo(ui->comboBox_materialBody, m_db.getBodyMaterials());
 
-    connect(ui->lineEdit_valveSeries, &QLineEdit::editingFinished,
-            this, &ValveWindow::onSeriesEditingFinished);
-
-    connect(ui->lineEdit_valveModel,  &QLineEdit::textEdited,
+    connect(ui->lineEdit_valveModel, &QLineEdit::textEdited,
             this, &ValveWindow::onModelEditingFinished);
 
     connect(ui->comboBox_DN, QOverload<int>::of(&QComboBox::currentIndexChanged),
@@ -128,7 +125,7 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
                 ui->comboBox_DN->clear();
                 ui->comboBox_CV->clear();
                 ui->lineEdit_valveModel->clear();
-                ui->comboBox_dinamicError->clear();
+                //ui->comboBox_dinamicError->clear();
                 ui->comboBox_materialSaddle->clear();
             });
 
@@ -180,16 +177,16 @@ void ValveWindow::onPositionerTypeChanged(int index)
 {
     const QString selected = ui->comboBox_positionerType->itemText(index);
 
-    ui->comboBox_dinamicError->clear();
+    ui->comboBox_dinamicError->clear(); // всегда очищаем перед установкой
 
     if (selected == QStringLiteral("Интеллектуальный ЭПП")) {
         ui->comboBox_dinamicError->addItem(QStringLiteral("1.5"));
-        ui->comboBox_dinamicError->setCurrentIndex(0);
     }
-    else if (selected == QStringLiteral("ЭПП") || selected == QStringLiteral("ПП")) {
+    else {
         ui->comboBox_dinamicError->addItem(QStringLiteral("2.5"));
-        ui->comboBox_dinamicError->setCurrentIndex(0);
     }
+
+    ui->comboBox_dinamicError->setCurrentIndex(0);
 }
 
 void ValveWindow::populateModelsAndDn(int seriesId)
@@ -200,7 +197,7 @@ void ValveWindow::populateModelsAndDn(int seriesId)
 
 void ValveWindow::onModelEditingFinished()
 {
-    ui->comboBox_dinamicError->clear();
+    // ui->comboBox_dinamicError->clear();
 
     QString seriesName = ui->lineEdit_valveSeries->text().trimmed();
     int manId = ui->comboBox_manufacturer->currentData().toInt();
@@ -210,12 +207,12 @@ void ValveWindow::onModelEditingFinished()
     int modelId = m_db.getValveModelIdByName(seriesId, model);
 
     if (seriesId < 0 || modelId < 0) {
-        ui->comboBox_dinamicError->clear();
+        // ui->comboBox_dinamicError->clear();
         ui->comboBox_materialSaddle->clear();
         return;
     }
 
-    populateComboInts(ui->comboBox_dinamicError, m_db.getDynamicErrors(modelId), true);
+    // populateComboInts(ui->comboBox_dinamicError, m_db.getDynamicErrors(modelId));
 
     populateCombo(ui->comboBox_materialSaddle, m_db.getSaddleMaterialsForModel(modelId));
 }
@@ -232,7 +229,7 @@ void ValveWindow::onSeriesEditingFinished()
         ui->comboBox_DN->clear();
         ui->comboBox_CV->clear();
         ui->lineEdit_valveModel->clear();
-        ui->comboBox_dinamicError->clear();
+        // ui->comboBox_dinamicError->clear();
         ui->comboBox_materialSaddle->clear();
         return;
     }

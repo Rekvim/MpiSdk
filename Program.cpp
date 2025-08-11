@@ -1,6 +1,5 @@
 #include "Program.h"
 
-#include "./Src/Tests/CyclicTestPositioner.h"
 #include "./Src/Tests/StepTest.h"
 #include "./Src/Tests/StrokeTest.h"
 #include "./Src/Tests/MainTest.h"

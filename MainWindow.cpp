@@ -211,6 +211,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(m_program, &Program::SetStepResults,
             this, &MainWindow::SetStepTestResults);
+
     connect(m_program, &Program::GetMainTestParameters,
             this, &MainWindow::GetMainTestParameters,
             Qt::BlockingQueuedConnection);
