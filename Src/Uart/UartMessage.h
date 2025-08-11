@@ -7,17 +7,17 @@
 static constexpr char startbyte = 0xAA;
 
 enum class Command : quint8 {
-    DAC         = 0xC2,
-    ADC         = 0xE1,
-    SetChADC    = 0x98,
-    ADC_OnOff   = 0x48,
-    GetVersion  = 0x00,
-    TimerArr    = 0x73,
-    SetDO       = 0x41,
-    GetDO       = 0x42,
-    GetDI       = 0x43,
-    OK          = 0x25,
-    WrongCRC    = 0x66,
+    DAC = 0xC2,
+    ADC = 0xE1,
+    SetChADC = 0x98,
+    ADC_OnOff = 0x48,
+    GetVersion = 0x00,
+    TimerArr = 0x73,
+    SetDO = 0x41,
+    GetDO = 0x42,
+    GetDI = 0x43,
+    OK = 0x25,
+    WrongCRC = 0x66,
     UnknownCode = 0x13
 };
 
