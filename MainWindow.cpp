@@ -336,21 +336,21 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
     }
     if (watched == ui->label_arrowUp) {
         if (event->type() == QEvent::Enter) {
-            ui->label_arrowUp->setPixmap(QPixmap(":/src/img/arrowUpHover.png"));
+            ui->label_arrowUp->setPixmap(QPixmap(":/Src/img/arrowUpHover.png"));
             return true;
         }
         if (event->type() == QEvent::Leave) {
-            ui->label_arrowUp->setPixmap(QPixmap(":/src/img/arrowUp.png"));
+            ui->label_arrowUp->setPixmap(QPixmap(":/Src/img/arrowUp.png"));
             return true;
         }
     }
     if (watched == ui->label_arrowDown) {
         if (event->type() == QEvent::Enter) {
-            ui->label_arrowDown->setPixmap(QPixmap(":/src/img/arrowDownHover.png"));
+            ui->label_arrowDown->setPixmap(QPixmap(":/Src/img/arrowDownHover.png"));
             return true;
         }
         if (event->type() == QEvent::Leave) {
-            ui->label_arrowDown->setPixmap(QPixmap(":/src/img/arrowDown.png"));
+            ui->label_arrowDown->setPixmap(QPixmap(":/Src/img/arrowDown.png"));
             return true;
         }
     }
@@ -491,6 +491,7 @@ void MainWindow::SetSensorsNumber(quint8 num)
     ui->tabWidget->setTabEnabled(1, num > 1);
     ui->tabWidget->setTabEnabled(2, !noSensors);
     ui->tabWidget->setTabEnabled(3, !noSensors);
+    ui->groupBox_SettingCurrentSignal->setEnabled(!noSensors);
 
     if (num > 0) {
         ui->checkBox_showCurve_task->setVisible(num > 1);
@@ -499,7 +500,6 @@ void MainWindow::SetSensorsNumber(quint8 num)
         ui->checkBox_showCurve_pressure_2->setVisible(num > 2);
         ui->checkBox_showCurve_pressure_3->setVisible(num > 3);
 
-        ui->groupBox_SettingCurrentSignal->setEnabled(num > 1);
 
         ui->checkBox_showCurve_task->setCheckState(num > 1 ? Qt::Checked : Qt::Unchecked);
         ui->checkBox_showCurve_moving->setCheckState(num > 1 ? Qt::Checked : Qt::Unchecked);

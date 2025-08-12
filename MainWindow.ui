@@ -23,7 +23,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>4</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_manual">
        <attribute name="title">
@@ -491,7 +491,7 @@
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="img.qrc">:/src/img/arrowUp.png</pixmap>
+                   <pixmap resource="img.qrc">:/Src/img/arrowUp.png</pixmap>
                   </property>
                   <property name="scaledContents">
                    <bool>true</bool>
@@ -510,7 +510,7 @@
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="img.qrc">:/src/img/arrowDown.png</pixmap>
+                   <pixmap resource="img.qrc">:/Src/img/arrowDown.png</pixmap>
                   </property>
                   <property name="scaledContents">
                    <bool>true</bool>
