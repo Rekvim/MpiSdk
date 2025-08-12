@@ -10,7 +10,7 @@
 
 #include "Registry.h"
 #include "ReportSaver.h"
-#include "./Src/ValveСonfig/ValveDataLoader.h"
+#include "./Src/ValveConfig/ValveDataLoader.h"
 #include "./Src/database/ValveDatabase.h"
 
 namespace Ui {

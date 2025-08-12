@@ -42,7 +42,7 @@ SOURCES += \
     Src/Uart/UartMessage.cpp \
     Src/Uart/UartReader.cpp \
     Src/ValidatorFactory/ValidatorFactory.cpp \
-    Src/ValveСonfig/ValveDataLoader.cpp \
+    Src/ValveConfig/ValveDataLoader.cpp \
     Src/database/ValveDatabase.cpp
 
 HEADERS += \
@@ -73,7 +73,7 @@ HEADERS += \
     Src/Uart/UartReader.h \
     Src/ValidatorFactory/RegexPatterns.h \
     Src/ValidatorFactory/ValidatorFactory.h \
-    Src/ValveСonfig/ValveDataLoader.h \
+    Src/ValveConfig/ValveDataLoader.h \
     Src/database/ValveDatabase.h
 
 FORMS += \
