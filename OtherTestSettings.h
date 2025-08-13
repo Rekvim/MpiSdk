@@ -26,7 +26,9 @@ public:
         QVector<qreal> steps;
     };
 
-    TestParameters getParameters();
+    TestParameters getParameters() const;
+
+    qint64 totalTestTimeMillis() const;
 
 private:
     Ui::OtherTestSettings *ui;

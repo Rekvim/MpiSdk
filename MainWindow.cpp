@@ -585,7 +585,7 @@ void MainWindow::GetMainTestParameters(MainTestSettings::TestParameters &paramet
     if (m_mainTestSettings->exec() == QDialog::Accepted) {
         parameters = m_mainTestSettings->getParameters();
 
-        qint64 totalMs = m_mainTestSettings->totalTestTimeMillis();
+        qint64 totalMs = m_mainTestSettings->totalTestTimeMillis() * 2 + 10000;
         m_totalTestMs = totalMs;
         m_elapsedTimer.start();
         m_durationTimer->start();

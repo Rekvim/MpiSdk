@@ -86,7 +86,7 @@ void StepTestSettings::reverse()
     ui->listWidget_value->addItem("10.0");
 }
 
-StepTestSettings::TestParameters StepTestSettings::getParameters()
+StepTestSettings::TestParameters StepTestSettings::getParameters() const
 {
     TestParameters testParameters;
 
@@ -97,4 +97,17 @@ StepTestSettings::TestParameters StepTestSettings::getParameters()
     }
 
     return testParameters;
+}
+
+qint64 StepTestSettings::totalTestTimeMillis() const
+{
+    TestParameters params = getParameters();
+
+    int P = params.points.size(); // количество точек
+    qint64 delay = params.delay;  // задержка в миллисекундах
+
+    // N_values = 1 старт + P прямой + 1 конец + P обратный + 1 возврат
+    qint64 N_values = 3 + 2 * P;
+
+    return 10000 + N_values * delay;
 }

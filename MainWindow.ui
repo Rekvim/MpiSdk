@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1046</width>
+    <width>1217</width>
     <height>745</height>
    </rect>
   </property>
@@ -35,7 +35,7 @@
           <property name="title">
            <string>Задание</string>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_2">
+          <layout class="QVBoxLayout" name="verticalLayout_18">
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_signalStrength_task">
              <item>
@@ -64,7 +64,7 @@
                   </font>
                  </property>
                  <property name="text">
-                  <string>20 мА</string>
+                  <string>20 мА - 100%</string>
                  </property>
                 </widget>
                </item>
@@ -120,7 +120,7 @@
                   </font>
                  </property>
                  <property name="text">
-                  <string>16 мА</string>
+                  <string>16 мА - 75%</string>
                  </property>
                 </widget>
                </item>
@@ -176,7 +176,7 @@
                   </font>
                  </property>
                  <property name="text">
-                  <string>12 мА</string>
+                  <string>12 мА - 50%</string>
                  </property>
                 </widget>
                </item>
@@ -232,7 +232,7 @@
                   </font>
                  </property>
                  <property name="text">
-                  <string>8 мА</string>
+                  <string>8 мА - 25%</string>
                  </property>
                 </widget>
                </item>
@@ -288,7 +288,7 @@
                   </font>
                  </property>
                  <property name="text">
-                  <string>4 мА</string>
+                  <string>4 мА - 0%</string>
                  </property>
                 </widget>
                </item>
@@ -331,6 +331,103 @@
                <property name="tickInterval">
                 <number>1000</number>
                </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QFrame" name="frame_5">
+               <property name="frameShape">
+                <enum>QFrame::Shape::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Shadow::Raised</enum>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_2">
+                <property name="spacing">
+                 <number>35</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="label_signalStrength_4mA_7">
+                  <property name="font">
+                   <font>
+                    <pointsize>10</pointsize>
+                    <bold>false</bold>
+                    <stylestrategy>PreferDefault</stylestrategy>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>100%</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_signalStrength_4mA_11">
+                  <property name="font">
+                   <font>
+                    <pointsize>10</pointsize>
+                    <bold>false</bold>
+                    <stylestrategy>PreferDefault</stylestrategy>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>75%</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_signalStrength_4mA_10">
+                  <property name="font">
+                   <font>
+                    <pointsize>10</pointsize>
+                    <bold>false</bold>
+                    <stylestrategy>PreferDefault</stylestrategy>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>50%</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_signalStrength_4mA_9">
+                  <property name="font">
+                   <font>
+                    <pointsize>10</pointsize>
+                    <bold>false</bold>
+                    <stylestrategy>PreferDefault</stylestrategy>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>25%</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_signalStrength_4mA_8">
+                  <property name="font">
+                   <font>
+                    <pointsize>10</pointsize>
+                    <bold>false</bold>
+                    <stylestrategy>PreferDefault</stylestrategy>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>0%</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </widget>
              </item>
             </layout>
