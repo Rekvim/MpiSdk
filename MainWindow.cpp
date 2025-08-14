@@ -11,11 +11,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->tabWidget->setCurrentIndex(0);
 
-    m_durationTimer = new QTimer(this);
-    m_durationTimer->setInterval(100);
-    connect(m_durationTimer, &QTimer::timeout,
-            this, &MainWindow::onCountdownTimeout);
-
     m_mainTestSettings = new MainTestSettings(this);
     m_stepTestSettings = new StepTestSettings(this);
     m_responseTestSettings = new OtherTestSettings(this);
@@ -61,13 +56,22 @@ MainWindow::MainWindow(QWidget *parent)
     m_programThread = new QThread(this);
     m_program->moveToThread(m_programThread);
 
+    m_durationTimer = new QTimer(this);
+    m_durationTimer->setInterval(100);
+    connect(m_durationTimer, &QTimer::timeout,
+            this, &MainWindow::onCountdownTimeout);
+
+    connect(m_programThread, &QThread::finished,
+            m_program, &QObject::deleteLater);
+
+    connect(m_program, &Program::TotalTestTimeMs,
+            this, &MainWindow::onTotalTestTimeMs);
+
     connect(ui->pushButton_init, &QPushButton::clicked,
-            m_program, &Program::button_init);
+            m_program, &Program::initialize);
 
     connect(ui->pushButton_set, &QPushButton::clicked,
             m_program, &Program::button_set_position);
-
-    // connect(ui->checkBox_autoinit, &QCheckBox::stateChanged, m_program, &Program::checkbox_autoinit);
 
     connect(ui->checkBox_autoinit, &QCheckBox::checkStateChanged,
             m_program, &Program::checkbox_autoinit);
@@ -75,65 +79,14 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, &MainWindow::SetDO,
             m_program, &Program::button_DO);
 
-    connect(ui->pushButton_mainTest_start, &QPushButton::clicked,
-            this, &MainWindow::ButtonStartMain);
+    connect(this, &MainWindow::runMainTest,
+            m_program, &Program::runningMainTest);
 
-    connect(ui->pushButton_mainTest_save, &QPushButton::clicked, this, [&] {
-        if (ui->tabWidget_mainTest->currentWidget() == ui->tab_mainTests_task) {
-            SaveChart(Charts::Task);
-        } else if (ui->tabWidget_mainTest->currentWidget() == ui->tab_mainTests_pressure) {
-            SaveChart(Charts::Pressure);
-        } else if (ui->tabWidget_mainTest->currentWidget() == ui->tab_mainTests_friction) {
-            SaveChart(Charts::Friction);
-        }
-    });
+    connect(this, &MainWindow::runStrokeTest,
+            m_program, &Program::runningStrokeTest);
 
-    connect(ui->pushButton_strokeTest_start, &QPushButton::clicked,
-            this, &MainWindow::ButtonStartStroke);
-
-    connect(ui->pushButton_strokeTest_save, &QPushButton::clicked, this, [&] {
-        SaveChart(Charts::Stroke);
-    });
-
-    connect(ui->pushButton_optionalTests_start, &QPushButton::clicked,
-            this, &MainWindow::ButtonStartOptional);
-
-    connect(ui->pushButton_optionalTests_save, &QPushButton::clicked, this, [&] {
-        if (ui->tabWidget_optionalTests->currentWidget() == ui->tab_optionalTests_response) {
-            SaveChart(Charts::Response);
-        } else if (ui->tabWidget_optionalTests->currentWidget() == ui->frame_chartResolution) {
-            SaveChart(Charts::Resolution);
-        } else if (ui->tabWidget_optionalTests->currentWidget() == ui->tab_optionalTests_step) {
-            SaveChart(Charts::Step);
-        }
-    });
-
-    connect(ui->pushButton_open, &QPushButton::clicked,
-            m_program, &Program::button_open);
-
-    connect(ui->pushButton_report, &QPushButton::clicked, this, [&] {
-        InitReport();
-        bool ok = m_reportSaver->SaveReport(m_report);
-        ui->pushButton_open->setEnabled(ok);
-    });
-
-    connect(ui->pushButton_imageChartTask, &QPushButton::clicked,
-            m_program, &Program::button_pixmap1);
-
-    connect(ui->pushButton_imageChartPressure, &QPushButton::clicked,
-            m_program, &Program::button_pixmap2);
-
-    connect(ui->pushButton_imageChartFriction, &QPushButton::clicked,
-            m_program, &Program::button_pixmap3);
-
-    connect(this, &MainWindow::StartMainTest,
-            m_program, &Program::MainTestStart);
-
-    connect(this, &MainWindow::StartStrokeTest,
-            m_program, &Program::StrokeTestStart);
-
-    connect(this, &MainWindow::StartOptionalTest,
-            m_program, &Program::OptionalTestStart);
+    connect(this, &MainWindow::runOptionalTest,
+            m_program, &Program::runningOptionalTest);
 
     connect(this, &MainWindow::StopTest,
             m_program, &Program::TerminateTest);
@@ -170,27 +123,6 @@ MainWindow::MainWindow(QWidget *parent)
         }
     });
 
-    connect(ui->pushButton_signal_4mA, &QPushButton::clicked,
-            this, [this]() {
-        ui->doubleSpinBox_task->setValue(4.0);
-    });
-    connect(ui->pushButton_signal_8mA, &QPushButton::clicked,
-            this, [this]() {
-        ui->doubleSpinBox_task->setValue(8.0);
-    });
-    connect(ui->pushButton_signal_12mA, &QPushButton::clicked,
-            this, [this]() {
-        ui->doubleSpinBox_task->setValue(12.0);
-    });
-    connect(ui->pushButton_signal_16mA, &QPushButton::clicked,
-            this, [this]() {
-        ui->doubleSpinBox_task->setValue(16.0);
-    });
-    connect(ui->pushButton_signal_20mA, &QPushButton::clicked,
-            this, [this]() {
-        ui->doubleSpinBox_task->setValue(20.0);
-    });
-
     ui->label_arrowUp->setCursor(Qt::PointingHandCursor);
     ui->label_arrowDown->setCursor(Qt::PointingHandCursor);
 
@@ -213,19 +145,19 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::SetStepTestResults);
 
     connect(m_program, &Program::GetMainTestParameters,
-            this, &MainWindow::GetMainTestParameters,
+            this, &MainWindow::receivedParameters_mainTest,
             Qt::BlockingQueuedConnection);
 
     connect(m_program, &Program::GetStepTestParameters,
-            this, &MainWindow::GetStepTestParameters,
+            this, &MainWindow::receivedParameters_stepTest,
             Qt::BlockingQueuedConnection);
 
     connect(m_program,  &Program::GetResolutionTestParameters,
-            this, &MainWindow::GetResolutionTestParameters,
+            this, &MainWindow::receivedParameters_resolutionTest,
             Qt::BlockingQueuedConnection);
 
     connect(m_program, &Program::GetResponseTestParameters,
-            this, &MainWindow::GetResponseTestParameters,
+            this, &MainWindow::receivedParameters_responseTest,
             Qt::BlockingQueuedConnection);
 
     connect(m_program, &Program::Question,
@@ -239,27 +171,6 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_reportSaver, &ReportSaver::GetDirectory,
             this, &MainWindow::GetDirectory,
             Qt::DirectConnection);
-
-    connect(ui->pushButton_imageChartTask, &QPushButton::clicked, this, [&] {
-        GetImage(ui->label_imageChartTask, &m_report.image1);
-    });
-
-    connect(ui->pushButton_imageChartPressure, &QPushButton::clicked, this, [&] {
-        GetImage(ui->label_imageChartPressure, &m_report.image2);
-    });
-
-    connect(ui->pushButton_imageChartFriction, &QPushButton::clicked, this, [&] {
-        GetImage(ui->label_imageChartFriction, &m_report.image3);
-    });
-
-    connect(ui->pushButton_report, &QPushButton::clicked, this, [&] {
-        ui->pushButton_open->setEnabled(m_reportSaver->SaveReport(m_report));
-    });
-
-    connect(ui->pushButton_open, &QPushButton::clicked, this, [&] {
-        QDesktopServices::openUrl(
-            QUrl::fromLocalFile(m_reportSaver->Directory().filePath("report.xlsx")));
-    });
 
     connect(ui->checkBox_autoinit, &QCheckBox::checkStateChanged, this, [&](int state) {
         ui->pushButton_set->setEnabled(state == Qt::Unchecked);
@@ -282,7 +193,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->label_arrowUp->installEventFilter(this);
     ui->label_arrowDown->installEventFilter(this);
-
 }
 
 MainWindow::~MainWindow()
@@ -290,6 +200,27 @@ MainWindow::~MainWindow()
     delete ui;
     m_programThread->quit();
     m_programThread->wait();
+}
+
+void MainWindow::on_pushButton_signal_4mA_clicked()
+{
+    ui->doubleSpinBox_task->setValue(4.0);
+}
+void MainWindow::on_pushButton_signal_8mA_clicked()
+{
+    ui->doubleSpinBox_task->setValue(8.0);
+}
+void MainWindow::on_pushButton_signal_12mA_clicked()
+{
+    ui->doubleSpinBox_task->setValue(12.0);
+}
+void MainWindow::on_pushButton_signal_16mA_clicked()
+{
+    ui->doubleSpinBox_task->setValue(16.0);
+}
+void MainWindow::on_pushButton_signal_20mA_clicked()
+{
+    ui->doubleSpinBox_task->setValue(20.0);
 }
 
 void MainWindow::onCountdownTimeout()
@@ -307,6 +238,51 @@ void MainWindow::onCountdownTimeout()
     ui->lineEdit_testDuration->setText(t.toString("hh:mm:ss.zzz"));
 
     if (remainingMs == 0) {
+        m_durationTimer->stop();
+    }
+}
+
+void MainWindow::onTotalTestTimeMs(quint64 totalMs)
+{
+    m_totalTestMs = totalMs;
+    m_elapsedTimer.restart();
+
+    if (!m_durationTimer) {
+        m_durationTimer = new QTimer(this);
+        m_durationTimer->setInterval(250);
+        connect(m_durationTimer, &QTimer::timeout,
+                this, &MainWindow::onCountdownTimeout);
+    }
+
+    auto formatHMS = [](quint64 ms) -> QString {
+        const quint64 hours = ms / 3600000ULL;
+        ms %= 3600000ULL;
+        const quint64 minutes = ms / 60000ULL;
+        ms %= 60000ULL;
+        const quint64 seconds = ms / 1000ULL;
+        const quint64 msec = ms % 1000ULL;
+
+        return QString("%1:%2:%3.%4")
+            .arg(hours,   2, 10, QChar('0'))
+            .arg(minutes, 2, 10, QChar('0'))
+            .arg(seconds, 2, 10, QChar('0'))
+            .arg(msec,    3, 10, QChar('0'));
+    };
+
+    ui->statusbar->showMessage(
+        QStringLiteral("Плановая длительность теста: %1").arg(formatHMS(m_totalTestMs))
+        );
+
+    m_durationTimer->start();
+    onCountdownTimeout();
+}
+
+void MainWindow::EndTest()
+{
+    m_testing = false;
+    ui->statusbar->showMessage("Тест завершен");
+
+    if (m_durationTimer) {
         m_durationTimer->stop();
     }
 }
@@ -424,6 +400,7 @@ void MainWindow::SetRegistry(Registry *registry)
     m_reportSaver->SetRegistry(registry);
     // InitReport();
 }
+
 
 void MainWindow::SetText(TextObjects object, const QString &text)
 {
@@ -580,27 +557,16 @@ void MainWindow::SetRegressionEnable(bool enable)
     ui->checkBox_regression->setCheckState(enable ? Qt::Checked : Qt::Unchecked);
 }
 
-void MainWindow::GetMainTestParameters(MainTestSettings::TestParameters &parameters)
+void MainWindow::receivedParameters_mainTest(MainTestSettings::TestParameters &parameters)
 {
     if (m_mainTestSettings->exec() == QDialog::Accepted) {
         parameters = m_mainTestSettings->getParameters();
-
-        qint64 totalMs = m_mainTestSettings->totalTestTimeMillis() * 2 + 10000;
-        m_totalTestMs = totalMs;
-        m_elapsedTimer.start();
-        m_durationTimer->start();
-        QTime t(0, 0);
-        t = t.addMSecs(totalMs);
-        ui->lineEdit_testDuration->setText(t.toString("hh:mm:ss.zzz"));
-
         return;
     }
-
-    parameters.delay = 0;
     return;
 }
 
-void MainWindow::GetStepTestParameters(StepTestSettings::TestParameters &parameters)
+void MainWindow::receivedParameters_stepTest(StepTestSettings::TestParameters &parameters)
 {
     parameters.points.clear();
 
@@ -609,7 +575,7 @@ void MainWindow::GetStepTestParameters(StepTestSettings::TestParameters &paramet
     }
 }
 
-void MainWindow::GetResolutionTestParameters(OtherTestSettings::TestParameters &parameters)
+void MainWindow::receivedParameters_resolutionTest(OtherTestSettings::TestParameters &parameters)
 {
     parameters.points.clear();
 
@@ -618,7 +584,7 @@ void MainWindow::GetResolutionTestParameters(OtherTestSettings::TestParameters &
     }
 }
 
-void MainWindow::GetResponseTestParameters(OtherTestSettings::TestParameters &parameters)
+void MainWindow::receivedParameters_responseTest(OtherTestSettings::TestParameters &parameters)
 {
     parameters.points.clear();
 
@@ -645,15 +611,7 @@ void MainWindow::StartTest()
     ui->statusbar->showMessage("Тест в процессе");
 }
 
-void MainWindow::EndTest()
-{
-    m_testing = false;
-    ui->statusbar->showMessage("Тест завершен");
-
-    m_durationTimer->stop();
-}
-
-void MainWindow::ButtonStartMain()
+void MainWindow::on_pushButton_mainTest_start_clicked()
 {
     if (m_testing) {
         if (QMessageBox::question(this, "Внимание!", "Вы действительно хотите завершить тест")
@@ -661,25 +619,22 @@ void MainWindow::ButtonStartMain()
             emit StopTest();
         }
     } else {
-        emit StartMainTest();
+        emit runMainTest();
         StartTest();
     }
 }
-
-void MainWindow::ButtonStartStroke()
+void MainWindow::on_pushButton_mainTest_save_clicked()
 {
-    if (m_testing) {
-        if (QMessageBox::question(this, "Внимание!", "Вы действительно хотите завершить тест")
-            == QMessageBox::Yes) {
-            emit StopTest();
-        }
-    } else {
-        emit StartStrokeTest();
-        StartTest();
+    if (ui->tabWidget_mainTests->currentWidget() == ui->tab_mainTests_task) {
+        SaveChart(Charts::Task);
+    } else if (ui->tabWidget_mainTests->currentWidget() == ui->tab_mainTests_pressure) {
+        SaveChart(Charts::Pressure);
+    } else if (ui->tabWidget_mainTests->currentWidget() == ui->tab_mainTests_friction) {
+        SaveChart(Charts::Friction);
     }
 }
 
-void MainWindow::ButtonStartOptional()
+void MainWindow::on_pushButton_strokeTest_start_clicked()
 {
     if (m_testing) {
         if (QMessageBox::question(this, "Внимание!", "Вы действительно хотите завершить тест")
@@ -687,8 +642,35 @@ void MainWindow::ButtonStartOptional()
             emit StopTest();
         }
     } else {
-        emit StartOptionalTest(ui->tabWidget_optionalTests->currentIndex());
+        emit runStrokeTest();
         StartTest();
+    }
+}
+void MainWindow::on_pushButton_strokeTest_save_clicked()
+{
+    SaveChart(Charts::Stroke);
+}
+
+void MainWindow::on_pushButton_optionalTests_start_clicked()
+{
+    if (m_testing) {
+        if (QMessageBox::question(this, "Внимание!", "Вы действительно хотите завершить тест")
+            == QMessageBox::Yes) {
+            emit StopTest();
+        }
+    } else {
+        emit runOptionalTest(ui->tabWidget_optionalTests->currentIndex());
+        StartTest();
+    }
+}
+void MainWindow::on_pushButton_optionalTests_save_clicked()
+{
+    if (ui->tabWidget_optionalTests->currentWidget() == ui->tab_optionalTests_response) {
+        SaveChart(Charts::Response);
+    } else if (ui->tabWidget_optionalTests->currentWidget() == ui->tab_optionalTests_resolution) {
+        SaveChart(Charts::Resolution);
+    } else if (ui->tabWidget_optionalTests->currentWidget() == ui->tab_optionalTests_step) {
+        SaveChart(Charts::Step);
     }
 }
 
@@ -777,19 +759,23 @@ void MainWindow::InitCharts()
     m_charts[Charts::Trend]->addSeries(0, "Датчик линейных перемещений", QColor::fromRgb(255, 0, 0));
     m_charts[Charts::Trend]->setMaxRange(60000);
 
+    connect(m_program, &Program::AddPoints,
+            this, &MainWindow::AddPoints);
 
-    // m_charts[Charts::Cyclic]->useTimeaxis(true);
-    // m_charts[Charts::Cyclic]->addAxis("%.2f%%");
-    // m_charts[Charts::Cyclic]->addSeries(0, "Задание", QColor::fromRgb(0, 0, 0));
-    // m_charts[Charts::Cyclic]->addSeries(0, "Датчик линейных перемещений", QColor::fromRgb(255, 0, 0));
+    connect(m_program, &Program::ClearPoints,
+            this, &MainWindow::ClearPoints);
 
+    connect(m_program, &Program::DublSeries,
+            this, &MainWindow::DublSeries);
 
-    connect(m_program, &Program::AddPoints, this, &MainWindow::AddPoints);
-    connect(m_program, &Program::ClearPoints, this, &MainWindow::ClearPoints);
-    connect(m_program, &Program::DublSeries, this, &MainWindow::DublSeries);
-    connect(m_program, &Program::SetVisible, this, &MainWindow::SetChartVisible);
-    connect(m_program, &Program::SetRegressionEnable, this, &MainWindow::SetRegressionEnable);
-    connect(m_program, &Program::ShowDots, this, &MainWindow::ShowDots);
+    connect(m_program, &Program::SetVisible,
+            this, &MainWindow::SetChartVisible);
+
+    connect(m_program, &Program::SetRegressionEnable,
+            this, &MainWindow::SetRegressionEnable);
+
+    connect(m_program, &Program::ShowDots,
+            this, &MainWindow::ShowDots);
 
     connect(ui->checkBox_showCurve_task, &QCheckBox::checkStateChanged, this, [&](int k) {
         m_charts[Charts::Task]->visible(0, k != 0);
@@ -815,11 +801,8 @@ void MainWindow::InitCharts()
         m_charts[Charts::Pressure]->visible(1, k != 0);
     });
 
-    connect(
-        m_program,
-        &Program::GetPoints,
-        this,
-        &MainWindow::GetPoints,
+    connect( m_program, &Program::GetPoints,
+        this, &MainWindow::GetPoints,
         Qt::BlockingQueuedConnection
     );
 
@@ -841,10 +824,12 @@ void MainWindow::SaveChart(Charts chart)
     m_reportSaver->SaveImage(m_charts[chart]);
 
     QPixmap pix = m_charts[chart]->grab();
+    QImage img = pix.toImage();
 
     switch (chart) {
     case Charts::Task:
         ui->label_imageChartTask->setPixmap(pix);
+        m_imageChartTask = img;
         break;
     case Charts::Stroke:
         break;
@@ -853,16 +838,17 @@ void MainWindow::SaveChart(Charts chart)
     case Charts::Resolution:
         break;
     case Charts::Step:
+        m_imageChartStep = img;
         break;
     case Charts::Pressure:
         ui->label_imageChartPressure->setPixmap(pix);
+        m_imageChartPressure = img;
         break;
     case Charts::Friction:
         ui->label_imageChartFriction->setPixmap(pix);
+        m_imageChartFriction = img;
         break;
     case Charts::Trend:
-        break;
-    case Charts::Solenoid:
         break;
     default:
         break;
@@ -890,6 +876,19 @@ void MainWindow::GetImage(QLabel *label, QImage *image)
         *image = img.scaled(1000, 430, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
         label->setPixmap(QPixmap::fromImage(img));
     }
+}
+
+void MainWindow::on_pushButton_imageChartTask_clicked()
+{
+    GetImage(ui->label_imageChartTask, &m_imageChartTask);
+}
+void MainWindow::on_pushButton_imageChartPressure_clicked()
+{
+    GetImage(ui->label_imageChartPressure, &m_imageChartPressure);
+}
+void MainWindow::on_pushButton_imageChartFriction_clicked()
+{
+    GetImage(ui->label_imageChartFriction, &m_imageChartFriction);
 }
 
 void MainWindow::InitReport()
@@ -962,4 +961,16 @@ void MainWindow::InitReport()
        {"=Заключение!$D$1:$D$5", "E48"},
        {"=Заключение!$F$3", "E50"},
     };
+}
+
+void MainWindow::on_pushButton_report_generate_clicked() {
+    InitReport();
+    bool ok = m_reportSaver->SaveReport(m_report);
+    ui->pushButton_report_open->setEnabled(ok);
+}
+
+void MainWindow::on_pushButton_report_open_clicked()
+{
+    QDesktopServices::openUrl(
+        QUrl::fromLocalFile(m_reportSaver->Directory().filePath("report.xlsx")));
 }

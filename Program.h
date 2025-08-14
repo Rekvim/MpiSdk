@@ -66,9 +66,7 @@ enum class Charts {
     Resolution,
     Stroke,
     Step,
-    Trend,
-    Cyclic,
-    Solenoid
+    Trend
 };
 
 struct Point
@@ -114,6 +112,8 @@ signals:
     void SetButtonsDOChecked(quint8 status);
     void SetCheckboxDIChecked(quint8 status);
 
+    void TotalTestTimeMs(quint64 totalMs);
+
 public slots:
     void AddRegression(const QVector<QPointF> &points);
     void AddFriction(const QVector<QPointF> &points);
@@ -124,17 +124,14 @@ public slots:
     void SetDAC_real(qreal value);
     void SetDAC_int(quint16 value);
 
-    void button_init();
-    void MainTestStart();
-    void StrokeTestStart();
-    void OptionalTestStart(quint8 test_num);
+    void initialize();
+
+    void runningMainTest();
+    void runningStrokeTest();
+    void runningOptionalTest(const quint8 test_num);
+
     void TerminateTest();
 
-    void button_open();
-    void button_report();
-    void button_pixmap1();
-    void button_pixmap2();
-    void button_pixmap3();
     void button_set_position();
     void button_DO(quint8 DO_num, bool state);
     void checkbox_autoinit(int state);
@@ -157,9 +154,9 @@ private slots:
     void UpdateCharts_stroketest();
     void UpdateCharts_optiontest(Charts chart);
 
-    void MainTestResults(MainTest::TestResults results);
-    void StepTestResults(QVector<StepTest::TestResult> results, quint32 T_value);
-    void StrokeTestResults(quint64 forwardTime, quint64 backwardTime);
+    void results_mainTest(const MainTest::TestResults &results);
+    void results_strokeTest(const quint64 forwardTime, const quint64 backwardTime);
+    void results_stepTest(const QVector<StepTest::TestResult> &results, const quint32 T_value);
 
     void SetTimeStart();
 

@@ -23,7 +23,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="tab_manual">
        <attribute name="title">
@@ -331,103 +331,6 @@
                <property name="tickInterval">
                 <number>1000</number>
                </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QFrame" name="frame_5">
-               <property name="frameShape">
-                <enum>QFrame::Shape::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Shadow::Raised</enum>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_2">
-                <property name="spacing">
-                 <number>35</number>
-                </property>
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QLabel" name="label_signalStrength_4mA_7">
-                  <property name="font">
-                   <font>
-                    <pointsize>10</pointsize>
-                    <bold>false</bold>
-                    <stylestrategy>PreferDefault</stylestrategy>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>100%</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_signalStrength_4mA_11">
-                  <property name="font">
-                   <font>
-                    <pointsize>10</pointsize>
-                    <bold>false</bold>
-                    <stylestrategy>PreferDefault</stylestrategy>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>75%</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_signalStrength_4mA_10">
-                  <property name="font">
-                   <font>
-                    <pointsize>10</pointsize>
-                    <bold>false</bold>
-                    <stylestrategy>PreferDefault</stylestrategy>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>50%</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_signalStrength_4mA_9">
-                  <property name="font">
-                   <font>
-                    <pointsize>10</pointsize>
-                    <bold>false</bold>
-                    <stylestrategy>PreferDefault</stylestrategy>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>25%</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="label_signalStrength_4mA_8">
-                  <property name="font">
-                   <font>
-                    <pointsize>10</pointsize>
-                    <bold>false</bold>
-                    <stylestrategy>PreferDefault</stylestrategy>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>0%</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
               </widget>
              </item>
             </layout>
@@ -1116,9 +1019,9 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_10">
         <item>
-         <widget class="QTabWidget" name="tabWidget_mainTest">
+         <widget class="QTabWidget" name="tabWidget_mainTests">
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="tab_mainTests_task">
            <attribute name="title">
@@ -1938,7 +1841,7 @@
         <item>
          <widget class="QTabWidget" name="tabWidget_optionalTests">
           <property name="currentIndex">
-           <number>2</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tab_optionalTests_response">
            <attribute name="title">
@@ -3752,7 +3655,7 @@
            </spacer>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_report">
+           <widget class="QPushButton" name="pushButton_report_generate">
             <property name="font">
              <font>
               <pointsize>11</pointsize>
@@ -3765,7 +3668,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_open">
+           <widget class="QPushButton" name="pushButton_report_open">
             <property name="enabled">
              <bool>false</bool>
             </property>
@@ -3799,7 +3702,7 @@
  </customwidgets>
  <tabstops>
   <tabstop>tabWidget</tabstop>
-  <tabstop>tabWidget_mainTest</tabstop>
+  <tabstop>tabWidget_mainTests</tabstop>
   <tabstop>lineEdit_linearSensor</tabstop>
   <tabstop>verticalSlider_task</tabstop>
   <tabstop>lineEdit_linearSensorPercent</tabstop>
@@ -3824,8 +3727,8 @@
   <tabstop>pushButton_optionalTests_save</tabstop>
   <tabstop>pushButton_optionalTests_start</tabstop>
   <tabstop>tab_widget</tabstop>
-  <tabstop>pushButton_report</tabstop>
-  <tabstop>pushButton_open</tabstop>
+  <tabstop>pushButton_report_generate</tabstop>
+  <tabstop>pushButton_report_open</tabstop>
   <tabstop>pushButton_imageChartTask</tabstop>
   <tabstop>pushButton_imageChartPressure</tabstop>
   <tabstop>pushButton_imageChartFriction</tabstop>

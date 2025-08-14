@@ -98,16 +98,3 @@ StepTestSettings::TestParameters StepTestSettings::getParameters() const
 
     return testParameters;
 }
-
-qint64 StepTestSettings::totalTestTimeMillis() const
-{
-    TestParameters params = getParameters();
-
-    int P = params.points.size(); // количество точек
-    qint64 delay = params.delay;  // задержка в миллисекундах
-
-    // N_values = 1 старт + P прямой + 1 конец + P обратный + 1 возврат
-    qint64 N_values = 3 + 2 * P;
-
-    return 10000 + N_values * delay;
-}

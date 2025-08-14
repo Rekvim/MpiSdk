@@ -29,8 +29,6 @@ public:
 
     TestParameters getParameters() const;
 
-    qint64 totalTestTimeMillis() const;
-
 private:
     Ui::StepTestSettings *ui;
     const QTime m_maxTime = QTime(0, 4, 0, 0);
