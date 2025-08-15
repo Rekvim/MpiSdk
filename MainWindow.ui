@@ -23,7 +23,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>4</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tab_manual">
        <attribute name="title">
@@ -1021,7 +1021,7 @@
         <item>
          <widget class="QTabWidget" name="tabWidget_mainTests">
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tab_mainTests_task">
            <attribute name="title">
@@ -1126,34 +1126,6 @@
                     <bool>false</bool>
                    </property>
                   </widget>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item>
-               <spacer name="horizontalSpacer_7">
-                <property name="orientation">
-                 <enum>Qt::Orientation::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QGroupBox" name="groupBox_19">
-                <property name="mouseTracking">
-                 <bool>false</bool>
-                </property>
-                <property name="title">
-                 <string>Таймер теста</string>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_42">
-                 <item>
-                  <widget class="QLineEdit" name="lineEdit_testDuration"/>
                  </item>
                 </layout>
                </widget>

@@ -110,16 +110,6 @@ void Program::SetTimeStart()
     m_startTime = QDateTime::currentMSecsSinceEpoch();
 }
 
-void Program::results_strokeTest(const quint64 forwardTime, const quint64 backwardTime)
-{
-    QString forwardText = QTime(0, 0).addMSecs(forwardTime).toString("mm:ss.zzz");
-    QString backwardText = QTime(0, 0).addMSecs(backwardTime).toString("mm:ss.zzz");
-    emit SetText(TextObjects::Label_forward, forwardText);
-    emit SetText(TextObjects::LineEdit_forward, forwardText);
-    emit SetText(TextObjects::Label_backward, backwardText);
-    emit SetText(TextObjects::LineEdit_backward, backwardText);
-}
-
 void Program::AddRegression(const QVector<QPointF> &points)
 {
     QVector<Point> chartPoints;
@@ -185,7 +175,7 @@ void Program::UpdateSensors()
     emit AddPoints(Charts::Trend, points);
 }
 
-void Program::UpdateCharts_maintest()
+void Program::UpdateCharts_mainTest()
 {
     QVector<Point> points;
     qreal percent = ((m_mpi.GetDAC()->GetValue() - 4) / 16) * 100;
@@ -212,27 +202,7 @@ void Program::UpdateCharts_maintest()
     emit AddPoints(Charts::Pressure, points);
 }
 
-void Program::UpdateCharts_stroketest()
-{
-    QVector<Point> points;
-
-    qreal percent = ((m_mpi.GetDAC()->GetValue() - 4) / 16) * 100;
-    percent = qMin(qMax(percent, 0.0), 100.0);
-
-    ValveInfo *valveInfo = m_registry->GetValveInfo();
-    if (valveInfo->safePosition != 0) {
-        percent = 100 - percent;
-    }
-
-    quint64 time = QDateTime::currentMSecsSinceEpoch() - m_startTime;
-
-    points.push_back({0, qreal(time), percent});
-    points.push_back({1, qreal(time), m_mpi[0]->GetPersent()});
-
-    emit AddPoints(Charts::Stroke, points);
-}
-
-void Program::UpdateCharts_optiontest(Charts chart)
+void Program::UpdateCharts_optionTest(Charts chart)
 {
     QVector<Point> points;
 
@@ -292,11 +262,6 @@ void Program::results_mainTest(const MainTest::TestResults &results)
 void Program::results_stepTest(const QVector<StepTest::TestResult> &results, quint32 T_value)
 {
     emit SetStepResults(results, T_value);
-}
-
-void Program::GetPoints_maintest(QVector<QVector<QPointF>> &points)
-{
-    emit GetPoints(points, Charts::Task);
 }
 
 void Program::GetPoints_steptest(QVector<QVector<QPointF>> &points)
@@ -472,7 +437,8 @@ void Program::runningMainTest()
                             + delay
                             + (pn + 1) * response
                             + delay
-                            + (pn + 1) * response;
+                            + (pn + 1) * response
+                            + 10000ULL;
     emit TotalTestTimeMs(totalMs);
 
     parameters.dac_min = qMax(m_mpi.GetDAC()->GetRawFromValue(parameters.signal_min),
@@ -508,7 +474,7 @@ void Program::runningMainTest()
             this, &Program::EndTest);
 
     connect(mainTest, &MainTest::UpdateGraph,
-            this, &Program::UpdateCharts_maintest);
+            this, &Program::UpdateCharts_mainTest);
 
     connect(mainTest, &MainTest::SetDAC,
             this, &Program::SetDac);
@@ -548,12 +514,17 @@ void Program::runningMainTest()
     threadTest->start();
 }
 
+void Program::GetPoints_maintest(QVector<QVector<QPointF>> &points)
+{
+    emit GetPoints(points, Charts::Task);
+}
+
 void Program::runningStrokeTest()
 {
     emit SetButtonInitEnabled(false);
     emit ClearPoints(Charts::Stroke);
 
-    emit TotalTestTimeMs(15000ULL);
+    // emit TotalTestTimeMs(15000ULL);
 
     StrokeTest *strokeTest = new StrokeTest;
     QThread *threadTest = new QThread(this);
@@ -581,7 +552,7 @@ void Program::runningStrokeTest()
             this, &Program::EndTest);
 
     connect(strokeTest, &StrokeTest::UpdateGraph,
-            this, &Program::UpdateCharts_stroketest);
+            this, &Program::UpdateCharts_strokeTest);
 
     connect(strokeTest, &StrokeTest::SetDAC, this,
             &Program::SetDac);
@@ -594,6 +565,36 @@ void Program::runningStrokeTest()
     m_testing = true;
     emit EnableSetTask(false);
     threadTest->start();
+}
+
+void Program::UpdateCharts_strokeTest()
+{
+    QVector<Point> points;
+
+    qreal percent = ((m_mpi.GetDAC()->GetValue() - 4) / 16) * 100;
+    percent = qMin(qMax(percent, 0.0), 100.0);
+
+    ValveInfo *valveInfo = m_registry->GetValveInfo();
+    if (valveInfo->safePosition != 0) {
+        percent = 100 - percent;
+    }
+
+    quint64 time = QDateTime::currentMSecsSinceEpoch() - m_startTime;
+
+    points.push_back({0, qreal(time), percent});
+    points.push_back({1, qreal(time), m_mpi[0]->GetPersent()});
+
+    emit AddPoints(Charts::Stroke, points);
+}
+
+void Program::results_strokeTest(const quint64 forwardTime, const quint64 backwardTime)
+{
+    QString forwardText = QTime(0, 0).addMSecs(forwardTime).toString("mm:ss.zzz");
+    QString backwardText = QTime(0, 0).addMSecs(backwardTime).toString("mm:ss.zzz");
+    emit SetText(TextObjects::Label_forward, forwardText);
+    emit SetText(TextObjects::LineEdit_forward, forwardText);
+    emit SetText(TextObjects::Label_backward, backwardText);
+    emit SetText(TextObjects::LineEdit_backward, backwardText);
 }
 
 void Program::runningOptionalTest(const quint8 testNum)
@@ -619,7 +620,7 @@ void Program::runningOptionalTest(const quint8 testNum)
         const quint64 delay = static_cast<quint64>(parameters.delay);
 
         const quint64 N_values = 1 + 2 * P * (1 + S);
-        const quint64 totalMs = 10000ULL + N_values * delay;
+        const quint64 totalMs = 10000ULL + N_values * delay + 10000ULL;
         emit TotalTestTimeMs(totalMs);
 
         task.delay = parameters.delay;
@@ -644,11 +645,13 @@ void Program::runningOptionalTest(const quint8 testNum)
             }
         }
 
+        task.value.push_back(m_mpi.GetDAC()->GetRawFromValue(4.0));
+
         optionalTest->SetTask(task);
 
         connect(optionalTest, &OptionTest::UpdateGraph,
                 this, [&] {
-            UpdateCharts_optiontest(Charts::Response);
+            UpdateCharts_optionTest(Charts::Response);
         });
 
         emit ClearPoints(Charts::Response);
@@ -671,7 +674,7 @@ void Program::runningOptionalTest(const quint8 testNum)
         const quint64 delay = static_cast<quint64>(parameters.delay);
 
         const quint64 N_values = 1 + P * (2 * S);
-        const quint64 totalMs = 10000ULL + N_values * delay;
+        const quint64 totalMs = 10000ULL + N_values * delay + 10000ULL;
         emit TotalTestTimeMs(totalMs);
 
         task.delay = parameters.delay;
@@ -694,11 +697,13 @@ void Program::runningOptionalTest(const quint8 testNum)
             }
         }
 
+        task.value.push_back(m_mpi.GetDAC()->GetRawFromValue(4.0));
+
         optionalTest->SetTask(task);
 
         connect(optionalTest, &OptionTest::UpdateGraph,
                 this, [&] {
-            UpdateCharts_optiontest(Charts::Resolution);
+            UpdateCharts_optionTest(Charts::Resolution);
         });
 
         emit ClearPoints(Charts::Resolution);
@@ -755,7 +760,7 @@ void Program::runningOptionalTest(const quint8 testNum)
 
         connect(optionalTest, &OptionTest::UpdateGraph,
                 this, [&] {
-            UpdateCharts_optiontest(Charts::Step);
+            UpdateCharts_optionTest(Charts::Step);
         });
         connect(dynamic_cast<StepTest *>(optionalTest), &StepTest::GetPoints,
                 this, &Program::GetPoints_steptest,

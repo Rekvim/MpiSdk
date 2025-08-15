@@ -150,9 +150,9 @@ private:
 
 private slots:
     void UpdateSensors();
-    void UpdateCharts_maintest();
-    void UpdateCharts_stroketest();
-    void UpdateCharts_optiontest(Charts chart);
+    void UpdateCharts_mainTest();
+    void UpdateCharts_strokeTest();
+    void UpdateCharts_optionTest(Charts chart);
 
     void results_mainTest(const MainTest::TestResults &results);
     void results_strokeTest(const quint64 forwardTime, const quint64 backwardTime);

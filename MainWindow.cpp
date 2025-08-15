@@ -225,17 +225,28 @@ void MainWindow::on_pushButton_signal_20mA_clicked()
 
 void MainWindow::onCountdownTimeout()
 {
-    qint64 elapsedMs = m_elapsedTimer.elapsed();
+    quint64 elapsedMs = m_elapsedTimer.elapsed();
+    qint64 remainingMs = static_cast<qint64>(m_totalTestMs) - static_cast<qint64>(elapsedMs);
+    if (remainingMs < 0) remainingMs = 0;
 
-    qint64 remainingMs = m_totalTestMs - elapsedMs;
-    if (remainingMs <= 0) {
-        remainingMs = 0;
-    }
+    auto formatHMS = [](quint64 ms) -> QString {
+        const quint64 hours = ms / 3600000ULL;  ms %= 3600000ULL;
+        const quint64 mins = ms / 60000ULL;  ms %=60000ULL;
+        const quint64 secs = ms / 1000ULL;
+        const quint64 msec = ms % 1000ULL;
+        return QString("%1:%2:%3.%4")
+            .arg(hours, 2, 10, QChar('0'))
+            .arg(mins, 2, 10, QChar('0'))
+            .arg(secs, 2, 10, QChar('0'))
+            .arg(msec, 3, 10, QChar('0'));
+    };
 
-    QTime t(0, 0);
-    t = t.addMSecs(remainingMs);
-
-    ui->lineEdit_testDuration->setText(t.toString("hh:mm:ss.zzz"));
+    ui->statusbar->showMessage(
+        QStringLiteral("Тест в процессе. До завершения теста осталось: %1 (прошло %2 из %3)")
+            .arg(formatHMS(static_cast<quint64>(remainingMs)))
+            .arg(formatHMS(static_cast<quint64>(elapsedMs)))
+            .arg(formatHMS(m_totalTestMs))
+        );
 
     if (remainingMs == 0) {
         m_durationTimer->stop();
