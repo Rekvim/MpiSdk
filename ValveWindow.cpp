@@ -129,8 +129,29 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
     connect(ui->lineEdit_CV, &QLineEdit::textChanged,
             this, [this]{ updatePartNumbers(); });
 
-    connect(ui->comboBox_materialSaddle, QOverload<int>::of(&QComboBox::currentIndexChanged),
-            this, &ValveWindow::updatePartNumbers);
+    connect(ui->comboBox_materialSaddle,
+            QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this,
+            [this](int idx){
+                const bool manual = (ui->comboBox_materialSaddle->itemText(idx) == m_manualInput);
+                if (manual) {
+                    ui->lineEdit_materialSaddle->setEnabled(true);
+                    ui->lineEdit_materialSaddle->setFocus();
+
+                    for (auto* le : m_partFields) le->clear();
+                } else {
+                    ui->lineEdit_materialSaddle->clear();
+                    ui->lineEdit_materialSaddle->setEnabled(false);
+                    updatePartNumbers();
+                }
+            });
+
+    connect(ui->lineEdit_materialSaddle, &QLineEdit::textEdited, this, [this](const QString&){
+        updatePartNumbers();
+    });
+
+    ui->lineEdit_materialSaddle->setEnabled(isManual(ui->comboBox_materialSaddle));
+    if (!isManual(ui->comboBox_materialSaddle)) ui->lineEdit_materialSaddle->clear();
 
     connect(ui->comboBox_manufacturer, QOverload<int>::of(&QComboBox::currentIndexChanged),
             this, &ValveWindow::onManufacturerChanged);
@@ -138,15 +159,15 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
     if (ui->comboBox_DN->count() > 0)
         onDNChanged(0);
 
-    connect(ui->comboBox_manufacturer, QOverload<int>::of(&QComboBox::currentIndexChanged),
-            this, [this](int){
-                ui->lineEdit_valveSeries->clear();
-                ui->comboBox_DN->clear();
-                ui->comboBox_CV->clear();
-                ui->lineEdit_valveModel->clear();
-                //ui->comboBox_dinamicError->clear();
-                ui->comboBox_materialSaddle->clear();
-            });
+    // connect(ui->comboBox_manufacturer, QOverload<int>::of(&QComboBox::currentIndexChanged),
+    //         this, [this](int){
+    //             ui->lineEdit_valveSeries->clear();
+    //             ui->comboBox_DN->clear();
+    //             ui->comboBox_CV->clear();
+    //             ui->lineEdit_valveModel->clear();
+    //             //ui->comboBox_dinamicError->clear();
+    //             ui->comboBox_materialSaddle->clear();
+    //         });
 
     ui->lineEdit_driveModel->setEnabled(false);
 
@@ -178,6 +199,9 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
             this, &ValveWindow::onPositionerTypeChanged);
 
     onPositionerTypeChanged(ui->comboBox_positionerType->currentIndex());
+
+    setDnCvManualMode(ui->comboBox_manufacturer->currentText() == m_manualInput);
+    setSaddleManualMode(ui->comboBox_manufacturer->currentText() == m_manualInput);
 }
 
 ValveWindow::~ValveWindow()
@@ -187,9 +211,78 @@ ValveWindow::~ValveWindow()
 
 void ValveWindow::onManufacturerChanged(int /*index*/)
 {
+    const bool manufacturerManual = (ui->comboBox_manufacturer->currentText() == m_manualInput);
+
     ui->lineEdit_valveSeries->clear();
     ui->comboBox_DN->clear();
     ui->comboBox_CV->clear();
+    ui->lineEdit_valveModel->clear();
+    ui->comboBox_materialSaddle->clear();
+
+    if (manufacturerManual) {
+        setDnCvManualMode(true);
+        setSaddleManualMode(true);
+    } else {
+        setDnCvManualMode(false);
+        setSaddleManualMode(false);
+
+        const QString seriesName = ui->lineEdit_valveSeries->text().trimmed();
+        if (!seriesName.isEmpty()) {
+            if (auto sidOpt = currentSeriesId(); sidOpt) {
+                populateModelsAndDn(*sidOpt);
+            }
+        }
+    }
+}
+void ValveWindow::setDnCvManualMode(bool manual)
+{
+    const QSignalBlocker b1(ui->comboBox_DN);
+    const QSignalBlocker b2(ui->comboBox_CV);
+
+    ui->comboBox_DN->clear();
+    ui->comboBox_CV->clear();
+
+    if (manual) {
+        // Только "Ручной ввод" в обоих комбобоксах
+        ui->comboBox_DN->addItem(m_manualInput);
+        ui->comboBox_CV->addItem(m_manualInput);
+        ui->comboBox_DN->setCurrentIndex(0);
+        ui->comboBox_CV->setCurrentIndex(0);
+
+        ui->lineEdit_DN->setEnabled(true);
+        ui->lineEdit_CV->setEnabled(true);
+
+        for (auto* le : m_partFields) le->clear();
+    } else {
+        ui->lineEdit_DN->clear();
+        ui->lineEdit_CV->clear();
+        ui->lineEdit_DN->setEnabled(false);
+        ui->lineEdit_CV->setEnabled(false);
+
+        ui->comboBox_DN->clear();
+        ui->comboBox_CV->clear();
+    }
+}
+
+void ValveWindow::setSaddleManualMode(bool manual)
+{
+    const QSignalBlocker b(ui->comboBox_materialSaddle);
+
+    ui->comboBox_materialSaddle->clear();
+
+    if (manual) {
+        ui->comboBox_materialSaddle->addItem(m_manualInput);
+        ui->comboBox_materialSaddle->setCurrentIndex(0);
+        ui->lineEdit_materialSaddle->setEnabled(true);
+        ui->lineEdit_materialSaddle->setFocus();
+
+        for (auto* le : m_partFields) le->clear();
+    } else {
+        // обычный режим — просто гарантируем наличие пункта
+        ensureSaddleManualOption();
+        ui->lineEdit_materialSaddle->clear();
+        ui->lineEdit_materialSaddle->setEnabled(false);
+    }
 }
 
 std::optional<int> ValveWindow::currentSeriesId() const
@@ -272,6 +365,13 @@ void ValveWindow::refreshCvForDn(std::optional<int> dnIdOpt)
     }
 }
 
+void ValveWindow::ensureSaddleManualOption()
+{
+    if (ui->comboBox_materialSaddle->findText(m_manualInput) < 0) {
+        ui->comboBox_materialSaddle->addItem(m_manualInput);
+    }
+}
+
 void ValveWindow::populateModelsAndDn(int seriesId)
 {
     populateComboInts(ui->comboBox_DN, m_db.getValveDnSizes(seriesId), true);
@@ -280,6 +380,10 @@ void ValveWindow::populateModelsAndDn(int seriesId)
 
 void ValveWindow::onModelEditingFinished()
 {
+    if (isManual(ui->comboBox_manufacturer)) {
+        return;
+    }
+
     // ui->comboBox_dinamicError->clear();
 
     QString seriesName = ui->lineEdit_valveSeries->text().trimmed();
@@ -297,11 +401,51 @@ void ValveWindow::onModelEditingFinished()
 
     // populateComboInts(ui->comboBox_dinamicError, m_db.getDynamicErrors(modelId));
 
-    populateCombo(ui->comboBox_materialSaddle, m_db.getSaddleMaterialsForModel(modelId));
+    populateCombo(ui->comboBox_materialSaddle, m_db.getSaddleMaterialsForModel(modelId), true);
+
+    if (ui->comboBox_manufacturer->currentText() == m_manualInput) {
+        // остаёмся в ручном режиме для материала седла
+        int manualIdx = ui->comboBox_materialSaddle->findText(m_manualInput);
+        if (manualIdx >= 0) {
+            ui->comboBox_materialSaddle->setCurrentIndex(manualIdx);
+            ui->lineEdit_materialSaddle->setEnabled(true);
+        }
+    }
+}
+
+std::optional<int> ValveWindow::currentModelId() const
+{
+    const auto sidOpt = currentSeriesId();
+    if (!sidOpt) return std::nullopt;
+
+    const QString model = ui->lineEdit_valveModel->text().trimmed();
+    const int modelId = m_db.getValveModelIdByName(*sidOpt, model);
+    if (modelId < 0) return std::nullopt;
+    return modelId;
+}
+
+std::optional<int> ValveWindow::resolveSaddleMaterialIdFromManual() const
+{
+    const auto midOpt = currentModelId();
+    if (!midOpt) return std::nullopt;
+
+    const QString typed = ui->lineEdit_materialSaddle->text().trimmed();
+    if (typed.isEmpty()) return std::nullopt;
+
+    const auto list = m_db.getSaddleMaterialsForModel(*midOpt); // контейнер пар <id, QString>
+    for (const auto& [id, text] : list) {
+        if (QString::compare(text.trimmed(), typed, Qt::CaseInsensitive) == 0)
+            return id;
+    }
+    return std::nullopt;
 }
 
 void ValveWindow::onSeriesEditingFinished()
 {
+    if (isManual(ui->comboBox_manufacturer)) {
+        return;
+    }
+
     QString seriesName = ui->lineEdit_valveSeries->text().trimmed();
     if (seriesName.isEmpty())
         return;
@@ -403,7 +547,18 @@ void ValveWindow::updatePartNumbers()
     }
 
     // 5) Обычная загрузка комплектующих
-    const int saddleMaterialId = ui->comboBox_materialSaddle->currentData().toInt();
+    int saddleMaterialId = -1;
+    if (isManual(ui->comboBox_materialSaddle)) {
+        if (auto idOpt = resolveSaddleMaterialIdFromManual(); idOpt && *idOpt > 0) {
+            saddleMaterialId = *idOpt;
+        } else {
+            // материал не распознан — чистим детали и выходим
+            for (auto* le : m_partFields) le->clear();
+            return;
+        }
+    } else {
+        saddleMaterialId = ui->comboBox_materialSaddle->currentData().toInt();
+    }
     const auto parts = m_db.getValveComponents(*dnIdOpt, *cvIdOpt, saddleMaterialId);
 
     static const QMap<QString, QString> displayNames = {
@@ -478,7 +633,10 @@ void ValveWindow::SaveValveInfo()
     else
         m_valveInfo->driveModel = ui->comboBox_driveModel->currentText();
 
-
+    if (ui->comboBox_materialSaddle->currentText() == m_manualInput)
+        m_materialsOfComponentParts->saddle = ui->lineEdit_materialSaddle->text().trimmed();
+    else
+        m_materialsOfComponentParts->saddle = ui->comboBox_materialSaddle->currentText();
 
     m_valveInfo->serialNumber = ui->lineEdit_serialNumber->text();
     m_valveInfo->valveStroke = ui->lineEdit_valveStroke->text();
@@ -502,7 +660,7 @@ void ValveWindow::SaveValveInfo()
     m_valveInfo->strokeMovement = ui->comboBox_stroke_movement->currentIndex();
     m_valveInfo->toolNumber = ui->comboBox_toolNumber->currentIndex();
 
-    m_materialsOfComponentParts->saddle = ui->comboBox_materialSaddle->currentText();
+    // m_materialsOfComponentParts->saddle = ui->comboBox_materialSaddle->currentText();
     m_materialsOfComponentParts->corpus = ui->lineEdit_materialCorpus->text();
     m_materialsOfComponentParts->cap = ui->lineEdit_materialCap->text();
     m_materialsOfComponentParts->ball = ui->lineEdit_materialBall->text();
@@ -555,6 +713,24 @@ void ValveWindow::PositionChanged(const QString &position)
         ui->comboBox_driveModel->setCurrentIndex(manualIdx);
         ui->lineEdit_driveModel->setText(loaded);
         ui->lineEdit_driveModel->setEnabled(true);
+    }
+
+    {
+        const QString savedMat = m_materialsOfComponentParts->saddle.trimmed();
+        int matIdx = ui->comboBox_materialSaddle->findText(savedMat, Qt::MatchFixedString);
+        if (matIdx >= 0) {
+            ui->comboBox_materialSaddle->setCurrentIndex(matIdx);
+            ui->lineEdit_materialSaddle->clear();
+            ui->lineEdit_materialSaddle->setEnabled(false);
+        } else {
+            // нет такого в списке — считаем это ручным вводом
+            int manualIdx = ui->comboBox_materialSaddle->findText(m_manualInput);
+            if (manualIdx >= 0) {
+                ui->comboBox_materialSaddle->setCurrentIndex(manualIdx);
+                ui->lineEdit_materialSaddle->setText(savedMat);
+                ui->lineEdit_materialSaddle->setEnabled(true);
+            }
+        }
     }
 
     ui->lineEdit_driveRange->setText(m_valveInfo->range);

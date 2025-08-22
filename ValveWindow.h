@@ -54,6 +54,14 @@ private:
     static constexpr qreal m_diameter[] = {50.0, 86.0, 108.0, 125.0};
 
     void refreshCvForDn(std::optional<int> dnIdOpt);
+    void setDnCvManualMode(bool manual);
+    void setSaddleManualMode(bool manual);
+
+    void ensureSaddleManualOption();
+
+    std::optional<int> currentModelId() const;
+    std::optional<int> resolveSaddleMaterialIdFromManual() const;
+
 
 private slots:
     void onSeriesEditingFinished();
