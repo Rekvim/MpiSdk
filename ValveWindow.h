@@ -40,14 +40,28 @@ private:
     ValveDataLoader m_loader;
     ValveDatabase& m_db;
     QMap<QString, QLineEdit*> m_partFields;
+
+    inline bool isManual(const QComboBox* cb) const {
+        return cb->currentText() == m_manualInput;
+    }
+
     const QString m_manualInput = "Ручной ввод";
+
+    std::optional<int> currentSeriesId() const;
+    std::optional<int> resolveDnIdFromManual() const;
+    std::optional<int> resolveCvIdFromManual(int dnSizeId) const;
+
     static constexpr qreal m_diameter[] = {50.0, 86.0, 108.0, 125.0};
+
+    void refreshCvForDn(std::optional<int> dnIdOpt);
 
 private slots:
     void onSeriesEditingFinished();
     void onModelEditingFinished();
 
     void onDNChanged(int index);
+    void onCVChanged(int index);
+
     void onManufacturerChanged(int index);
     void onPositionerTypeChanged(int index);
 

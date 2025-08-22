@@ -110,32 +110,6 @@ void Program::SetTimeStart()
     m_startTime = QDateTime::currentMSecsSinceEpoch();
 }
 
-void Program::AddRegression(const QVector<QPointF> &points)
-{
-    QVector<Point> chartPoints;
-    for (QPointF point : points) {
-        chartPoints.push_back({1, point.x(), point.y()});
-    }
-    emit AddPoints(Charts::Pressure, chartPoints);
-
-    //emit SetVisible(Charts::Main_pressure, 1, true);
-    emit SetRegressionEnable(true);
-}
-
-void Program::AddFriction(const QVector<QPointF> &points)
-{
-    QVector<Point> chartPoints;
-
-    ValveInfo *valveInfo = m_registry->GetValveInfo();
-
-    qreal k = 5 * M_PI * valveInfo->diameter * valveInfo->diameter / 4;
-
-    for (QPointF point : points) {
-        chartPoints.push_back({0, point.x(), point.y() * k});
-    }
-    emit AddPoints(Charts::Friction, chartPoints);
-}
-
 void Program::UpdateSensors()
 {
     for (quint8 i = 0; i < m_mpi.SensorCount(); ++i) {
@@ -159,13 +133,8 @@ void Program::UpdateSensors()
         emit SetTask(m_mpi.GetDAC()->GetValue());
 
     QVector<Point> points;
-    qreal percent = ((m_mpi.GetDAC()->GetValue() - 4) / 16) * 100;
-    percent = qMin(qMax(percent, 0.0), 100.0);
-
-    ValveInfo *valveInfo = m_registry->GetValveInfo();
-    if (valveInfo->safePosition != 0) {
-        percent = 100 - percent;
-    }
+    qreal percent = calcPercent(m_mpi.GetDAC()->GetValue(),
+                                m_registry->GetValveInfo()->safePosition != 0);
 
     quint64 time = QDateTime::currentMSecsSinceEpoch() - m_initTime;
 
@@ -173,100 +142,6 @@ void Program::UpdateSensors()
     points.push_back({1, qreal(time), m_mpi[0]->GetPersent()});
 
     emit AddPoints(Charts::Trend, points);
-}
-
-void Program::UpdateCharts_mainTest()
-{
-    QVector<Point> points;
-    qreal percent = ((m_mpi.GetDAC()->GetValue() - 4) / 16) * 100;
-    percent = qMin(qMax(percent, 0.0), 100.0);
-
-    ValveInfo *valveInfo = m_registry->GetValveInfo();
-    if (valveInfo->safePosition != 0) {
-        percent = 100 - percent;
-    }
-
-    qreal task = m_mpi[0]->GetValueFromPercent(percent);
-    qreal X = m_mpi.GetDAC()->GetValue();
-    points.push_back({0, X, task});
-
-    for (quint8 i = 0; i < m_mpi.SensorCount(); ++i) {
-        points.push_back({static_cast<quint8>(i + 1), X, m_mpi[i]->GetValue()});
-    }
-
-    emit AddPoints(Charts::Task, points);
-
-    points.clear();
-    points.push_back({0, m_mpi[1]->GetValue(), m_mpi[0]->GetValue()});
-
-    emit AddPoints(Charts::Pressure, points);
-}
-
-void Program::UpdateCharts_optionTest(Charts chart)
-{
-    QVector<Point> points;
-
-    qreal percent = ((m_mpi.GetDAC()->GetValue() - 4) / 16) * 100;
-    percent = qMin(qMax(percent, 0.0), 100.0);
-
-    ValveInfo *valveInfo = m_registry->GetValveInfo();
-    if (valveInfo->safePosition != 0) {
-        percent = 100 - percent;
-    }
-
-    quint64 time = QDateTime::currentMSecsSinceEpoch() - m_startTime;
-
-    points.push_back({0, qreal(time), percent});
-    points.push_back({1, qreal(time), m_mpi[0]->GetPersent()});
-
-    emit AddPoints(chart, points);
-}
-
-void Program::results_mainTest(const MainTest::TestResults &results)
-{
-    ValveInfo *valveInfo = m_registry->GetValveInfo();
-
-    qreal k = 5 * M_PI * valveInfo->diameter * valveInfo->diameter / 4;
-
-    emit SetText(TextObjects::Label_pressureDifferenceValue,
-                 QString::asprintf("%.3f bar", results.pressureDiff));
-    emit SetText(TextObjects::Label_frictionForceValue,
-                 QString::asprintf("%.3f H", results.pressureDiff * k));
-    emit SetText(TextObjects::Label_frictionPercentValue,
-                 QString::asprintf("%.2f %%", results.friction));
-    emit SetText(TextObjects::Label_dynamicErrorMax,
-                 QString::asprintf("%.3f mA", results.dinErrorMean));
-    emit SetText(TextObjects::Label_dynamicErrorMax,
-                 QString::asprintf("%.2f %%", results.dinErrorMean / 0.16));
-    emit SetText(TextObjects::Label_dynamicErrorMean,
-                 QString::asprintf("%.3f mA", results.dinErrorMax));
-    emit SetText(TextObjects::Label_dynamicErrorMeanPercent,
-                 QString::asprintf("%.2f %%", results.dinErrorMax / 0.16));
-
-    emit SetText(TextObjects::Label_lowLimitValue, QString::asprintf("%.2f bar", results.lowLimit));
-    emit SetText(TextObjects::Label_highLimitValue, QString::asprintf("%.2f bar", results.highLimit));
-
-    emit SetText(TextObjects::LineEdit_dinamic_error,
-                 QString::asprintf("%.2f", results.dinErrorMean / 0.16));
-    emit SetText(TextObjects::LineEdit_range_pressure,
-                 QString::asprintf("%.2f - %.2f", results.lowLimit, results.highLimit));
-    emit SetText(TextObjects::LineEdit_range,
-                 QString::asprintf("%.2f - %.2f", results.springLow, results.springHigh));
-
-    emit SetText(TextObjects::LineEdit_friction,
-                 QString::asprintf("%.3f", results.pressureDiff * k));
-    emit SetText(TextObjects::LineEdit_friction_percent,
-                 QString::asprintf("%.2f", results.friction));
-}
-
-void Program::results_stepTest(const QVector<StepTest::TestResult> &results, quint32 T_value)
-{
-    emit SetStepResults(results, T_value);
-}
-
-void Program::GetPoints_steptest(QVector<QVector<QPointF>> &points)
-{
-    emit GetPoints(points, Charts::Step);
 }
 
 void Program::EndTest()
@@ -514,9 +389,94 @@ void Program::runningMainTest()
     threadTest->start();
 }
 
+void Program::AddFriction(const QVector<QPointF> &points)
+{
+    QVector<Point> chartPoints;
+
+    ValveInfo *valveInfo = m_registry->GetValveInfo();
+
+    qreal k = 5 * M_PI * valveInfo->diameter * valveInfo->diameter / 4;
+
+    for (QPointF point : points) {
+        chartPoints.push_back({0, point.x(), point.y() * k});
+    }
+    emit AddPoints(Charts::Friction, chartPoints);
+}
+
+void Program::AddRegression(const QVector<QPointF> &points)
+{
+    QVector<Point> chartPoints;
+    for (QPointF point : points) {
+        chartPoints.push_back({1, point.x(), point.y()});
+    }
+    emit AddPoints(Charts::Pressure, chartPoints);
+
+    //emit SetVisible(Charts::Main_pressure, 1, true);
+    emit SetRegressionEnable(true);
+}
+
+void Program::UpdateCharts_mainTest()
+{
+    QVector<Point> points;
+    qreal percent = calcPercent(m_mpi.GetDAC()->GetValue(),
+                                m_registry->GetValveInfo()->safePosition != 0);
+
+    qreal task = m_mpi[0]->GetValueFromPercent(percent);
+    qreal X = m_mpi.GetDAC()->GetValue();
+    points.push_back({0, X, task});
+
+    for (quint8 i = 0; i < m_mpi.SensorCount(); ++i) {
+        points.push_back({static_cast<quint8>(i + 1), X, m_mpi[i]->GetValue()});
+    }
+
+    emit AddPoints(Charts::Task, points);
+
+    points.clear();
+    points.push_back({0, m_mpi[1]->GetValue(), m_mpi[0]->GetValue()});
+
+    emit AddPoints(Charts::Pressure, points);
+}
+
 void Program::GetPoints_maintest(QVector<QVector<QPointF>> &points)
 {
     emit GetPoints(points, Charts::Task);
+}
+
+void Program::results_mainTest(const MainTest::TestResults &results)
+{
+    ValveInfo *valveInfo = m_registry->GetValveInfo();
+
+    qreal k = 5 * M_PI * valveInfo->diameter * valveInfo->diameter / 4;
+
+    emit SetText(TextObjects::Label_pressureDifferenceValue,
+                 QString::asprintf("%.3f bar", results.pressureDiff));
+    emit SetText(TextObjects::Label_frictionForceValue,
+                 QString::asprintf("%.3f H", results.pressureDiff * k));
+    emit SetText(TextObjects::Label_frictionPercentValue,
+                 QString::asprintf("%.2f %%", results.friction));
+    emit SetText(TextObjects::Label_dynamicErrorMax,
+                 QString::asprintf("%.3f mA", results.dinErrorMean));
+    emit SetText(TextObjects::Label_dynamicErrorMax,
+                 QString::asprintf("%.2f %%", results.dinErrorMean / 0.16));
+    emit SetText(TextObjects::Label_dynamicErrorMean,
+                 QString::asprintf("%.3f mA", results.dinErrorMax));
+    emit SetText(TextObjects::Label_dynamicErrorMeanPercent,
+                 QString::asprintf("%.2f %%", results.dinErrorMax / 0.16));
+
+    emit SetText(TextObjects::Label_lowLimitValue, QString::asprintf("%.2f bar", results.lowLimit));
+    emit SetText(TextObjects::Label_highLimitValue, QString::asprintf("%.2f bar", results.highLimit));
+
+    emit SetText(TextObjects::LineEdit_dinamic_error,
+                 QString::asprintf("%.2f", results.dinErrorMean / 0.16));
+    emit SetText(TextObjects::LineEdit_range_pressure,
+                 QString::asprintf("%.2f - %.2f", results.lowLimit, results.highLimit));
+    emit SetText(TextObjects::LineEdit_range,
+                 QString::asprintf("%.2f - %.2f", results.springLow, results.springHigh));
+
+    emit SetText(TextObjects::LineEdit_friction,
+                 QString::asprintf("%.3f", results.pressureDiff * k));
+    emit SetText(TextObjects::LineEdit_friction_percent,
+                 QString::asprintf("%.2f", results.friction));
 }
 
 void Program::runningStrokeTest()
@@ -571,13 +531,8 @@ void Program::UpdateCharts_strokeTest()
 {
     QVector<Point> points;
 
-    qreal percent = ((m_mpi.GetDAC()->GetValue() - 4) / 16) * 100;
-    percent = qMin(qMax(percent, 0.0), 100.0);
-
-    ValveInfo *valveInfo = m_registry->GetValveInfo();
-    if (valveInfo->safePosition != 0) {
-        percent = 100 - percent;
-    }
+    qreal percent = calcPercent(m_mpi.GetDAC()->GetValue(),
+                                m_registry->GetValveInfo()->safePosition != 0);
 
     quint64 time = QDateTime::currentMSecsSinceEpoch() - m_startTime;
 
@@ -813,6 +768,31 @@ void Program::runningOptionalTest(const quint8 testNum)
     m_testing = true;
     emit EnableSetTask(false);
     threadTest->start();
+}
+
+void Program::results_stepTest(const QVector<StepTest::TestResult> &results, quint32 T_value)
+{
+    emit SetStepResults(results, T_value);
+}
+
+void Program::GetPoints_steptest(QVector<QVector<QPointF>> &points)
+{
+    emit GetPoints(points, Charts::Step);
+}
+
+void Program::UpdateCharts_optionTest(Charts chart)
+{
+    QVector<Point> points;
+
+    qreal percent = calcPercent(m_mpi.GetDAC()->GetValue(),
+                                m_registry->GetValveInfo()->safePosition != 0);
+
+    quint64 time = QDateTime::currentMSecsSinceEpoch() - m_startTime;
+
+    points.push_back({0, qreal(time), percent});
+    points.push_back({1, qreal(time), m_mpi[0]->GetPersent()});
+
+    emit AddPoints(chart, points);
 }
 
 void Program::TerminateTest()
