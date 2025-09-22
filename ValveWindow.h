@@ -51,7 +51,7 @@ private:
     std::optional<int> resolveDnIdFromManual() const;
     std::optional<int> resolveCvIdFromManual(int dnSizeId) const;
 
-    static constexpr qreal m_diameter[] = {50.0, 86.0, 108.0, 125.0};
+    QList<QString> m_diameter = {"50.0", "86.0", "108.0", "125.0"};
 
     void refreshCvForDn(std::optional<int> dnIdOpt);
     void setDnCvManualMode(bool manual);

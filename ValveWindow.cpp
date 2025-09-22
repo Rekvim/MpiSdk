@@ -51,7 +51,7 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
             }
             );
 
-    ui->lineEdit_diameterPulley->setText(QString::number(m_diameter[0]));
+    ui->lineEdit_diameterPulley->setText(m_diameter[0]);
 
     connect(ui->comboBox_stroke_movement, &QComboBox::currentIndexChanged,
             this, &ValveWindow::StrokeChanged);
@@ -768,7 +768,7 @@ void ValveWindow::ToolChanged(quint16 n)
         ui->lineEdit_diameterPulley->setEnabled(true);
     } else {
         ui->lineEdit_diameterPulley->setEnabled(false);
-        ui->lineEdit_diameterPulley->setText(QString::number(m_diameter[n]));
+        ui->lineEdit_diameterPulley->setText(m_diameter[n]);
     }
 }
 
@@ -832,7 +832,7 @@ void ValveWindow::Clear()
     ui->comboBox_toolNumber->setCurrentIndex(0);
 
     ui->lineEdit_diameter->setText("1.0");
-    ui->lineEdit_diameterPulley->setText(QString::number(m_diameter[0]));
+    ui->lineEdit_diameterPulley->setText(m_diameter[0]);
 }
 
 void ValveWindow::ButtonClick()
