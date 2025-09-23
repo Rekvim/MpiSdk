@@ -723,7 +723,6 @@ void ValveWindow::PositionChanged(const QString &position)
             ui->lineEdit_materialSaddle->clear();
             ui->lineEdit_materialSaddle->setEnabled(false);
         } else {
-            // нет такого в списке — считаем это ручным вводом
             int manualIdx = ui->comboBox_materialSaddle->findText(m_manualInput);
             if (manualIdx >= 0) {
                 ui->comboBox_materialSaddle->setCurrentIndex(manualIdx);
