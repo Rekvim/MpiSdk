@@ -484,8 +484,6 @@ void Program::runningStrokeTest()
     emit SetButtonInitEnabled(false);
     emit ClearPoints(Charts::Stroke);
 
-    // emit TotalTestTimeMs(15000ULL);
-
     StrokeTest *strokeTest = new StrokeTest;
     QThread *threadTest = new QThread(this);
     strokeTest->moveToThread(threadTest);
@@ -514,8 +512,9 @@ void Program::runningStrokeTest()
     connect(strokeTest, &StrokeTest::UpdateGraph,
             this, &Program::UpdateCharts_strokeTest);
 
-    connect(strokeTest, &StrokeTest::SetDAC, this,
-            &Program::SetDac);
+    connect(strokeTest, &StrokeTest::SetDAC,
+            this, &Program::SetDac);
+
     connect(strokeTest, &StrokeTest::SetStartTime,
             this, &Program::SetTimeStart);
 
