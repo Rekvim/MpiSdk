@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
         return 0;
 
     ValveWindow valveWindow(database);
-    valveWindow.SetRegistry(&registry);
+    valveWindow.setRegistry(&registry);
     if (valveWindow.exec() != QDialog::Accepted)
         return 0;
 
@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     }
 
     MainWindow mainWindow;
-    mainWindow.SetRegistry(&registry);
+    mainWindow.setRegistry(&registry);
 
     mainWindow.setReport(report);
     mainWindow.show();

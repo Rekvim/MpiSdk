@@ -54,21 +54,15 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
     ui->lineEdit_diameterPulley->setText(m_diameter[0]);
 
     connect(ui->comboBox_strokeMovement, &QComboBox::currentIndexChanged,
-            this, &ValveWindow::StrokeChanged);
+            this, &ValveWindow::strokeChanged);
 
     connect(ui->comboBox_toolNumber, &QComboBox::currentIndexChanged,
-            this, &ValveWindow::ToolChanged);
+            this, &ValveWindow::toolChanged);
 
     connect(ui->lineEdit_driveDiameter, &QLineEdit::textChanged,
-            this, &ValveWindow::DiameterChanged);
+            this, &ValveWindow::diameterChanged);
 
-    connect(ui->pushButton, &QPushButton::clicked,
-            this, &ValveWindow::ButtonClick);
-
-    connect(ui->pushButton_clear, &QPushButton::clicked,
-            this, &ValveWindow::Clear);
-
-    DiameterChanged(ui->lineEdit_driveDiameter->text());
+    diameterChanged(ui->lineEdit_driveDiameter->text());
 
     m_partFields.insert("plunger", ui->lineEdit_plunger);
     m_partFields.insert("saddle", ui->lineEdit_saddle);
@@ -590,7 +584,7 @@ void ValveWindow::updatePartNumbers()
 }
 
 
-void ValveWindow::SetRegistry(Registry *registry)
+void ValveWindow::setRegistry(Registry *registry)
 {
     Q_ASSERT(registry != nullptr);
     m_registry = registry;
@@ -609,16 +603,16 @@ void ValveWindow::SetRegistry(Registry *registry)
         int idx = ui->comboBox_positionNumber->findText(lastPosition);
         if (idx >= 0) {
             ui->comboBox_positionNumber->setCurrentIndex(idx);
-            PositionChanged(lastPosition);
+            positionChanged(lastPosition);
         }
     }
 
     connect(ui->comboBox_positionNumber,
             &QComboBox::currentTextChanged,
             this,
-            &ValveWindow::PositionChanged);
+            &ValveWindow::positionChanged);
 }
-void ValveWindow::SaveValveInfo()
+void ValveWindow::saveValveInfo()
 {
     if (ui->comboBox_positionNumber->currentText() == m_manualInput)
         m_valveInfo = m_registry->GetValveInfo(ui->lineEdit_positionNumber->text());
@@ -675,7 +669,7 @@ void ValveWindow::SaveValveInfo()
     m_registry->SaveValveInfo();
 }
 
-void ValveWindow::PositionChanged(const QString &position)
+void ValveWindow::positionChanged(const QString &position)
 {
     m_valveInfo = m_registry->GetValveInfo(position);
     m_materialsOfComponentParts = m_registry->GetMaterialsOfComponentParts();
@@ -753,7 +747,7 @@ void ValveWindow::PositionChanged(const QString &position)
     ui->lineEdit_materialGuideSleeve->setText(m_materialsOfComponentParts->guideSleeve);
 }
 
-void ValveWindow::StrokeChanged(quint16 n)
+void ValveWindow::strokeChanged(quint16 n)
 {
     ui->comboBox_toolNumber->setEnabled(n == 1);
     ui->lineEdit_diameterPulley->setEnabled(
@@ -761,7 +755,7 @@ void ValveWindow::StrokeChanged(quint16 n)
         && (ui->comboBox_toolNumber->currentIndex() == ui->comboBox_toolNumber->count() - 1));
 }
 
-void ValveWindow::ToolChanged(quint16 n)
+void ValveWindow::toolChanged(quint16 n)
 {
     if (n == ui->comboBox_toolNumber->count() - 1) {
         ui->lineEdit_diameterPulley->setEnabled(true);
@@ -771,7 +765,7 @@ void ValveWindow::ToolChanged(quint16 n)
     }
 }
 
-void ValveWindow::DiameterChanged(const QString &text)
+void ValveWindow::diameterChanged(const QString &text)
 {
     qreal value = text.toDouble();
     ui->label_square->setText(QString::number(M_PI * value * value / 4.0, 'f', 2));
@@ -802,7 +796,35 @@ void ValveWindow::fillReport(ReportSaver::Report &report) {
     report.data.push_back({65, 10, ui->lineEdit_saddleLock->text()});
 }
 
-void ValveWindow::Clear()
+void ValveWindow::on_pushButton_clicked()
+{
+    if (ui->lineEdit_positionNumber->text().isEmpty()) {
+        QMessageBox::warning(this, "Ошибка", "Введите номер позиции");
+        return;
+    }
+
+    if ((ui->lineEdit_serialNumber->text().isEmpty()) or (ui->lineEdit_PN->text().isEmpty())
+        or (ui->lineEdit_strokValve->text().isEmpty()) or (ui->lineEdit_positionerModel->text().isEmpty())
+        or (ui->lineEdit_driveRange->text().isEmpty())) {
+        QMessageBox::StandardButton button
+            = QMessageBox::question(this,
+                                    "Предупреждение",
+                                    "Введены не все данные, вы действительно хотите продолжить?");
+
+        if (button == QMessageBox::StandardButton::No) {
+            return;
+        }
+    }
+
+    OtherParameters *otherParameters = m_registry->GetOtherParameters();
+    otherParameters->safePosition = ui->comboBox_safePosition->currentText();
+    otherParameters->movement = ui->comboBox_strokeMovement->currentText();
+
+    saveValveInfo();
+    accept();
+}
+
+void ValveWindow::on_pushButton_clear_clicked()
 {
     ui->lineEdit_manufacturer->setText("");
     ui->lineEdit_serialNumber->setText("");
@@ -834,31 +856,3 @@ void ValveWindow::Clear()
     ui->lineEdit_diameterPulley->setText(m_diameter[0]);
 }
 
-void ValveWindow::ButtonClick()
-{
-
-    if (ui->lineEdit_positionNumber->text().isEmpty()) {
-        QMessageBox::warning(this, "Ошибка", "Введите номер позиции");
-        return;
-    }
-
-    if ((ui->lineEdit_serialNumber->text().isEmpty()) or (ui->lineEdit_PN->text().isEmpty())
-        or (ui->lineEdit_strokValve->text().isEmpty()) or (ui->lineEdit_positionerModel->text().isEmpty())
-        or (ui->lineEdit_driveRange->text().isEmpty())) {
-        QMessageBox::StandardButton button
-            = QMessageBox::question(this,
-                                    "Предупреждение",
-                                    "Введены не все данные, вы действительно хотите продолжить?");
-
-        if (button == QMessageBox::StandardButton::No) {
-            return;
-        }
-    }
-
-    OtherParameters *otherParameters = m_registry->GetOtherParameters();
-    otherParameters->safePosition = ui->comboBox_safePosition->currentText();
-    otherParameters->movement = ui->comboBox_strokeMovement->currentText();
-
-    SaveValveInfo();
-    accept();
-}

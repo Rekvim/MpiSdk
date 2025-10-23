@@ -24,17 +24,17 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void SetRegistry(Registry *registry);
+    void setRegistry(Registry *registry);
     void setReport(const ReportSaver::Report &report);
 
 signals:
-    void SetDAC(qreal value);
+    void setDac(qreal value);
     void runMainTest();
     void runStrokeTest();
     void runOptionalTest(quint8 test_num);
 
-    void StopTest();
-    void SetDO(quint8 DO_num, bool state);
+    void stopTest();
+    void setDO(quint8 DO_num, bool state);
 
 private:
     Ui::MainWindow *ui;
@@ -55,7 +55,9 @@ private:
     QHash<TextObjects, QLineEdit *> m_lineEdits;
     QHash<Charts, MyChart *> m_charts;
 
-    bool m_testing;
+    bool m_userCanceled = false;
+    bool m_testing = false;
+
     MainTestSettings *m_mainTestSettings;
     StepTestSettings *m_stepTestSettings;
     OtherTestSettings *m_responseTestSettings;
@@ -66,31 +68,43 @@ private:
     QImage m_imageChartFriction;
     QImage m_imageChartStep;
 
-    void InitCharts();
-    void SaveChart(Charts chart);
-    void GetImage(QLabel *label, QImage *image);
-    void InitReport();
+    void initCharts();
+    void saveChart(Charts chart);
+    void getImage(QLabel *label, QImage *image);
+    void initReport();
 
 private slots:
-    void SetText(const TextObjects object, const QString &text);
-    void SetTask(qreal task);
-    void SetTextColor(const TextObjects object, const QColor color);
-    void SetStepTestResults(QVector<StepTest::TestResult> results, quint32 T_value);
-    void SetSensorsNumber(quint8 num);
-    void SetButtonInitEnabled(bool enable);
+    void setText(const TextObjects object, const QString &text);
+    void setTask(qreal task);
+    void setTextColor(const TextObjects object, const QColor color);
+
+    void setChartVisible(Charts chart, quint16 series, bool visible);
+    void setStepTestResults(const QVector<StepTest::TestResult> &results, quint32 T_value);
+    void setSensorsNumber(quint8 num);
+    void setButtonInitEnabled(bool enable);
+
+    void setRegressionEnable(bool enable);
 
     void onCountdownTimeout();
     void onTotalTestTimeMs(const quint64 totalMs);
 
-    void AddPoints(Charts chart, QVector<Point> points);
-    void ClearPoints(Charts chart);
-    void SetChartVisible(Charts chart, quint16 series, bool visible);
-    void ShowDots(bool visible);
-    void DublSeries();
-    void EnableSetTask(bool enable);
-    void SetRegressionEnable(bool enable);
+    void promptSaveCharts();
 
-    void GetPoints(QVector<QVector<QPointF>> &points, Charts chart);
+    void addPoints(Charts chart, QVector<Point> points);
+    void clearPoints(Charts chart);
+
+    void showDots(bool visible);
+    void dublSeries();
+    void enableSetTask(bool enable);
+
+    void getPoints(QVector<QVector<QPointF>> &points, Charts chart);
+
+    void question(const QString &title, const QString &text, bool &result);
+
+    void getDirectory(const QString &currentPath, QString &result);
+
+    void startTest();
+    void endTest();
 
     void receivedParameters_mainTest(MainTestSettings::TestParameters &parameters);
     void receivedParameters_stepTest(StepTestSettings::TestParameters &parameters);
@@ -118,11 +132,6 @@ private slots:
     void on_pushButton_signal_12mA_clicked();
     void on_pushButton_signal_16mA_clicked();
     void on_pushButton_signal_20mA_clicked();
-
-    void Question(QString title, QString text, bool &result);
-    void GetDirectory(QString currentPath, QString &result);
-    void StartTest();
-    void EndTest();
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override;

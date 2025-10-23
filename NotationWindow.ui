@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>597</width>
-    <height>360</height>
+    <height>329</height>
    </rect>
   </property>
   <property name="font">
@@ -26,15 +26,30 @@
       <widget class="QGroupBox" name="groupBox_color">
        <property name="font">
         <font>
-         <family>Roboto</family>
-         <pointsize>14</pointsize>
-         <bold>true</bold>
+         <family>Segoe UI</family>
+         <pointsize>12</pointsize>
+         <bold>false</bold>
         </font>
        </property>
        <property name="title">
         <string>Цвета портов</string>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_4">
+        <property name="spacing">
+         <number>4</number>
+        </property>
+        <property name="leftMargin">
+         <number>10</number>
+        </property>
+        <property name="topMargin">
+         <number>10</number>
+        </property>
+        <property name="rightMargin">
+         <number>10</number>
+        </property>
+        <property name="bottomMargin">
+         <number>10</number>
+        </property>
         <item>
          <widget class="QFrame" name="frame_pressure_1">
           <property name="sizePolicy">
@@ -98,8 +113,8 @@ border-radius: 6px;</string>
              </property>
              <property name="font">
               <font>
-               <family>Roboto</family>
-               <pointsize>14</pointsize>
+               <family>Segoe UI</family>
+               <pointsize>12</pointsize>
                <bold>false</bold>
               </font>
              </property>
@@ -171,8 +186,8 @@ border-radius: 6px;</string>
              </property>
              <property name="font">
               <font>
-               <family>Roboto</family>
-               <pointsize>14</pointsize>
+               <family>Segoe UI</family>
+               <pointsize>12</pointsize>
                <bold>false</bold>
               </font>
              </property>
@@ -244,8 +259,8 @@ border-radius: 6px;</string>
              </property>
              <property name="font">
               <font>
-               <family>Roboto</family>
-               <pointsize>14</pointsize>
+               <family>Segoe UI</family>
+               <pointsize>12</pointsize>
                <bold>false</bold>
               </font>
              </property>
@@ -305,8 +320,8 @@ border-radius: 6px;</string>
             <widget class="QLabel" name="label_moving">
              <property name="font">
               <font>
-               <family>Roboto</family>
-               <pointsize>14</pointsize>
+               <family>Segoe UI</family>
+               <pointsize>12</pointsize>
                <bold>false</bold>
               </font>
              </property>
@@ -366,8 +381,8 @@ border-radius: 6px;</string>
             <widget class="QLabel" name="label_output_4_20_mA">
              <property name="font">
               <font>
-               <family>Roboto</family>
-               <pointsize>14</pointsize>
+               <family>Segoe UI</family>
+               <pointsize>12</pointsize>
                <bold>false</bold>
               </font>
              </property>
@@ -427,8 +442,8 @@ border-radius: 6px;</string>
             <widget class="QLabel" name="label_usb">
              <property name="font">
               <font>
-               <family>Roboto</family>
-               <pointsize>14</pointsize>
+               <family>Segoe UI</family>
+               <pointsize>12</pointsize>
                <bold>false</bold>
               </font>
              </property>
@@ -449,9 +464,9 @@ border-radius: 6px;</string>
         <widget class="QGroupBox" name="groupBox_pressureSensors">
          <property name="font">
           <font>
-           <family>Roboto</family>
-           <pointsize>14</pointsize>
-           <bold>true</bold>
+           <family>Segoe UI</family>
+           <pointsize>12</pointsize>
+           <bold>false</bold>
           </font>
          </property>
          <property name="title">
@@ -483,10 +498,13 @@ border-radius: 6px;</string>
               <widget class="QCheckBox" name="checkBox_pressureSensor_4">
                <property name="font">
                 <font>
-                 <family>Roboto</family>
-                 <pointsize>14</pointsize>
+                 <family>Segoe UI</family>
+                 <pointsize>12</pointsize>
                  <bold>false</bold>
                 </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">padding: 4px;</string>
                </property>
                <property name="text">
                 <string>532 092 37</string>
@@ -521,10 +539,13 @@ border-radius: 6px;</string>
               <widget class="QCheckBox" name="checkBox_pressureSensor_3">
                <property name="font">
                 <font>
-                 <family>Roboto</family>
-                 <pointsize>14</pointsize>
+                 <family>Segoe UI</family>
+                 <pointsize>12</pointsize>
                  <bold>false</bold>
                 </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">padding: 4px;</string>
                </property>
                <property name="text">
                 <string>532 092 36</string>
@@ -559,10 +580,13 @@ border-radius: 6px;</string>
               <widget class="QCheckBox" name="checkBox_pressureSensor_1">
                <property name="font">
                 <font>
-                 <family>Roboto</family>
-                 <pointsize>14</pointsize>
+                 <family>Segoe UI</family>
+                 <pointsize>12</pointsize>
                  <bold>false</bold>
                 </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">padding: 4px;</string>
                </property>
                <property name="text">
                 <string>532 092 32</string>
@@ -597,10 +621,13 @@ border-radius: 6px;</string>
               <widget class="QCheckBox" name="checkBox_pressureSensor_2">
                <property name="font">
                 <font>
-                 <family>Roboto</family>
-                 <pointsize>14</pointsize>
+                 <family>Segoe UI</family>
+                 <pointsize>12</pointsize>
                  <bold>false</bold>
                 </font>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">padding: 4px;</string>
                </property>
                <property name="text">
                 <string>532 092 34</string>
@@ -615,17 +642,41 @@ border-radius: 6px;</string>
        </item>
        <item>
         <widget class="QGroupBox" name="groupBox_movings">
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="title">
           <string>Датчик ленейных перемещений</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_2">
+          <property name="spacing">
+           <number>6</number>
+          </property>
+          <property name="leftMargin">
+           <number>10</number>
+          </property>
+          <property name="topMargin">
+           <number>10</number>
+          </property>
+          <property name="rightMargin">
+           <number>10</number>
+          </property>
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
           <item>
            <widget class="QComboBox" name="comboBox_movings">
             <property name="font">
              <font>
-              <family>Roboto</family>
-              <pointsize>14</pointsize>
+              <family>Segoe UI</family>
+              <pointsize>12</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">padding: 4px;</string>
             </property>
             <item>
              <property name="text">
@@ -679,8 +730,8 @@ border-radius: 6px;</string>
        </property>
        <property name="font">
         <font>
-         <family>Roboto</family>
-         <pointsize>14</pointsize>
+         <family>Segoe UI</family>
+         <pointsize>12</pointsize>
         </font>
        </property>
        <property name="text">

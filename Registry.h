@@ -76,26 +76,26 @@ class Registry : public QObject
 public:
     explicit Registry(QObject *parent = nullptr);
 
-    ObjectInfo *GetObjectInfo();
-    void SaveObjectInfo();
+    ObjectInfo *getObjectInfo();
+    void saveObjectInfo();
 
-    ValveInfo *GetValveInfo(const QString &positionNumber);
-    ValveInfo *GetValveInfo();
-    void SaveValveInfo();
+    ValveInfo *getValveInfo(const QString &positionNumber);
+    ValveInfo *getValveInfo();
+    void saveValveInfo();
 
-    MaterialsOfComponentParts *GetMaterialsOfComponentParts();
-    void SaveMaterialsOfComponentParts();
+    MaterialsOfComponentParts *getMaterialsOfComponentParts();
+    void saveMaterialsOfComponentParts();
 
-    AccessoriesSeries *GetAccessoriesSeries();
-    void SaveAccessoriesSeries();
+    AccessoriesSeries *getAccessoriesSeries();
+    void saveAccessoriesSeries();
 
-    OtherParameters *GetOtherParameters();
-    bool CheckObject(const QString &object);
-    bool CheckManufactory(const QString &manufactory);
-    bool CheckDepartment(const QString &department);
-    bool CheckPosition(const QString &position);
-    QStringList GetPositions();
-    QString GetLastPosition();
+    OtherParameters *getOtherParameters();
+    bool checkObject(const QString &object);
+    bool checkManufactory(const QString &manufactory);
+    bool checkDepartment(const QString &department);
+    bool checkPosition(const QString &position);
+    QStringList getPositions();
+    QString getLastPosition();
 
 private:
     ObjectInfo m_objectInfo;

@@ -24,8 +24,8 @@
     <widget class="QTabWidget" name="tabWidget">
      <property name="font">
       <font>
-       <family>Roboto</family>
-       <pointsize>11</pointsize>
+       <family>Segoe UI</family>
+       <pointsize>12</pointsize>
       </font>
      </property>
      <property name="currentIndex">
@@ -42,7 +42,7 @@
           <widget class="QLabel" name="label">
            <property name="font">
             <font>
-             <family>Roboto</family>
+             <family>Segoe UI</family>
              <pointsize>12</pointsize>
             </font>
            </property>
@@ -55,9 +55,12 @@
           <widget class="QTimeEdit" name="timeEdit">
            <property name="font">
             <font>
-             <family>Roboto</family>
+             <family>Segoe UI</family>
              <pointsize>12</pointsize>
             </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">padding: 4px;</string>
            </property>
            <property name="maximumTime">
             <time>
@@ -111,12 +114,12 @@
         <widget class="QLabel" name="label_2">
          <property name="font">
           <font>
-           <family>Roboto</family>
+           <family>Segoe UI</family>
            <pointsize>12</pointsize>
           </font>
          </property>
          <property name="text">
-          <string>Время отклика:</string>
+          <string>Время отклика</string>
          </property>
         </widget>
        </item>
@@ -124,9 +127,12 @@
         <widget class="QDoubleSpinBox" name="doubleSpinBox_response">
          <property name="font">
           <font>
-           <family>Roboto</family>
+           <family>Segoe UI</family>
            <pointsize>12</pointsize>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">padding: 4px;</string>
          </property>
          <property name="buttonSymbols">
           <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
@@ -146,12 +152,12 @@
         <widget class="QLabel" name="label_3">
          <property name="font">
           <font>
-           <family>Roboto</family>
+           <family>Segoe UI</family>
            <pointsize>12</pointsize>
           </font>
          </property>
          <property name="text">
-          <string>Время задержки:</string>
+          <string>Время задержки</string>
          </property>
         </widget>
        </item>
@@ -159,9 +165,12 @@
         <widget class="QDoubleSpinBox" name="doubleSpinBox_delay">
          <property name="font">
           <font>
-           <family>Roboto</family>
+           <family>Segoe UI</family>
            <pointsize>12</pointsize>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">padding: 4px;</string>
          </property>
          <property name="buttonSymbols">
           <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
@@ -184,12 +193,12 @@
         <widget class="QLabel" name="label_4">
          <property name="font">
           <font>
-           <family>Roboto</family>
+           <family>Segoe UI</family>
            <pointsize>12</pointsize>
           </font>
          </property>
          <property name="text">
-          <string>Количество точек:</string>
+          <string>Количество точек</string>
          </property>
         </widget>
        </item>
@@ -197,9 +206,12 @@
         <widget class="QDoubleSpinBox" name="doubleSpinBox_points">
          <property name="font">
           <font>
-           <family>Roboto</family>
+           <family>Segoe UI</family>
            <pointsize>12</pointsize>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">padding: 4px;</string>
          </property>
          <property name="buttonSymbols">
           <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
@@ -225,12 +237,12 @@
         <widget class="QLabel" name="label_5">
          <property name="font">
           <font>
-           <family>Roboto</family>
+           <family>Segoe UI</family>
            <pointsize>12</pointsize>
           </font>
          </property>
          <property name="text">
-          <string>Минимальный сигнал:</string>
+          <string>Минимальный сигнал</string>
          </property>
         </widget>
        </item>
@@ -238,9 +250,12 @@
         <widget class="QDoubleSpinBox" name="doubleSpinBox_signal_min">
          <property name="font">
           <font>
-           <family>Roboto</family>
+           <family>Segoe UI</family>
            <pointsize>12</pointsize>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">padding: 4px;</string>
          </property>
          <property name="buttonSymbols">
           <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
@@ -269,12 +284,12 @@
         <widget class="QLabel" name="label_6">
          <property name="font">
           <font>
-           <family>Roboto</family>
+           <family>Segoe UI</family>
            <pointsize>12</pointsize>
           </font>
          </property>
          <property name="text">
-          <string>Максимальный сигнал:</string>
+          <string>Максимальный сигнал</string>
          </property>
         </widget>
        </item>
@@ -282,9 +297,12 @@
         <widget class="QDoubleSpinBox" name="doubleSpinBox_signal_max">
          <property name="font">
           <font>
-           <family>Roboto</family>
+           <family>Segoe UI</family>
            <pointsize>12</pointsize>
           </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">padding: 4px;</string>
          </property>
          <property name="buttonSymbols">
           <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
@@ -330,6 +348,15 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_cancel">
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">padding: 4px;</string>
+       </property>
        <property name="text">
         <string>Отмена</string>
        </property>
@@ -337,6 +364,15 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_start">
+       <property name="font">
+        <font>
+         <family>Segoe UI</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">padding: 4px;</string>
+       </property>
        <property name="text">
         <string>Начать тест</string>
        </property>

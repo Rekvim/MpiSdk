@@ -6,20 +6,41 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>796</width>
-    <height>324</height>
+    <width>565</width>
+    <height>263</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Информация об объекте</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>5</number>
+   </property>
+   <property name="topMargin">
+    <number>5</number>
+   </property>
+   <property name="rightMargin">
+    <number>5</number>
+   </property>
+   <property name="bottomMargin">
+    <number>5</number>
+   </property>
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="font">
       <font>
-       <family>Roboto</family>
-       <pointsize>14</pointsize>
+       <family>Segoe UI</family>
+       <pointsize>12</pointsize>
        <bold>false</bold>
       </font>
      </property>
@@ -27,6 +48,21 @@
       <string>Введите данные об объекте</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>4</number>
+      </property>
+      <property name="leftMargin">
+       <number>10</number>
+      </property>
+      <property name="topMargin">
+       <number>10</number>
+      </property>
+      <property name="rightMargin">
+       <number>10</number>
+      </property>
+      <property name="bottomMargin">
+       <number>10</number>
+      </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
@@ -39,8 +75,8 @@
           </property>
           <property name="font">
            <font>
-            <family>Roboto</family>
-            <pointsize>14</pointsize>
+            <family>Segoe UI</family>
+            <pointsize>12</pointsize>
             <bold>false</bold>
            </font>
           </property>
@@ -53,10 +89,13 @@
          <widget class="QLineEdit" name="lineEdit_object">
           <property name="font">
            <font>
-            <family>Roboto</family>
-            <pointsize>14</pointsize>
+            <family>Segoe UI</family>
+            <pointsize>12</pointsize>
             <bold>false</bold>
            </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">padding: 4px;</string>
           </property>
          </widget>
         </item>
@@ -74,8 +113,8 @@
           </property>
           <property name="font">
            <font>
-            <family>Roboto</family>
-            <pointsize>14</pointsize>
+            <family>Segoe UI</family>
+            <pointsize>12</pointsize>
             <bold>false</bold>
            </font>
           </property>
@@ -88,10 +127,13 @@
          <widget class="QLineEdit" name="lineEdit_department">
           <property name="font">
            <font>
-            <family>Roboto</family>
-            <pointsize>14</pointsize>
+            <family>Segoe UI</family>
+            <pointsize>12</pointsize>
             <bold>false</bold>
            </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">padding: 4px;</string>
           </property>
          </widget>
         </item>
@@ -109,8 +151,8 @@
           </property>
           <property name="font">
            <font>
-            <family>Roboto</family>
-            <pointsize>14</pointsize>
+            <family>Segoe UI</family>
+            <pointsize>12</pointsize>
             <bold>false</bold>
            </font>
           </property>
@@ -129,10 +171,13 @@
           </property>
           <property name="font">
            <font>
-            <family>Roboto</family>
-            <pointsize>14</pointsize>
+            <family>Segoe UI</family>
+            <pointsize>12</pointsize>
             <bold>false</bold>
            </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">padding: 4px;</string>
           </property>
           <property name="calendarPopup">
            <bool>true</bool>
@@ -153,8 +198,8 @@
           </property>
           <property name="font">
            <font>
-            <family>Roboto</family>
-            <pointsize>14</pointsize>
+            <family>Segoe UI</family>
+            <pointsize>12</pointsize>
             <bold>false</bold>
            </font>
           </property>
@@ -167,10 +212,13 @@
          <widget class="QLineEdit" name="lineEdit_FIO">
           <property name="font">
            <font>
-            <family>Roboto</family>
-            <pointsize>14</pointsize>
+            <family>Segoe UI</family>
+            <pointsize>12</pointsize>
             <bold>false</bold>
            </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">padding: 4px;</string>
           </property>
          </widget>
         </item>
@@ -188,8 +236,8 @@
           </property>
           <property name="font">
            <font>
-            <family>Roboto</family>
-            <pointsize>14</pointsize>
+            <family>Segoe UI</family>
+            <pointsize>12</pointsize>
             <bold>false</bold>
            </font>
           </property>
@@ -202,10 +250,13 @@
          <widget class="QLineEdit" name="lineEdit_manufactory">
           <property name="font">
            <font>
-            <family>Roboto</family>
-            <pointsize>14</pointsize>
+            <family>Segoe UI</family>
+            <pointsize>12</pointsize>
             <bold>false</bold>
            </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">padding: 4px;</string>
           </property>
          </widget>
         </item>
@@ -213,19 +264,6 @@
       </item>
      </layout>
     </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Orientation::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -246,9 +284,12 @@
       <widget class="QPushButton" name="pushButton">
        <property name="font">
         <font>
-         <family>Roboto</family>
-         <pointsize>14</pointsize>
+         <family>Segoe UI</family>
+         <pointsize>12</pointsize>
         </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">padding: 5 10px;</string>
        </property>
        <property name="text">
         <string>Далее</string>

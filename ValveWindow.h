@@ -24,15 +24,30 @@ class ValveWindow : public QDialog
 public:
     explicit ValveWindow(ValveDatabase& db, QWidget *parent = nullptr);
     ~ValveWindow();
-    void SetRegistry(Registry *registry);
+    void setRegistry(Registry *registry);
     void fillReport(ReportSaver::Report &report);
 
 private:
-    void SaveValveInfo();
-    Ui::ValveWindow *ui;
+    void saveValveInfo();
 
     void populateModelsAndDn(int seriesId);
+    void refreshCvForDn(std::optional<int> dnIdOpt);
+    void setDnCvManualMode(bool manual);
+    void setSaddleManualMode(bool manual);
 
+    void ensureSaddleManualOption();
+    inline bool isManual(const QComboBox* cb) const {
+        return cb->currentText() == m_manualInput;
+    }
+
+    std::optional<int> currentSeriesId() const;
+    std::optional<int> resolveDnIdFromManual() const;
+    std::optional<int> resolveCvIdFromManual(int dnSizeId) const;
+    std::optional<int> currentModelId() const;
+    std::optional<int> resolveSaddleMaterialIdFromManual() const;
+
+    const QString m_manualInput = "Ручной ввод";
+    Ui::ValveWindow *ui;
     Registry *m_registry;
     ValveInfo *m_valveInfo;
     MaterialsOfComponentParts *m_materialsOfComponentParts;
@@ -40,28 +55,7 @@ private:
     ValveDataLoader m_loader;
     ValveDatabase& m_db;
     QMap<QString, QLineEdit*> m_partFields;
-
-    inline bool isManual(const QComboBox* cb) const {
-        return cb->currentText() == m_manualInput;
-    }
-
-    const QString m_manualInput = "Ручной ввод";
-
-    std::optional<int> currentSeriesId() const;
-    std::optional<int> resolveDnIdFromManual() const;
-    std::optional<int> resolveCvIdFromManual(int dnSizeId) const;
-
     QList<QString> m_diameter = {"50.0", "86.0", "108.0", "125.0"};
-
-    void refreshCvForDn(std::optional<int> dnIdOpt);
-    void setDnCvManualMode(bool manual);
-    void setSaddleManualMode(bool manual);
-
-    void ensureSaddleManualOption();
-
-    std::optional<int> currentModelId() const;
-    std::optional<int> resolveSaddleMaterialIdFromManual() const;
-
 
 private slots:
     void onSeriesEditingFinished();
@@ -73,13 +67,14 @@ private slots:
     void onManufacturerChanged(int index);
     void onPositionerTypeChanged(int index);
 
-    void PositionChanged(const QString &position);
-    void ButtonClick();
+    void positionChanged(const QString &position);
     void updatePartNumbers();
-    void StrokeChanged(quint16 n);
-    void ToolChanged(quint16 n);
-    void DiameterChanged(const QString &text);
-    void Clear();
+    void strokeChanged(quint16 n);
+    void toolChanged(quint16 n);
+    void diameterChanged(const QString &text);
+
+    void on_pushButton_clicked();
+    void on_pushButton_clear_clicked();
 
 protected:
     // Заполнение QComboBox из контейнера пар <int, QString>

@@ -11,7 +11,7 @@ Program::Program(QObject *parent)
     m_timerSensors->setInterval(200);
 
     connect(m_timerSensors, &QTimer::timeout,
-            this, &Program::UpdateSensors);
+            this, &Program::updateSensors);
 
     m_testing = false;
     m_dacEventloop = new QEventLoop(this);
@@ -20,21 +20,21 @@ Program::Program(QObject *parent)
     m_timerDI->setInterval(1000);
     connect(m_timerDI, &QTimer::timeout, this, [&]() {
         quint8 DI = m_mpi.GetDIStatus();
-        emit SetCheckboxDIChecked(DI);
+        emit setCheckboxDIChecked(DI);
     });
 }
 
-void Program::SetRegistry(Registry *registry)
+void Program::setRegistry(Registry *registry)
 {
     m_registry = registry;
 }
 
-void Program::SetDac(quint16 dac, quint32 sleepMs, bool waitForStop, bool waitForStart)
+void Program::setDac(quint16 dac, quint32 sleepMs, bool waitForStop, bool waitForStart)
 {
     m_stopSetDac = false;
 
     if (m_mpi.SensorCount() == 0) {
-        emit ReleaseBlock();
+        emit releaseBlock();
         return;
     }
 
@@ -63,7 +63,7 @@ void Program::SetDac(quint16 dac, quint32 sleepMs, bool waitForStop, bool waitFo
     }
 
     if (m_stopSetDac) {
-        emit ReleaseBlock();
+        emit releaseBlock();
         return;
     }
 
@@ -76,7 +76,7 @@ void Program::SetDac(quint16 dac, quint32 sleepMs, bool waitForStop, bool waitFo
     }
 
     if (m_stopSetDac) {
-        emit ReleaseBlock();
+        emit releaseBlock();
         return;
     }
 
@@ -102,35 +102,35 @@ void Program::SetDac(quint16 dac, quint32 sleepMs, bool waitForStop, bool waitFo
         timer.stop();
     }
 
-    emit ReleaseBlock();
+    emit releaseBlock();
 }
 
-void Program::SetTimeStart()
+void Program::setTimeStart()
 {
     m_startTime = QDateTime::currentMSecsSinceEpoch();
 }
 
-void Program::UpdateSensors()
+void Program::updateSensors()
 {
     for (quint8 i = 0; i < m_mpi.SensorCount(); ++i) {
         switch (i) {
         case 0:
-            emit SetText(TextObjects::LineEdit_linearSensor, m_mpi[i]->GetFormatedValue());
-            emit SetText(TextObjects::LineEdit_linearSensorPercent, m_mpi[i]->GetPersentFormated());
+            emit setText(TextObjects::LineEdit_linearSensor, m_mpi[i]->GetFormatedValue());
+            emit setText(TextObjects::LineEdit_linearSensorPercent, m_mpi[i]->GetPersentFormated());
             break;
         case 1:
-            emit SetText(TextObjects::LineEdit_pressureSensor_1, m_mpi[i]->GetFormatedValue());
+            emit setText(TextObjects::LineEdit_pressureSensor_1, m_mpi[i]->GetFormatedValue());
             break;
         case 2:
-            emit SetText(TextObjects::LineEdit_pressureSensor_2, m_mpi[i]->GetFormatedValue());
+            emit setText(TextObjects::LineEdit_pressureSensor_2, m_mpi[i]->GetFormatedValue());
             break;
         case 3:
-            emit SetText(TextObjects::LineEdit_pressureSensor_3, m_mpi[i]->GetFormatedValue());
+            emit setText(TextObjects::LineEdit_pressureSensor_3, m_mpi[i]->GetFormatedValue());
             break;
         }
     }
     if (m_testing)
-        emit SetTask(m_mpi.GetDAC()->GetValue());
+        emit setTask(m_mpi.GetDAC()->GetValue());
 
     QVector<Point> points;
     qreal percent = calcPercent(m_mpi.GetDAC()->GetValue(),
@@ -141,25 +141,25 @@ void Program::UpdateSensors()
     points.push_back({0, qreal(time), percent});
     points.push_back({1, qreal(time), m_mpi[0]->GetPersent()});
 
-    emit AddPoints(Charts::Trend, points);
+    emit addPoints(Charts::Trend, points);
 }
 
-void Program::EndTest()
+void Program::endTest()
 {
     m_testing = false;
-    emit EnableSetTask(true);
-    emit SetButtonInitEnabled(true);
-    SetDAC_int(0);
-    emit StopTest();
-    emit SetTask(m_mpi.GetDAC()->GetValue());
+    emit enableSetTask(true);
+    emit setButtonInitEnabled(true);
+    setDac_int(0);
+    emit stopTest();
+    emit setTask(m_mpi.GetDAC()->GetValue());
 }
 
-void Program::SetDAC_real(qreal value)
+void Program::setDac_real(qreal value)
 {
     m_mpi.SetDAC_Real(value);
 }
 
-void Program::SetDAC_int(quint16 value)
+void Program::setDac_int(quint16 value)
 {
     m_mpi.SetDAC_Raw(value);
 }
@@ -169,66 +169,66 @@ void Program::initialize()
     m_timerSensors->stop();
     m_timerDI->stop();
 
-    emit SetButtonInitEnabled(false);
-    emit SetSensorNumber(0);
+    emit setButtonInitEnabled(false);
+    emit setSensorNumber(0);
 
-    emit SetGroupDOVisible(false);
+    emit setGroupDOVisible(false);
 
-    emit SetText(TextObjects::Label_deviceStatusValue, "");
-    emit SetText(TextObjects::Label_deviceInitValue, "");
-    emit SetText(TextObjects::Label_connectedSensorsNumber, "");
-    emit SetText(TextObjects::Label_startingPositionValue, "");
-    emit SetText(TextObjects::Label_finalPositionValue, "");
+    emit setText(TextObjects::Label_deviceStatusValue, "");
+    emit setText(TextObjects::Label_deviceInitValue, "");
+    emit setText(TextObjects::Label_connectedSensorsNumber, "");
+    emit setText(TextObjects::Label_startingPositionValue, "");
+    emit setText(TextObjects::Label_finalPositionValue, "");
 
     if (!m_mpi.Connect()) {
-        emit SetText(TextObjects::Label_deviceStatusValue, "Ошибка подключения");
-        emit SetTextColor(TextObjects::Label_deviceStatusValue, Qt::red);
-        emit SetButtonInitEnabled(true);
+        emit setText(TextObjects::Label_deviceStatusValue, "Ошибка подключения");
+        emit setTextColor(TextObjects::Label_deviceStatusValue, Qt::red);
+        emit setButtonInitEnabled(true);
         return;
     }
 
-    emit SetText(TextObjects::Label_deviceStatusValue, "Успешное подключение к порту " + m_mpi.PortName());
-    emit SetTextColor(TextObjects::Label_deviceStatusValue, Qt::darkGreen);
+    emit setText(TextObjects::Label_deviceStatusValue, "Успешное подключение к порту " + m_mpi.PortName());
+    emit setTextColor(TextObjects::Label_deviceStatusValue, Qt::darkGreen);
 
     if (!m_mpi.Initialize()) {
-        emit SetText(TextObjects::Label_deviceInitValue, "Ошибка инициализации");
-        emit SetTextColor(TextObjects::Label_deviceStatusValue, Qt::red);
-        emit SetButtonInitEnabled(true);
+        emit setText(TextObjects::Label_deviceInitValue, "Ошибка инициализации");
+        emit setTextColor(TextObjects::Label_deviceStatusValue, Qt::red);
+        emit setButtonInitEnabled(true);
         return;
     }
 
     if ((m_mpi.Version() & 0x40) != 0) {
-        emit SetGroupDOVisible(true);
-        emit SetButtonsDOChecked(m_mpi.GetDOStatus());
+        emit setGroupDOVisible(true);
+        emit setButtonsDOChecked(m_mpi.GetDOStatus());
         m_timerDI->start();
     }
 
-    emit SetText(TextObjects::Label_deviceInitValue, "Успешная инициализация");
-    emit SetTextColor(TextObjects::Label_deviceInitValue, Qt::darkGreen);
+    emit setText(TextObjects::Label_deviceInitValue, "Успешная инициализация");
+    emit setTextColor(TextObjects::Label_deviceInitValue, Qt::darkGreen);
 
     switch (m_mpi.SensorCount()) {
     case 0:
-        emit SetText(TextObjects::Label_connectedSensorsNumber, "Дачики не обнаружены");
-        emit SetTextColor(TextObjects::Label_connectedSensorsNumber, Qt::red);
-        // emit SetButtonInitEnabled(true);
+        emit setText(TextObjects::Label_connectedSensorsNumber, "Дачики не обнаружены");
+        emit setTextColor(TextObjects::Label_connectedSensorsNumber, Qt::red);
+        // emit setButtonInitEnabled(true);
         // return;
     case 1:
-        emit SetText(TextObjects::Label_connectedSensorsNumber, "Обнаружен 1 датчик");
-        emit SetTextColor(TextObjects::Label_connectedSensorsNumber, Qt::darkYellow);
+        emit setText(TextObjects::Label_connectedSensorsNumber, "Обнаружен 1 датчик");
+        emit setTextColor(TextObjects::Label_connectedSensorsNumber, Qt::darkYellow);
         break;
     default:
-        emit SetText(TextObjects::Label_connectedSensorsNumber,
+        emit setText(TextObjects::Label_connectedSensorsNumber,
                      "Обнаружено " + QString::number(m_mpi.SensorCount()) + " датчика");
-        emit SetTextColor(TextObjects::Label_connectedSensorsNumber, Qt::darkGreen);
+        emit setTextColor(TextObjects::Label_connectedSensorsNumber, Qt::darkGreen);
     }
 
     ValveInfo *valveInfo = m_registry->GetValveInfo();
     bool normalClosed = (valveInfo->safePosition == 0);
 
-    emit SetText(TextObjects::Label_startingPositionValue, "Измерение");
-    emit SetTextColor(TextObjects::Label_startingPositionValue, Qt::darkYellow);
+    emit setText(TextObjects::Label_startingPositionValue, "Измерение");
+    emit setTextColor(TextObjects::Label_startingPositionValue, Qt::darkYellow);
 
-    SetDac(0, 10000, true);
+    setDac(0, 10000, true);
 
     QTimer timer(this);
     connect(&timer, &QTimer::timeout, this, [&] {
@@ -246,13 +246,13 @@ void Program::initialize()
     else
         m_mpi[0]->SetMax();
 
-    emit SetText(TextObjects::Label_startingPositionValue, m_mpi[0]->GetFormatedValue());
-    emit SetTextColor(TextObjects::Label_startingPositionValue, Qt::darkGreen);
+    emit setText(TextObjects::Label_startingPositionValue, m_mpi[0]->GetFormatedValue());
+    emit setTextColor(TextObjects::Label_startingPositionValue, Qt::darkGreen);
 
-    emit SetText(TextObjects::Label_finalPositionValue, "Измерение");
-    emit SetTextColor(TextObjects::Label_finalPositionValue, Qt::darkYellow);
+    emit setText(TextObjects::Label_finalPositionValue, "Измерение");
+    emit setTextColor(TextObjects::Label_finalPositionValue, Qt::darkYellow);
 
-    SetDac(0xFFFF, 10000, true);
+    setDac(0xFFFF, 10000, true);
 
     timer.start(50);
     m_dacEventloop->exec();
@@ -263,8 +263,8 @@ void Program::initialize()
     else
         m_mpi[0]->SetMin();
 
-    emit SetText(TextObjects::Label_finalPositionValue, m_mpi[0]->GetFormatedValue());
-    emit SetTextColor(TextObjects::Label_finalPositionValue, Qt::darkGreen);
+    emit setText(TextObjects::Label_finalPositionValue, m_mpi[0]->GetFormatedValue());
+    emit setTextColor(TextObjects::Label_finalPositionValue, Qt::darkGreen);
 
     qreal correctCoefficient = 1;
     if (valveInfo->strokeMovement != 0) {
@@ -274,32 +274,32 @@ void Program::initialize()
     m_mpi[0]->CorrectCoefficients(correctCoefficient);
 
     if (normalClosed) {
-        emit SetText(TextObjects::Label_valveStroke_range, m_mpi[0]->GetFormatedValue());
-        emit SetText(TextObjects::LineEdit_stroke, QString::asprintf("%.2f", m_mpi[0]->GetValue()));
-        SetDac(0);
+        emit setText(TextObjects::Label_valveStroke_range, m_mpi[0]->GetFormatedValue());
+        emit setText(TextObjects::LineEdit_stroke, QString::asprintf("%.2f", m_mpi[0]->GetValue()));
+        setDac(0);
     } else {
-        SetDac(0, 10000, true);
-        emit SetText(TextObjects::Label_valveStroke_range, m_mpi[0]->GetFormatedValue());
-        emit SetText(TextObjects::LineEdit_stroke, QString::asprintf("%.2f", m_mpi[0]->GetValue()));
+        setDac(0, 10000, true);
+        emit setText(TextObjects::Label_valveStroke_range, m_mpi[0]->GetFormatedValue());
+        emit setText(TextObjects::LineEdit_stroke, QString::asprintf("%.2f", m_mpi[0]->GetValue()));
     }
 
-    emit SetTask(m_mpi.GetDAC()->GetValue());
+    emit setTask(m_mpi.GetDAC()->GetValue());
 
-    emit ClearPoints(Charts::Trend);
+    emit clearPoints(Charts::Trend);
     m_initTime = QDateTime::currentMSecsSinceEpoch();
 
-    emit SetSensorNumber(m_mpi.SensorCount());
-    emit SetButtonInitEnabled(true);
+    emit setSensorNumber(m_mpi.SensorCount());
+    emit setButtonInitEnabled(true);
     m_timerSensors->start();
 }
 
 void Program::runningMainTest()
 {
     MainTestSettings::TestParameters parameters;
-    emit GetMainTestParameters(parameters);
+    emit getParameters_mainTest(parameters);
 
     if (parameters.delay == 0) {
-        emit StopTest();
+        emit stopTest();
         return;
     }
 
@@ -314,14 +314,14 @@ void Program::runningMainTest()
                             + delay
                             + (pn + 1) * response
                             + 10000ULL;
-    emit TotalTestTimeMs(totalMs);
+    emit totalTestTimeMs(totalMs);
 
     parameters.dac_min = qMax(m_mpi.GetDAC()->GetRawFromValue(parameters.signal_min),
                               m_mpi.GetDac_Min());
     parameters.dac_max = qMin(m_mpi.GetDAC()->GetRawFromValue(parameters.signal_max),
                               m_mpi.GetDac_Max());
 
-    emit SetButtonInitEnabled(false);
+    emit setButtonInitEnabled(false);
 
     MainTest *mainTest = new MainTest;
 
@@ -336,7 +336,7 @@ void Program::runningMainTest()
     connect(mainTest, &MainTest::EndTest,
             threadTest, &QThread::quit);
 
-    connect(this, &Program::StopTest,
+    connect(this, &Program::stopTest,
             mainTest, &MainTest::Stop);
 
     connect(threadTest, &QThread::finished,
@@ -346,50 +346,53 @@ void Program::runningMainTest()
             mainTest, &MainTest::deleteLater);
 
     connect(mainTest, &MainTest::EndTest,
-            this, &Program::EndTest);
+            this, &Program::endTest);
+
+    connect(mainTest, &MainTest::EndTest,
+            this, &Program::mainTestFinished);
 
     connect(mainTest, &MainTest::UpdateGraph,
-            this, &Program::UpdateCharts_mainTest);
+            this, &Program::updateCharts_mainTest);
 
     connect(mainTest, &MainTest::SetDAC,
-            this, &Program::SetDac);
+            this, &Program::setDac);
 
     connect(mainTest, &MainTest::DublSeries,
-            this, [&] { emit DublSeries(); });
+            this, [&] { emit dublSeries(); });
 
     connect(mainTest, &MainTest::GetPoints,
-            this, &Program::GetPoints_maintest,
+            this, &Program::getPoints_maintest,
             Qt::BlockingQueuedConnection);
 
     connect(mainTest, &MainTest::AddRegression,
-            this, &Program::AddRegression);
+            this, &Program::addRegression);
 
     connect(mainTest, &MainTest::AddFriction,
-            this, &Program::AddFriction);
+            this, &Program::addFriction);
 
-    connect(this, &Program::ReleaseBlock,
+    connect(this, &Program::releaseBlock,
             mainTest, &MainTest::ReleaseBlock);
 
     connect(mainTest, &MainTest::Results,
             this, &Program::results_mainTest);
 
     connect(mainTest, &MainTest::ShowDots,
-            this, [&](bool visible) { emit ShowDots(visible); });
+            this, [&](bool visible) { emit showDots(visible); });
 
     connect(mainTest, &MainTest::ClearGraph,
             this, [&] {
-        emit ClearPoints(Charts::Task);
-        emit ClearPoints(Charts::Pressure);
-        emit ClearPoints(Charts::Friction);
-        emit SetRegressionEnable(false);
+        emit clearPoints(Charts::Task);
+        emit clearPoints(Charts::Pressure);
+        emit clearPoints(Charts::Friction);
+        emit setRegressionEnable(false);
     });
 
     m_testing = true;
-    emit EnableSetTask(false);
+    emit enableSetTask(false);
     threadTest->start();
 }
 
-void Program::AddFriction(const QVector<QPointF> &points)
+void Program::addFriction(const QVector<QPointF> &points)
 {
     QVector<Point> chartPoints;
 
@@ -400,22 +403,22 @@ void Program::AddFriction(const QVector<QPointF> &points)
     for (QPointF point : points) {
         chartPoints.push_back({0, point.x(), point.y() * k});
     }
-    emit AddPoints(Charts::Friction, chartPoints);
+    emit addPoints(Charts::Friction, chartPoints);
 }
 
-void Program::AddRegression(const QVector<QPointF> &points)
+void Program::addRegression(const QVector<QPointF> &points)
 {
     QVector<Point> chartPoints;
     for (QPointF point : points) {
         chartPoints.push_back({1, point.x(), point.y()});
     }
-    emit AddPoints(Charts::Pressure, chartPoints);
+    emit addPoints(Charts::Pressure, chartPoints);
 
     //emit SetVisible(Charts::Main_pressure, 1, true);
-    emit SetRegressionEnable(true);
+    emit setRegressionEnable(true);
 }
 
-void Program::UpdateCharts_mainTest()
+void Program::updateCharts_mainTest()
 {
     QVector<Point> points;
     qreal percent = calcPercent(m_mpi.GetDAC()->GetValue(),
@@ -429,17 +432,17 @@ void Program::UpdateCharts_mainTest()
         points.push_back({static_cast<quint8>(i + 1), X, m_mpi[i]->GetValue()});
     }
 
-    emit AddPoints(Charts::Task, points);
+    emit addPoints(Charts::Task, points);
 
     points.clear();
     points.push_back({0, m_mpi[1]->GetValue(), m_mpi[0]->GetValue()});
 
-    emit AddPoints(Charts::Pressure, points);
+    emit addPoints(Charts::Pressure, points);
 }
 
-void Program::GetPoints_maintest(QVector<QVector<QPointF>> &points)
+void Program::getPoints_maintest(QVector<QVector<QPointF>> &points)
 {
-    emit GetPoints(points, Charts::Task);
+    emit getPoints(points, Charts::Task);
 }
 
 void Program::results_mainTest(const MainTest::TestResults &results)
@@ -448,41 +451,41 @@ void Program::results_mainTest(const MainTest::TestResults &results)
 
     qreal k = 5 * M_PI * valveInfo->diameter * valveInfo->diameter / 4;
 
-    emit SetText(TextObjects::Label_pressureDifferenceValue,
+    emit setText(TextObjects::Label_pressureDifferenceValue,
                  QString::asprintf("%.3f bar", results.pressureDiff));
-    emit SetText(TextObjects::Label_frictionForceValue,
+    emit setText(TextObjects::Label_frictionForceValue,
                  QString::asprintf("%.3f H", results.pressureDiff * k));
-    emit SetText(TextObjects::Label_frictionPercentValue,
+    emit setText(TextObjects::Label_frictionPercentValue,
                  QString::asprintf("%.2f %%", results.friction));
-    emit SetText(TextObjects::Label_dynamicErrorMax,
+    emit setText(TextObjects::Label_dynamicErrorMax,
                  QString::asprintf("%.3f mA", results.dinErrorMean));
-    emit SetText(TextObjects::Label_dynamicErrorMax,
+    emit setText(TextObjects::Label_dynamicErrorMax,
                  QString::asprintf("%.2f %%", results.dinErrorMean / 0.16));
-    emit SetText(TextObjects::Label_dynamicErrorMean,
+    emit setText(TextObjects::Label_dynamicErrorMean,
                  QString::asprintf("%.3f mA", results.dinErrorMax));
-    emit SetText(TextObjects::Label_dynamicErrorMeanPercent,
+    emit setText(TextObjects::Label_dynamicErrorMeanPercent,
                  QString::asprintf("%.2f %%", results.dinErrorMax / 0.16));
 
-    emit SetText(TextObjects::Label_lowLimitValue, QString::asprintf("%.2f bar", results.lowLimit));
-    emit SetText(TextObjects::Label_highLimitValue, QString::asprintf("%.2f bar", results.highLimit));
+    emit setText(TextObjects::Label_lowLimitValue, QString::asprintf("%.2f bar", results.lowLimit));
+    emit setText(TextObjects::Label_highLimitValue, QString::asprintf("%.2f bar", results.highLimit));
 
-    emit SetText(TextObjects::LineEdit_dinamic_error,
+    emit setText(TextObjects::LineEdit_dinamic_error,
                  QString::asprintf("%.2f", results.dinErrorMean / 0.16));
-    emit SetText(TextObjects::LineEdit_range_pressure,
+    emit setText(TextObjects::LineEdit_range_pressure,
                  QString::asprintf("%.2f - %.2f", results.lowLimit, results.highLimit));
-    emit SetText(TextObjects::LineEdit_range,
+    emit setText(TextObjects::LineEdit_range,
                  QString::asprintf("%.2f - %.2f", results.springLow, results.springHigh));
 
-    emit SetText(TextObjects::LineEdit_friction,
+    emit setText(TextObjects::LineEdit_friction,
                  QString::asprintf("%.3f", results.pressureDiff * k));
-    emit SetText(TextObjects::LineEdit_friction_percent,
+    emit setText(TextObjects::LineEdit_friction_percent,
                  QString::asprintf("%.2f", results.friction));
 }
 
 void Program::runningStrokeTest()
 {
-    emit SetButtonInitEnabled(false);
-    emit ClearPoints(Charts::Stroke);
+    emit setButtonInitEnabled(false);
+    emit clearPoints(Charts::Stroke);
 
     StrokeTest *strokeTest = new StrokeTest;
     QThread *threadTest = new QThread(this);
@@ -494,7 +497,7 @@ void Program::runningStrokeTest()
     connect(strokeTest, &StrokeTest::EndTest,
             threadTest, &QThread::quit);
 
-    connect(this, &Program::StopTest,
+    connect(this, &Program::stopTest,
             strokeTest, &StrokeTest::Stop);
 
     connect(threadTest, &QThread::finished,
@@ -503,30 +506,30 @@ void Program::runningStrokeTest()
     connect(threadTest, &QThread::finished,
             strokeTest, &StrokeTest::deleteLater);
 
-    connect(this, &Program::ReleaseBlock,
+    connect(this, &Program::releaseBlock,
             strokeTest, &MainTest::ReleaseBlock);
 
     connect(strokeTest, &StrokeTest::EndTest,
-            this, &Program::EndTest);
+            this, &Program::endTest);
 
     connect(strokeTest, &StrokeTest::UpdateGraph,
-            this, &Program::UpdateCharts_strokeTest);
+            this, &Program::updateCharts_strokeTest);
 
     connect(strokeTest, &StrokeTest::SetDAC,
-            this, &Program::SetDac);
+            this, &Program::setDac);
 
     connect(strokeTest, &StrokeTest::SetStartTime,
-            this, &Program::SetTimeStart);
+            this, &Program::setTimeStart);
 
     connect(strokeTest, &StrokeTest::Results,
             this, &Program::results_strokeTest);
 
     m_testing = true;
-    emit EnableSetTask(false);
+    emit enableSetTask(false);
     threadTest->start();
 }
 
-void Program::UpdateCharts_strokeTest()
+void Program::updateCharts_strokeTest()
 {
     QVector<Point> points;
 
@@ -538,17 +541,17 @@ void Program::UpdateCharts_strokeTest()
     points.push_back({0, qreal(time), percent});
     points.push_back({1, qreal(time), m_mpi[0]->GetPersent()});
 
-    emit AddPoints(Charts::Stroke, points);
+    emit addPoints(Charts::Stroke, points);
 }
 
 void Program::results_strokeTest(const quint64 forwardTime, const quint64 backwardTime)
 {
     QString forwardText = QTime(0, 0).addMSecs(forwardTime).toString("mm:ss.zzz");
     QString backwardText = QTime(0, 0).addMSecs(backwardTime).toString("mm:ss.zzz");
-    emit SetText(TextObjects::Label_forward, forwardText);
-    emit SetText(TextObjects::LineEdit_forward, forwardText);
-    emit SetText(TextObjects::Label_backward, backwardText);
-    emit SetText(TextObjects::LineEdit_backward, backwardText);
+    emit setText(TextObjects::Label_forward, forwardText);
+    emit setText(TextObjects::LineEdit_forward, forwardText);
+    emit setText(TextObjects::Label_backward, backwardText);
+    emit setText(TextObjects::LineEdit_backward, backwardText);
 }
 
 void Program::runningOptionalTest(const quint8 testNum)
@@ -561,11 +564,11 @@ void Program::runningOptionalTest(const quint8 testNum)
         optionalTest = new OptionTest;
 
         OtherTestSettings::TestParameters parameters;
-        emit GetResponseTestParameters(parameters);
+        emit getParameters_responseTest(parameters);
 
         if (parameters.points.empty()) {
             delete optionalTest;
-            emit StopTest();
+            emit stopTest();
             return;
         }
 
@@ -575,7 +578,7 @@ void Program::runningOptionalTest(const quint8 testNum)
 
         const quint64 N_values = 1 + 2 * P * (1 + S);
         const quint64 totalMs = 10000ULL + N_values * delay + 10000ULL;
-        emit TotalTestTimeMs(totalMs);
+        emit totalTestTimeMs(totalMs);
 
         task.delay = parameters.delay;
 
@@ -605,21 +608,21 @@ void Program::runningOptionalTest(const quint8 testNum)
 
         connect(optionalTest, &OptionTest::UpdateGraph,
                 this, [&] {
-            UpdateCharts_optionTest(Charts::Response);
+            updateCharts_optionTest(Charts::Response);
         });
 
-        emit ClearPoints(Charts::Response);
+        emit clearPoints(Charts::Response);
 
         break;
     }
     case 1: {
         optionalTest = new OptionTest;
         OtherTestSettings::TestParameters parameters;
-        emit GetResolutionTestParameters(parameters);
+        emit getParameters_resolutionTest(parameters);
 
         if (parameters.points.empty()) {
             delete optionalTest;
-            emit StopTest();
+            emit stopTest();
             return;
         }
 
@@ -629,7 +632,7 @@ void Program::runningOptionalTest(const quint8 testNum)
 
         const quint64 N_values = 1 + P * (2 * S);
         const quint64 totalMs = 10000ULL + N_values * delay + 10000ULL;
-        emit TotalTestTimeMs(totalMs);
+        emit totalTestTimeMs(totalMs);
 
         task.delay = parameters.delay;
 
@@ -657,10 +660,10 @@ void Program::runningOptionalTest(const quint8 testNum)
 
         connect(optionalTest, &OptionTest::UpdateGraph,
                 this, [&] {
-            UpdateCharts_optionTest(Charts::Resolution);
+            updateCharts_optionTest(Charts::Resolution);
         });
 
-        emit ClearPoints(Charts::Resolution);
+        emit clearPoints(Charts::Resolution);
 
         break;
     }
@@ -668,11 +671,11 @@ void Program::runningOptionalTest(const quint8 testNum)
     case 2: {
         optionalTest = new StepTest;
         StepTestSettings::TestParameters parameters;
-        emit GetStepTestParameters(parameters);
+        emit getParameters_stepTest(parameters);
 
         if (parameters.points.empty()) {
             delete optionalTest;
-            emit StopTest();
+            emit stopTest();
             return;
         }
 
@@ -681,7 +684,7 @@ void Program::runningOptionalTest(const quint8 testNum)
         // N_values = 1 старт + P прямой + 1 конец + P обратный + 1 возврат = 3 + 2*P
         const quint64 N_values = 3 + 2 * P;
         const quint64 totalMs = 10000ULL + N_values * delay;
-        emit TotalTestTimeMs(totalMs);
+        emit totalTestTimeMs(totalMs);
 
         task.delay = parameters.delay;
         ValveInfo *valveInfo = m_registry->GetValveInfo();
@@ -714,28 +717,28 @@ void Program::runningOptionalTest(const quint8 testNum)
 
         connect(optionalTest, &OptionTest::UpdateGraph,
                 this, [&] {
-            UpdateCharts_optionTest(Charts::Step);
+            updateCharts_optionTest(Charts::Step);
         });
         connect(dynamic_cast<StepTest *>(optionalTest), &StepTest::GetPoints,
-                this, &Program::GetPoints_steptest,
+                this, &Program::getPoints_steptest,
                 Qt::BlockingQueuedConnection);
 
         connect(dynamic_cast<StepTest *>(optionalTest), &StepTest::Results,
                 this, &Program::results_stepTest);
 
-        emit ClearPoints(Charts::Step);
+        emit clearPoints(Charts::Step);
 
         break;
     }
     default:
-        emit StopTest();
+        emit stopTest();
         return;
     }
 
     QThread *threadTest = new QThread(this);
     optionalTest->moveToThread(threadTest);
 
-    emit SetButtonInitEnabled(false);
+    emit setButtonInitEnabled(false);
 
     connect(threadTest, &QThread::started,
             optionalTest, &OptionTest::Process);
@@ -743,7 +746,7 @@ void Program::runningOptionalTest(const quint8 testNum)
     connect(optionalTest, &OptionTest::EndTest,
             threadTest, &QThread::quit);
 
-    connect(this, &Program::StopTest,
+    connect(this, &Program::stopTest,
             optionalTest, &OptionTest::Stop);
 
     connect(threadTest, &QThread::finished,
@@ -752,34 +755,34 @@ void Program::runningOptionalTest(const quint8 testNum)
     connect(threadTest, &QThread::finished,
             optionalTest, &OptionTest::deleteLater);
 
-    connect(this, &Program::ReleaseBlock,
+    connect(this, &Program::releaseBlock,
             optionalTest, &MainTest::ReleaseBlock);
 
     connect(optionalTest, &OptionTest::EndTest,
-            this, &Program::EndTest);
+            this, &Program::endTest);
 
     connect(optionalTest, &OptionTest::SetDAC,
-            this, &Program::SetDac);
+            this, &Program::setDac);
 
     connect(optionalTest, &OptionTest::SetStartTime,
-            this, &Program::SetTimeStart);
+            this, &Program::setTimeStart);
 
     m_testing = true;
-    emit EnableSetTask(false);
+    emit enableSetTask(false);
     threadTest->start();
 }
 
 void Program::results_stepTest(const QVector<StepTest::TestResult> &results, quint32 T_value)
 {
-    emit SetStepResults(results, T_value);
+    emit setStepResults(results, T_value);
 }
 
-void Program::GetPoints_steptest(QVector<QVector<QPointF>> &points)
+void Program::getPoints_steptest(QVector<QVector<QPointF>> &points)
 {
-    emit GetPoints(points, Charts::Step);
+    emit getPoints(points, Charts::Step);
 }
 
-void Program::UpdateCharts_optionTest(Charts chart)
+void Program::updateCharts_optionTest(Charts chart)
 {
     QVector<Point> points;
 
@@ -791,14 +794,14 @@ void Program::UpdateCharts_optionTest(Charts chart)
     points.push_back({0, qreal(time), percent});
     points.push_back({1, qreal(time), m_mpi[0]->GetPersent()});
 
-    emit AddPoints(chart, points);
+    emit addPoints(chart, points);
 }
 
-void Program::TerminateTest()
+void Program::terminateTest()
 {
     m_stopSetDac = true;
     m_dacEventloop->quit();
-    emit StopTest();
+    emit stopTest();
 }
 
 void Program::button_set_position()

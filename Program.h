@@ -55,7 +55,6 @@ enum class TextObjects {
     LineEdit_forward,
     LineEdit_backward,
     LineEdit_range_pressure
-
 };
 
 enum class Charts {
@@ -81,48 +80,50 @@ class Program : public QObject
     Q_OBJECT
 public:
     explicit Program(QObject *parent = nullptr);
-    void SetRegistry(Registry *registry);
+    void setRegistry(Registry *registry);
 
 signals:
-    void SetText(const TextObjects object, const QString &text);
-    void SetTextColor(const TextObjects object, const QColor color);
-    void SetTask(qreal task);
-    void SetSensorNumber(quint8 num);
-    void SetButtonInitEnabled(bool enable);
-    void SetGroupDOVisible(bool visible);
-    void StopTest();
+    void setText(const TextObjects object, const QString &text);
+    void setTextColor(const TextObjects object, const QColor color);
+    void setTask(qreal task);
+    void setSensorNumber(quint8 num);
+    void setButtonInitEnabled(bool enable);
+    void setGroupDOVisible(bool visible);
+    void stopTest();
 
-    void AddPoints(Charts chart, QVector<Point> points);
-    void SetVisible(Charts chart, quint16 series, bool visible);
-    void ClearPoints(Charts chart);
-    void ShowDots(bool visible);
-    void EnableSetTask(bool enable);
-    void DublSeries();
-    void GetPoints(QVector<QVector<QPointF>> &points, Charts chart);
-    void ReleaseBlock();
-    void SetRegressionEnable(bool enable);
+    void addPoints(Charts chart, QVector<Point> points);
+    void setVisible(Charts chart, quint16 series, bool visible);
+    void clearPoints(Charts chart);
+    void showDots(bool visible);
+    void enableSetTask(bool enable);
+    void dublSeries();
+    void getPoints(QVector<QVector<QPointF>> &points, Charts chart);
+    void releaseBlock();
+    void setRegressionEnable(bool enable);
 
-    void GetMainTestParameters(MainTestSettings::TestParameters &parameters);
-    void GetStepTestParameters(StepTestSettings::TestParameters &parameters);
-    void GetResolutionTestParameters(OtherTestSettings::TestParameters &parameters);
-    void GetResponseTestParameters(OtherTestSettings::TestParameters &parameters);
-    void Question(QString title, QString text, bool &result);
+    void mainTestFinished();
+    void getParameters_mainTest(MainTestSettings::TestParameters &parameters);
+    void getParameters_stepTest(StepTestSettings::TestParameters &parameters);
+    void getParameters_resolutionTest(OtherTestSettings::TestParameters &parameters);
+    void getParameters_responseTest(OtherTestSettings::TestParameters &parameters);
 
-    void SetStepResults(QVector<StepTest::TestResult> results, quint32 T_value);
-    void SetButtonsDOChecked(quint8 status);
-    void SetCheckboxDIChecked(quint8 status);
+    void question(QString &title, QString &text, bool &result);
 
-    void TotalTestTimeMs(quint64 totalMs);
+    void setStepResults(QVector<StepTest::TestResult> results, quint32 T_value);
+    void setButtonsDOChecked(quint8 status);
+    void setCheckboxDIChecked(quint8 status);
+
+    void totalTestTimeMs(quint64 totalMs);
 
 public slots:
-    void AddRegression(const QVector<QPointF> &points);
-    void AddFriction(const QVector<QPointF> &points);
-    void GetPoints_maintest(QVector<QVector<QPointF>> &points);
-    void GetPoints_steptest(QVector<QVector<QPointF>> &points);
-    void EndTest();
+    void addRegression(const QVector<QPointF> &points);
+    void addFriction(const QVector<QPointF> &points);
+    void getPoints_maintest(QVector<QVector<QPointF>> &points);
+    void getPoints_steptest(QVector<QVector<QPointF>> &points);
+    void endTest();
 
-    void SetDAC_real(qreal value);
-    void SetDAC_int(quint16 value);
+    void setDac_real(qreal value);
+    void setDac_int(quint16 value);
 
     void initialize();
 
@@ -130,7 +131,7 @@ public slots:
     void runningStrokeTest();
     void runningOptionalTest(const quint8 test_num);
 
-    void TerminateTest();
+    void terminateTest();
 
     void button_set_position();
     void button_DO(quint8 DO_num, bool state);
@@ -155,18 +156,18 @@ private:
     }
 
 private slots:
-    void UpdateSensors();
-    void UpdateCharts_mainTest();
-    void UpdateCharts_strokeTest();
-    void UpdateCharts_optionTest(Charts chart);
+    void updateSensors();
+    void updateCharts_mainTest();
+    void updateCharts_strokeTest();
+    void updateCharts_optionTest(Charts chart);
 
     void results_mainTest(const MainTest::TestResults &results);
     void results_strokeTest(const quint64 forwardTime, const quint64 backwardTime);
     void results_stepTest(const QVector<StepTest::TestResult> &results, const quint32 T_value);
 
-    void SetTimeStart();
+    void setTimeStart();
 
-    void SetDac(quint16 dac,
+    void setDac(quint16 dac,
                 quint32 sleepMs = 0,
                 bool waitForStop = false,
                 bool waitForStart = false);

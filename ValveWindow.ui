@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>911</width>
-    <height>814</height>
+    <width>654</width>
+    <height>719</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -36,9 +36,12 @@
      </property>
      <property name="font">
       <font>
-       <family>Roboto</family>
+       <family>Segoe UI</family>
        <pointsize>12</pointsize>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
      </property>
      <property name="currentIndex">
       <number>0</number>
@@ -49,7 +52,19 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <property name="spacing">
-        <number>2</number>
+        <number>4</number>
+       </property>
+       <property name="leftMargin">
+        <number>10</number>
+       </property>
+       <property name="topMargin">
+        <number>10</number>
+       </property>
+       <property name="rightMargin">
+        <number>10</number>
+       </property>
+       <property name="bottomMargin">
+        <number>10</number>
        </property>
        <item>
         <widget class="QWidget" name="widget_positionNumber" native="true">
@@ -70,19 +85,19 @@
            <widget class="QLabel" name="label_positionNumber">
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -101,9 +116,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
             <item>
              <property name="text">
@@ -122,9 +140,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -156,19 +177,19 @@
             </property>
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -193,9 +214,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
             <item>
              <property name="text">
@@ -214,9 +238,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -242,19 +269,19 @@
            <widget class="QLabel" name="label_valveSeries">
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -273,9 +300,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -301,19 +331,19 @@
            <widget class="QLabel" name="label_valveModel">
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -332,9 +362,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -360,19 +393,19 @@
            <widget class="QLabel" name="label_serialNumber">
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -391,9 +424,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -419,19 +455,19 @@
            <widget class="QLabel" name="label_materialBody">
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -456,9 +492,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -484,19 +523,19 @@
            <widget class="QLabel" name="label_material_saddleMaterials">
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -515,9 +554,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -531,9 +573,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -559,19 +604,19 @@
            <widget class="QLabel" name="label_DN">
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -596,9 +641,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -612,9 +660,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -640,19 +691,19 @@
            <widget class="QLabel" name="label_CV">
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -671,9 +722,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -687,9 +741,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -715,19 +772,19 @@
            <widget class="QLabel" name="label_PN">
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -746,9 +803,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -774,19 +834,19 @@
            <widget class="QLabel" name="label_positionerModel">
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -805,9 +865,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -833,19 +896,19 @@
            <widget class="QLabel" name="label_dinamicError_positionerType">
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -864,9 +927,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
             <item>
              <property name="text">
@@ -895,9 +961,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
             <item>
              <property name="text">
@@ -933,19 +1002,19 @@
            <widget class="QLabel" name="label_strokeMovement">
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -964,9 +1033,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
             <item>
              <property name="text">
@@ -1002,19 +1074,19 @@
            <widget class="QLabel" name="label_valveStroke">
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -1033,9 +1105,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -1061,19 +1136,19 @@
            <widget class="QLabel" name="label_driveModel">
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -1098,9 +1173,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -1114,9 +1192,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -1142,19 +1223,19 @@
            <widget class="QLabel" name="label_safePosition">
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -1173,9 +1254,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
             <item>
              <property name="text">
@@ -1211,19 +1295,19 @@
            <widget class="QLabel" name="label_driveType">
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -1242,9 +1326,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
             <item>
              <property name="text">
@@ -1280,19 +1367,19 @@
            <widget class="QLabel" name="label_driveRange">
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -1311,9 +1398,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -1339,19 +1429,19 @@
            <widget class="QLabel" name="label_driveDiameter">
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -1370,9 +1460,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -1398,19 +1491,19 @@
            <widget class="QLabel" name="label_square_2">
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -1423,9 +1516,12 @@
            <widget class="QLabel" name="label_square">
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
             <property name="text">
              <string>0 см</string>
@@ -1454,19 +1550,19 @@
            <widget class="QLabel" name="label_toolNumber">
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -1488,9 +1584,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
             <item>
              <property name="text">
@@ -1541,19 +1640,19 @@
            <widget class="QLabel" name="label_diameterPulley">
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -1564,6 +1663,14 @@
           </item>
           <item>
            <widget class="QLineEdit" name="lineEdit_diameterPulley">
+            <property name="font">
+             <font>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
             <property name="readOnly">
              <bool>true</bool>
             </property>
@@ -1591,19 +1698,19 @@
            <widget class="QLabel" name="label_materialStuffingBoxSeal">
             <property name="minimumSize">
              <size>
-              <width>370</width>
+              <width>260</width>
               <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>230</width>
+              <width>260</width>
               <height>16777215</height>
              </size>
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -1622,9 +1729,12 @@
             </property>
             <property name="font">
              <font>
-              <family>Roboto</family>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
             </property>
             <item>
              <property name="text">
@@ -1647,13 +1757,13 @@
       <attribute name="title">
        <string>35002</string>
       </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_5">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="QGroupBox" name="groupBox_listDetails">
+        <widget class="QGroupBox" name="groupBox">
          <property name="title">
           <string>Перечень деталей</string>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_4">
+         <layout class="QVBoxLayout" name="verticalLayout_5">
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_plunger">
             <property name="spacing">
@@ -1669,7 +1779,7 @@
               </property>
               <property name="font">
                <font>
-                <family>Roboto</family>
+                <family>Segoe UI</family>
                 <pointsize>10</pointsize>
                </font>
               </property>
@@ -1682,9 +1792,12 @@
              <widget class="QLineEdit" name="lineEdit_plunger">
               <property name="font">
                <font>
-                <family>Roboto</family>
+                <family>Segoe UI</family>
                 <pointsize>10</pointsize>
                </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">padding: 4px;</string>
               </property>
              </widget>
             </item>
@@ -1705,7 +1818,7 @@
               </property>
               <property name="font">
                <font>
-                <family>Roboto</family>
+                <family>Segoe UI</family>
                 <pointsize>10</pointsize>
                </font>
               </property>
@@ -1718,225 +1831,12 @@
              <widget class="QLineEdit" name="lineEdit_saddle">
               <property name="font">
                <font>
-                <family>Roboto</family>
+                <family>Segoe UI</family>
                 <pointsize>10</pointsize>
                </font>
               </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_bushing">
-            <property name="spacing">
-             <number>15</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="label_upperBushing">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <family>Roboto</family>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Верхняя втулка</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineEdit_upperBushing">
-              <property name="font">
-               <font>
-                <family>Roboto</family>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_lowerBushing">
-            <property name="spacing">
-             <number>15</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="label_lowerBushing">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <family>Roboto</family>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Нижняя втулка</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineEdit_lowerBushing">
-              <property name="font">
-               <font>
-                <family>Roboto</family>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_upperORing">
-            <property name="spacing">
-             <number>15</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="label_upperORing">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <family>Roboto</family>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Верхнее уплотнительное кольцо O-ring</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineEdit_upperORing">
-              <property name="font">
-               <font>
-                <family>Roboto</family>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_LowerORing">
-            <property name="spacing">
-             <number>15</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="label_lowerORing">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <family>Roboto</family>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Нижнее уплотнительное кольцо O-ring</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineEdit_lowerORing">
-              <property name="font">
-               <font>
-                <family>Roboto</family>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_stuffingBoxSeal">
-            <property name="spacing">
-             <number>15</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="label_stuffingBoxSeal">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <family>Roboto</family>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Сальниковое уплотнение</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineEdit_stuffingBoxSeal">
-              <property name="font">
-               <font>
-                <family>Roboto</family>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_driveDiaphragm">
-            <property name="spacing">
-             <number>15</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="label_driveDiaphragm">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <family>Roboto</family>
-                <pointsize>10</pointsize>
-               </font>
-              </property>
-              <property name="text">
-               <string>Мембрана привода</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="lineEdit_driveDiaphragm">
-              <property name="font">
-               <font>
-                <family>Roboto</family>
-                <pointsize>10</pointsize>
-               </font>
+              <property name="styleSheet">
+               <string notr="true">padding: 4px;</string>
               </property>
              </widget>
             </item>
@@ -1957,7 +1857,7 @@
               </property>
               <property name="font">
                <font>
-                <family>Roboto</family>
+                <family>Segoe UI</family>
                 <pointsize>10</pointsize>
                </font>
               </property>
@@ -1970,9 +1870,129 @@
              <widget class="QLineEdit" name="lineEdit_covers">
               <property name="font">
                <font>
-                <family>Roboto</family>
+                <family>Segoe UI</family>
                 <pointsize>10</pointsize>
                </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">padding: 4px;</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_lowerBushing">
+            <property name="spacing">
+             <number>15</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_lowerBushing">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Нижняя втулка</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEdit_lowerBushing">
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">padding: 4px;</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_bushing">
+            <property name="spacing">
+             <number>15</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_upperBushing">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Верхняя втулка</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEdit_upperBushing">
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">padding: 4px;</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_upperORing">
+            <property name="spacing">
+             <number>15</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_upperORing">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Верхнее уплотнительное кольцо O-ring</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEdit_upperORing">
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">padding: 4px;</string>
               </property>
              </widget>
             </item>
@@ -1993,7 +2013,7 @@
               </property>
               <property name="font">
                <font>
-                <family>Roboto</family>
+                <family>Segoe UI</family>
                 <pointsize>10</pointsize>
                </font>
               </property>
@@ -2006,9 +2026,129 @@
              <widget class="QLineEdit" name="lineEdit_shaft">
               <property name="font">
                <font>
-                <family>Roboto</family>
+                <family>Segoe UI</family>
                 <pointsize>10</pointsize>
                </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">padding: 4px;</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_driveDiaphragm">
+            <property name="spacing">
+             <number>15</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_driveDiaphragm">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Мембрана привода</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEdit_driveDiaphragm">
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">padding: 4px;</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_stuffingBoxSeal">
+            <property name="spacing">
+             <number>15</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_stuffingBoxSeal">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Сальниковое уплотнение</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEdit_stuffingBoxSeal">
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">padding: 4px;</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_LowerORing">
+            <property name="spacing">
+             <number>15</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_lowerORing">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="text">
+               <string>Нижнее уплотнительное кольцо O-ring</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="lineEdit_lowerORing">
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">padding: 4px;</string>
               </property>
              </widget>
             </item>
@@ -2029,7 +2169,7 @@
               </property>
               <property name="font">
                <font>
-                <family>Roboto</family>
+                <family>Segoe UI</family>
                 <pointsize>10</pointsize>
                </font>
               </property>
@@ -2042,9 +2182,12 @@
              <widget class="QLineEdit" name="lineEdit_saddleLock">
               <property name="font">
                <font>
-                <family>Roboto</family>
+                <family>Segoe UI</family>
                 <pointsize>10</pointsize>
                </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">padding: 4px;</string>
               </property>
              </widget>
             </item>
@@ -2075,10 +2218,31 @@
       <layout class="QVBoxLayout" name="verticalLayout_6">
        <item>
         <widget class="QGroupBox" name="groupBox_materialsParts">
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="title">
           <string>Материалы деталей</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
+          <property name="spacing">
+           <number>4</number>
+          </property>
+          <property name="leftMargin">
+           <number>4</number>
+          </property>
+          <property name="topMargin">
+           <number>4</number>
+          </property>
+          <property name="rightMargin">
+           <number>4</number>
+          </property>
+          <property name="bottomMargin">
+           <number>4</number>
+          </property>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_materialCorpus">
             <property name="spacing">
@@ -2110,6 +2274,9 @@
                 <family>Roboto</family>
                 <pointsize>10</pointsize>
                </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">padding: 4px;</string>
               </property>
              </widget>
             </item>
@@ -2147,6 +2314,9 @@
                 <pointsize>10</pointsize>
                </font>
               </property>
+              <property name="styleSheet">
+               <string notr="true">padding: 4px;</string>
+              </property>
              </widget>
             </item>
            </layout>
@@ -2182,6 +2352,9 @@
                 <family>Roboto</family>
                 <pointsize>10</pointsize>
                </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">padding: 4px;</string>
               </property>
              </widget>
             </item>
@@ -2219,6 +2392,9 @@
                 <pointsize>10</pointsize>
                </font>
               </property>
+              <property name="styleSheet">
+               <string notr="true">padding: 4px;</string>
+              </property>
              </widget>
             </item>
            </layout>
@@ -2254,6 +2430,9 @@
                 <family>Roboto</family>
                 <pointsize>10</pointsize>
                </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">padding: 4px;</string>
               </property>
              </widget>
             </item>
@@ -2291,6 +2470,9 @@
                 <pointsize>10</pointsize>
                </font>
               </property>
+              <property name="styleSheet">
+               <string notr="true">padding: 4px;</string>
+              </property>
              </widget>
             </item>
            </layout>
@@ -2327,6 +2509,9 @@
                 <pointsize>10</pointsize>
                </font>
               </property>
+              <property name="styleSheet">
+               <string notr="true">padding: 4px;</string>
+              </property>
              </widget>
             </item>
            </layout>
@@ -2362,6 +2547,9 @@
                 <family>Roboto</family>
                 <pointsize>10</pointsize>
                </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">padding: 4px;</string>
               </property>
              </widget>
             </item>
@@ -2406,9 +2594,12 @@
       <widget class="QPushButton" name="pushButton_clear">
        <property name="font">
         <font>
-         <family>Roboto</family>
+         <family>Segoe UI</family>
          <pointsize>10</pointsize>
         </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">padding: 4px;</string>
        </property>
        <property name="text">
         <string>Очистить</string>
@@ -2419,9 +2610,12 @@
       <widget class="QPushButton" name="pushButton">
        <property name="font">
         <font>
-         <family>Roboto</family>
+         <family>Segoe UI</family>
          <pointsize>10</pointsize>
         </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">padding: 4px;</string>
        </property>
        <property name="text">
         <string>Далее</string>
