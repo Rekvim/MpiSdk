@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>796</width>
-    <height>302</height>
+    <height>324</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,8 +18,9 @@
     <widget class="QGroupBox" name="groupBox">
      <property name="font">
       <font>
+       <family>Roboto</family>
        <pointsize>14</pointsize>
-       <bold>true</bold>
+       <bold>false</bold>
       </font>
      </property>
      <property name="title">
@@ -38,6 +39,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Roboto</family>
             <pointsize>14</pointsize>
             <bold>false</bold>
            </font>
@@ -51,6 +53,7 @@
          <widget class="QLineEdit" name="lineEdit_object">
           <property name="font">
            <font>
+            <family>Roboto</family>
             <pointsize>14</pointsize>
             <bold>false</bold>
            </font>
@@ -71,6 +74,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Roboto</family>
             <pointsize>14</pointsize>
             <bold>false</bold>
            </font>
@@ -84,6 +88,7 @@
          <widget class="QLineEdit" name="lineEdit_department">
           <property name="font">
            <font>
+            <family>Roboto</family>
             <pointsize>14</pointsize>
             <bold>false</bold>
            </font>
@@ -104,6 +109,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Roboto</family>
             <pointsize>14</pointsize>
             <bold>false</bold>
            </font>
@@ -123,6 +129,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Roboto</family>
             <pointsize>14</pointsize>
             <bold>false</bold>
            </font>
@@ -146,6 +153,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Roboto</family>
             <pointsize>14</pointsize>
             <bold>false</bold>
            </font>
@@ -159,6 +167,7 @@
          <widget class="QLineEdit" name="lineEdit_FIO">
           <property name="font">
            <font>
+            <family>Roboto</family>
             <pointsize>14</pointsize>
             <bold>false</bold>
            </font>
@@ -179,6 +188,7 @@
           </property>
           <property name="font">
            <font>
+            <family>Roboto</family>
             <pointsize>14</pointsize>
             <bold>false</bold>
            </font>
@@ -192,6 +202,7 @@
          <widget class="QLineEdit" name="lineEdit_manufactory">
           <property name="font">
            <font>
+            <family>Roboto</family>
             <pointsize>14</pointsize>
             <bold>false</bold>
            </font>
@@ -235,6 +246,7 @@
       <widget class="QPushButton" name="pushButton">
        <property name="font">
         <font>
+         <family>Roboto</family>
          <pointsize>14</pointsize>
         </font>
        </property>
