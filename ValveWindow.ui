@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>654</width>
-    <height>719</height>
+    <height>715</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -37,7 +37,7 @@
      <property name="font">
       <font>
        <family>Segoe UI</family>
-       <pointsize>12</pointsize>
+       <pointsize>10</pointsize>
       </font>
      </property>
      <property name="styleSheet">
@@ -1665,6 +1665,7 @@
            <widget class="QLineEdit" name="lineEdit_diameterPulley">
             <property name="font">
              <font>
+              <family>Segoe UI</family>
               <pointsize>10</pointsize>
              </font>
             </property>
@@ -2627,28 +2628,57 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>comboBox_positionNumber</tabstop>
+  <tabstop>lineEdit_positionNumber</tabstop>
+  <tabstop>comboBox_manufacturer</tabstop>
+  <tabstop>lineEdit_manufacturer</tabstop>
+  <tabstop>lineEdit_valveSeries</tabstop>
+  <tabstop>lineEdit_valveModel</tabstop>
+  <tabstop>lineEdit_serialNumber</tabstop>
+  <tabstop>comboBox_materialBody</tabstop>
+  <tabstop>comboBox_materialSaddle</tabstop>
+  <tabstop>lineEdit_materialSaddle</tabstop>
+  <tabstop>comboBox_DN</tabstop>
+  <tabstop>lineEdit_DN</tabstop>
+  <tabstop>comboBox_CV</tabstop>
+  <tabstop>lineEdit_CV</tabstop>
+  <tabstop>lineEdit_PN</tabstop>
+  <tabstop>lineEdit_positionerModel</tabstop>
+  <tabstop>comboBox_positionerType</tabstop>
+  <tabstop>comboBox_dinamicError</tabstop>
+  <tabstop>comboBox_strokeMovement</tabstop>
+  <tabstop>lineEdit_strokValve</tabstop>
+  <tabstop>comboBox_driveModel</tabstop>
+  <tabstop>lineEdit_driveModel</tabstop>
+  <tabstop>comboBox_safePosition</tabstop>
+  <tabstop>comboBox_driveType</tabstop>
+  <tabstop>lineEdit_driveRange</tabstop>
+  <tabstop>lineEdit_driveDiameter</tabstop>
+  <tabstop>comboBox_toolNumber</tabstop>
+  <tabstop>lineEdit_diameterPulley</tabstop>
+  <tabstop>comboBox_materialStuffingBoxSeal</tabstop>
   <tabstop>pushButton</tabstop>
   <tabstop>pushButton_clear</tabstop>
-  <tabstop>tabWidget_Data</tabstop>
-  <tabstop>lineEdit_materialCorpus</tabstop>
-  <tabstop>lineEdit_materialStock</tabstop>
-  <tabstop>lineEdit_materialCap</tabstop>
-  <tabstop>lineEdit_materialBall</tabstop>
+  <tabstop>lineEdit_saddleLock</tabstop>
   <tabstop>lineEdit_materialGuideSleeve</tabstop>
+  <tabstop>lineEdit_stuffingBoxSeal</tabstop>
   <tabstop>lineEdit_materialDisk</tabstop>
+  <tabstop>lineEdit_shaft</tabstop>
   <tabstop>lineEdit_materialPlunger</tabstop>
   <tabstop>lineEdit_plunger</tabstop>
   <tabstop>lineEdit_saddle</tabstop>
+  <tabstop>lineEdit_driveDiaphragm</tabstop>
   <tabstop>lineEdit_upperBushing</tabstop>
   <tabstop>lineEdit_lowerBushing</tabstop>
   <tabstop>lineEdit_upperORing</tabstop>
-  <tabstop>lineEdit_lowerORing</tabstop>
-  <tabstop>lineEdit_stuffingBoxSeal</tabstop>
-  <tabstop>lineEdit_driveDiaphragm</tabstop>
-  <tabstop>lineEdit_covers</tabstop>
-  <tabstop>lineEdit_shaft</tabstop>
-  <tabstop>lineEdit_saddleLock</tabstop>
   <tabstop>lineEdit_materialShaft</tabstop>
+  <tabstop>lineEdit_materialCap</tabstop>
+  <tabstop>lineEdit_covers</tabstop>
+  <tabstop>lineEdit_materialBall</tabstop>
+  <tabstop>lineEdit_lowerORing</tabstop>
+  <tabstop>tabWidget_Data</tabstop>
+  <tabstop>lineEdit_materialCorpus</tabstop>
+  <tabstop>lineEdit_materialStock</tabstop>
  </tabstops>
  <resources/>
  <connections/>

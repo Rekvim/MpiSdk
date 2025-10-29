@@ -25,11 +25,11 @@
       <property name="font">
        <font>
         <family>Segoe UI</family>
-        <pointsize>12</pointsize>
+        <pointsize>10</pointsize>
        </font>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab_manual">
        <attribute name="title">
@@ -41,7 +41,7 @@
           <property name="font">
            <font>
             <family>Segoe UI</family>
-            <pointsize>12</pointsize>
+            <pointsize>10</pointsize>
            </font>
           </property>
           <property name="title">
@@ -374,6 +374,12 @@
                <height>0</height>
               </size>
              </property>
+             <property name="font">
+              <font>
+               <family>Segoe UI</family>
+               <pointsize>10</pointsize>
+              </font>
+             </property>
              <property name="suffix">
               <string> мА</string>
              </property>
@@ -408,7 +414,7 @@
           <property name="font">
            <font>
             <family>Segoe UI</family>
-            <pointsize>12</pointsize>
+            <pointsize>10</pointsize>
            </font>
           </property>
           <property name="title">
@@ -420,7 +426,7 @@
              <property name="font">
               <font>
                <family>Segoe UI</family>
-               <pointsize>12</pointsize>
+               <pointsize>10</pointsize>
               </font>
              </property>
              <property name="title">
@@ -431,8 +437,8 @@
                <widget class="QLineEdit" name="lineEdit_linearSensor">
                 <property name="font">
                  <font>
-                  <family>Roboto</family>
-                  <pointsize>12</pointsize>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
                  </font>
                 </property>
                 <property name="styleSheet">
@@ -447,8 +453,8 @@
                <widget class="QLineEdit" name="lineEdit_linearSensorPercent">
                 <property name="font">
                  <font>
-                  <family>Roboto</family>
-                  <pointsize>12</pointsize>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
                  </font>
                 </property>
                 <property name="styleSheet">
@@ -467,7 +473,7 @@
              <property name="font">
               <font>
                <family>Segoe UI</family>
-               <pointsize>12</pointsize>
+               <pointsize>10</pointsize>
               </font>
              </property>
              <property name="title">
@@ -478,8 +484,8 @@
                <widget class="QLineEdit" name="lineEdit_pressureSensor_1">
                 <property name="font">
                  <font>
-                  <family>Roboto</family>
-                  <pointsize>12</pointsize>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
                  </font>
                 </property>
                 <property name="styleSheet">
@@ -498,7 +504,7 @@
              <property name="font">
               <font>
                <family>Segoe UI</family>
-               <pointsize>12</pointsize>
+               <pointsize>10</pointsize>
               </font>
              </property>
              <property name="title">
@@ -509,8 +515,8 @@
                <widget class="QLineEdit" name="lineEdit_pressureSensor_2">
                 <property name="font">
                  <font>
-                  <family>Roboto</family>
-                  <pointsize>12</pointsize>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
                  </font>
                 </property>
                 <property name="styleSheet">
@@ -529,7 +535,7 @@
              <property name="font">
               <font>
                <family>Segoe UI</family>
-               <pointsize>12</pointsize>
+               <pointsize>10</pointsize>
               </font>
              </property>
              <property name="title">
@@ -540,8 +546,8 @@
                <widget class="QLineEdit" name="lineEdit_pressureSensor_3">
                 <property name="font">
                  <font>
-                  <family>Roboto</family>
-                  <pointsize>12</pointsize>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
                  </font>
                 </property>
                 <property name="styleSheet">
@@ -576,7 +582,7 @@
              <property name="font">
               <font>
                <family>Segoe UI</family>
-               <pointsize>12</pointsize>
+               <pointsize>10</pointsize>
               </font>
              </property>
              <property name="title">
@@ -641,7 +647,7 @@
                   <property name="font">
                    <font>
                     <family>Segoe UI</family>
-                    <pointsize>12</pointsize>
+                    <pointsize>10</pointsize>
                    </font>
                   </property>
                   <property name="text">
@@ -654,7 +660,7 @@
                   <property name="font">
                    <font>
                     <family>Segoe UI</family>
-                    <pointsize>12</pointsize>
+                    <pointsize>10</pointsize>
                    </font>
                   </property>
                   <property name="text">
@@ -667,7 +673,7 @@
                   <property name="font">
                    <font>
                     <family>Segoe UI</family>
-                    <pointsize>12</pointsize>
+                    <pointsize>10</pointsize>
                    </font>
                   </property>
                   <property name="text">
@@ -680,7 +686,7 @@
                   <property name="font">
                    <font>
                     <family>Segoe UI</family>
-                    <pointsize>12</pointsize>
+                    <pointsize>10</pointsize>
                    </font>
                   </property>
                   <property name="text">
@@ -693,7 +699,7 @@
                   <property name="font">
                    <font>
                     <family>Segoe UI</family>
-                    <pointsize>12</pointsize>
+                    <pointsize>10</pointsize>
                    </font>
                   </property>
                   <property name="text">
@@ -726,7 +732,7 @@
           <property name="font">
            <font>
             <family>Segoe UI</family>
-            <pointsize>12</pointsize>
+            <pointsize>10</pointsize>
            </font>
           </property>
           <property name="title">
@@ -740,7 +746,7 @@
                <property name="font">
                 <font>
                  <family>Segoe UI</family>
-                 <pointsize>12</pointsize>
+                 <pointsize>10</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -778,7 +784,7 @@
                <property name="font">
                 <font>
                  <family>Segoe UI</family>
-                 <pointsize>12</pointsize>
+                 <pointsize>10</pointsize>
                 </font>
                </property>
                <property name="layoutDirection">
@@ -804,7 +810,7 @@
                <property name="font">
                 <font>
                  <family>Segoe UI</family>
-                 <pointsize>12</pointsize>
+                 <pointsize>10</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -842,7 +848,7 @@
                <property name="font">
                 <font>
                  <family>Segoe UI</family>
-                 <pointsize>12</pointsize>
+                 <pointsize>10</pointsize>
                 </font>
                </property>
                <property name="layoutDirection">
@@ -865,7 +871,7 @@
                <property name="font">
                 <font>
                  <family>Segoe UI</family>
-                 <pointsize>12</pointsize>
+                 <pointsize>10</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -903,7 +909,7 @@
                <property name="font">
                 <font>
                  <family>Segoe UI</family>
-                 <pointsize>12</pointsize>
+                 <pointsize>10</pointsize>
                 </font>
                </property>
                <property name="layoutDirection">
@@ -926,7 +932,7 @@
                <property name="font">
                 <font>
                  <family>Segoe UI</family>
-                 <pointsize>12</pointsize>
+                 <pointsize>10</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -964,7 +970,7 @@
                <property name="font">
                 <font>
                  <family>Segoe UI</family>
-                 <pointsize>12</pointsize>
+                 <pointsize>10</pointsize>
                 </font>
                </property>
                <property name="layoutDirection">
@@ -987,7 +993,7 @@
                <property name="font">
                 <font>
                  <family>Segoe UI</family>
-                 <pointsize>12</pointsize>
+                 <pointsize>10</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -1025,7 +1031,7 @@
                <property name="font">
                 <font>
                  <family>Segoe UI</family>
-                 <pointsize>12</pointsize>
+                 <pointsize>10</pointsize>
                 </font>
                </property>
                <property name="layoutDirection">
@@ -1051,7 +1057,7 @@
                <property name="font">
                 <font>
                  <family>Segoe UI</family>
-                 <pointsize>12</pointsize>
+                 <pointsize>10</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -1070,7 +1076,7 @@
                <property name="font">
                 <font>
                  <family>Segoe UI</family>
-                 <pointsize>12</pointsize>
+                 <pointsize>10</pointsize>
                 </font>
                </property>
                <property name="text">
@@ -1102,7 +1108,7 @@
                <property name="font">
                 <font>
                  <family>Segoe UI</family>
-                 <pointsize>12</pointsize>
+                 <pointsize>10</pointsize>
                  <italic>false</italic>
                  <bold>false</bold>
                 </font>
@@ -1164,7 +1170,7 @@
             <property name="font">
              <font>
               <family>Segoe UI</family>
-              <pointsize>12</pointsize>
+              <pointsize>10</pointsize>
              </font>
             </property>
             <property name="title">
@@ -1192,7 +1198,7 @@
             <property name="font">
              <font>
               <family>Segoe UI</family>
-              <pointsize>12</pointsize>
+              <pointsize>10</pointsize>
              </font>
             </property>
             <property name="title">
@@ -1233,7 +1239,7 @@
             <property name="font">
              <font>
               <family>Segoe UI</family>
-              <pointsize>12</pointsize>
+              <pointsize>10</pointsize>
              </font>
             </property>
             <property name="text">
@@ -1246,7 +1252,7 @@
             <property name="font">
              <font>
               <family>Segoe UI</family>
-              <pointsize>12</pointsize>
+              <pointsize>10</pointsize>
              </font>
             </property>
             <property name="text">
@@ -1268,11 +1274,11 @@
           <property name="font">
            <font>
             <family>Segoe UI</family>
-            <pointsize>12</pointsize>
+            <pointsize>10</pointsize>
            </font>
           </property>
           <property name="currentIndex">
-           <number>3</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="tab_mainTests_task">
            <attribute name="title">
@@ -1328,7 +1334,7 @@
                 <property name="font">
                  <font>
                   <family>Segoe UI</family>
-                  <pointsize>12</pointsize>
+                  <pointsize>10</pointsize>
                  </font>
                 </property>
                 <property name="title">
@@ -1337,12 +1343,6 @@
                 <layout class="QHBoxLayout" name="horizontalLayout_12">
                  <item>
                   <widget class="QCheckBox" name="checkBox_showCurve_task">
-                   <property name="font">
-                    <font>
-                     <family>Segoe UI</family>
-                     <pointsize>12</pointsize>
-                    </font>
-                   </property>
                    <property name="text">
                     <string>Задание</string>
                    </property>
@@ -1353,12 +1353,6 @@
                  </item>
                  <item>
                   <widget class="QCheckBox" name="checkBox_showCurve_moving">
-                   <property name="font">
-                    <font>
-                     <family>Segoe UI</family>
-                     <pointsize>12</pointsize>
-                    </font>
-                   </property>
                    <property name="text">
                     <string>Датчик линейных перемещений</string>
                    </property>
@@ -1369,12 +1363,6 @@
                  </item>
                  <item>
                   <widget class="QCheckBox" name="checkBox_showCurve_pressure_1">
-                   <property name="font">
-                    <font>
-                     <family>Segoe UI</family>
-                     <pointsize>12</pointsize>
-                    </font>
-                   </property>
                    <property name="text">
                     <string>Датчик давления 1</string>
                    </property>
@@ -1385,12 +1373,6 @@
                  </item>
                  <item>
                   <widget class="QCheckBox" name="checkBox_showCurve_pressure_2">
-                   <property name="font">
-                    <font>
-                     <family>Segoe UI</family>
-                     <pointsize>12</pointsize>
-                    </font>
-                   </property>
                    <property name="text">
                     <string>Датчик давления 2</string>
                    </property>
@@ -1401,12 +1383,6 @@
                  </item>
                  <item>
                   <widget class="QCheckBox" name="checkBox_showCurve_pressure_3">
-                   <property name="font">
-                    <font>
-                     <family>Segoe UI</family>
-                     <pointsize>12</pointsize>
-                    </font>
-                   </property>
                    <property name="text">
                     <string>Датчик давления 3</string>
                    </property>
@@ -1567,7 +1543,7 @@
               <property name="font">
                <font>
                 <family>Segoe UI</family>
-                <pointsize>12</pointsize>
+                <pointsize>10</pointsize>
                 <stylestrategy>PreferDefault</stylestrategy>
                </font>
               </property>
@@ -1745,7 +1721,7 @@
               <property name="font">
                <font>
                 <family>Segoe UI</family>
-                <pointsize>12</pointsize>
+                <pointsize>10</pointsize>
                 <stylestrategy>PreferDefault</stylestrategy>
                </font>
               </property>
@@ -1883,7 +1859,7 @@
               <property name="font">
                <font>
                 <family>Segoe UI</family>
-                <pointsize>12</pointsize>
+                <pointsize>10</pointsize>
                 <stylestrategy>PreferDefault</stylestrategy>
                </font>
               </property>
@@ -2096,7 +2072,7 @@
             <property name="font">
              <font>
               <family>Segoe UI</family>
-              <pointsize>12</pointsize>
+              <pointsize>10</pointsize>
              </font>
             </property>
             <property name="text">
@@ -2109,7 +2085,7 @@
             <property name="font">
              <font>
               <family>Segoe UI</family>
-              <pointsize>12</pointsize>
+              <pointsize>10</pointsize>
              </font>
             </property>
             <property name="text">
@@ -2128,6 +2104,12 @@
        <layout class="QVBoxLayout" name="verticalLayout_27">
         <item>
          <widget class="QTabWidget" name="tabWidget_optionalTests">
+          <property name="font">
+           <font>
+            <family>Segoe UI</family>
+            <pointsize>10</pointsize>
+           </font>
+          </property>
           <property name="currentIndex">
            <number>0</number>
           </property>
@@ -2293,6 +2275,12 @@
           </item>
           <item>
            <widget class="QPushButton" name="pushButton_optionalTests_save">
+            <property name="font">
+             <font>
+              <family>Segoe UI</family>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>Сохранить</string>
             </property>
@@ -2300,6 +2288,12 @@
           </item>
           <item>
            <widget class="QPushButton" name="pushButton_optionalTests_start">
+            <property name="font">
+             <font>
+              <family>Segoe UI</family>
+              <pointsize>10</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>Старт/Стоп</string>
             </property>
@@ -2317,7 +2311,7 @@
         <item>
          <widget class="QTabWidget" name="tab_widget">
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="general">
            <attribute name="title">
@@ -2337,7 +2331,7 @@
                 <property name="font">
                  <font>
                   <family>Segoe UI</family>
-                  <pointsize>12</pointsize>
+                  <pointsize>10</pointsize>
                   <stylestrategy>PreferDefault</stylestrategy>
                  </font>
                 </property>
@@ -2536,6 +2530,12 @@
             </item>
             <item>
              <widget class="QTabWidget" name="tabWidget_2">
+              <property name="font">
+               <font>
+                <family>Segoe UI</family>
+                <pointsize>10</pointsize>
+               </font>
+              </property>
               <property name="currentIndex">
                <number>0</number>
               </property>
@@ -3420,6 +3420,12 @@
              <layout class="QVBoxLayout" name="verticalLayout_imagesChart">
               <item>
                <widget class="QGroupBox" name="groupBox_imageChartTask">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
                 <property name="title">
                  <string>График зависимости ход штока/сигнал позиционера</string>
                 </property>
@@ -3490,6 +3496,12 @@
               </item>
               <item>
                <widget class="QGroupBox" name="groupBox_imageChartPressure">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
                 <property name="title">
                  <string>График зависимости ход штока/давление в приводе</string>
                 </property>
@@ -3557,6 +3569,12 @@
               </item>
               <item>
                <widget class="QGroupBox" name="groupBox_imageChartFriction">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
                 <property name="title">
                  <string>График трения</string>
                 </property>
@@ -3642,6 +3660,12 @@
              <layout class="QGridLayout" name="gridLayout">
               <item row="3" column="2">
                <widget class="QLineEdit" name="lineEdit_stroke_recomend">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">padding: 4px;</string>
                 </property>
@@ -3655,7 +3679,7 @@
                 <property name="font">
                  <font>
                   <family>Segoe UI</family>
-                  <pointsize>12</pointsize>
+                  <pointsize>10</pointsize>
                   <stylestrategy>PreferDefault</stylestrategy>
                  </font>
                 </property>
@@ -3666,6 +3690,12 @@
               </item>
               <item row="2" column="2">
                <widget class="QLineEdit" name="lineEdit_dinamic_ip_recomend">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">padding: 4px;</string>
                 </property>
@@ -3676,6 +3706,12 @@
               </item>
               <item row="4" column="1">
                <widget class="QLineEdit" name="lineEdit_range_real">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">padding: 4px;</string>
                 </property>
@@ -3709,7 +3745,7 @@
                 <property name="font">
                  <font>
                   <family>Segoe UI</family>
-                  <pointsize>12</pointsize>
+                  <pointsize>10</pointsize>
                   <stylestrategy>PreferDefault</stylestrategy>
                  </font>
                 </property>
@@ -3721,6 +3757,12 @@
               </item>
               <item row="4" column="2">
                <widget class="QLineEdit" name="lineEdit_range_recomend">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">padding: 4px;</string>
                 </property>
@@ -3731,6 +3773,12 @@
               </item>
               <item row="8" column="1" colspan="2">
                <widget class="QLineEdit" name="lineEdit_time_forward">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">padding: 4px;</string>
                 </property>
@@ -3744,7 +3792,7 @@
                 <property name="font">
                  <font>
                   <family>Segoe UI</family>
-                  <pointsize>12</pointsize>
+                  <pointsize>10</pointsize>
                   <stylestrategy>PreferDefault</stylestrategy>
                  </font>
                 </property>
@@ -3758,7 +3806,7 @@
                 <property name="font">
                  <font>
                   <family>Segoe UI</family>
-                  <pointsize>12</pointsize>
+                  <pointsize>10</pointsize>
                   <stylestrategy>PreferDefault</stylestrategy>
                  </font>
                 </property>
@@ -3769,6 +3817,12 @@
               </item>
               <item row="3" column="1">
                <widget class="QLineEdit" name="lineEdit_stroke_real">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">padding: 4px;</string>
                 </property>
@@ -3779,6 +3833,12 @@
               </item>
               <item row="9" column="1" colspan="2">
                <widget class="QLineEdit" name="lineEdit_time_backward">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">padding: 4px;</string>
                 </property>
@@ -3792,7 +3852,7 @@
                 <property name="font">
                  <font>
                   <family>Segoe UI</family>
-                  <pointsize>12</pointsize>
+                  <pointsize>10</pointsize>
                   <stylestrategy>PreferDefault</stylestrategy>
                  </font>
                 </property>
@@ -3806,7 +3866,7 @@
                 <property name="font">
                  <font>
                   <family>Segoe UI</family>
-                  <pointsize>12</pointsize>
+                  <pointsize>10</pointsize>
                   <stylestrategy>PreferDefault</stylestrategy>
                  </font>
                 </property>
@@ -3820,7 +3880,7 @@
                 <property name="font">
                  <font>
                   <family>Segoe UI</family>
-                  <pointsize>12</pointsize>
+                  <pointsize>10</pointsize>
                   <stylestrategy>PreferDefault</stylestrategy>
                  </font>
                 </property>
@@ -3831,6 +3891,12 @@
               </item>
               <item row="1" column="1">
                <widget class="QLineEdit" name="lineEdit_dinamic_real">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">padding: 4px;</string>
                 </property>
@@ -3844,7 +3910,7 @@
                 <property name="font">
                  <font>
                   <family>Segoe UI</family>
-                  <pointsize>12</pointsize>
+                  <pointsize>10</pointsize>
                   <stylestrategy>PreferDefault</stylestrategy>
                  </font>
                 </property>
@@ -3858,7 +3924,7 @@
                 <property name="font">
                  <font>
                   <family>Segoe UI</family>
-                  <pointsize>12</pointsize>
+                  <pointsize>10</pointsize>
                   <stylestrategy>PreferDefault</stylestrategy>
                  </font>
                 </property>
@@ -3870,6 +3936,12 @@
               </item>
               <item row="6" column="1" colspan="2">
                <widget class="QLineEdit" name="lineEdit_friction">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">padding: 4px;</string>
                 </property>
@@ -3883,7 +3955,7 @@
                 <property name="font">
                  <font>
                   <family>Segoe UI</family>
-                  <pointsize>12</pointsize>
+                  <pointsize>10</pointsize>
                   <stylestrategy>PreferDefault</stylestrategy>
                  </font>
                 </property>
@@ -3895,6 +3967,12 @@
               </item>
               <item row="7" column="1" colspan="2">
                <widget class="QLineEdit" name="lineEdit_friction_percent">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">padding: 4px;</string>
                 </property>
@@ -3908,7 +3986,7 @@
                 <property name="font">
                  <font>
                   <family>Segoe UI</family>
-                  <pointsize>12</pointsize>
+                  <pointsize>10</pointsize>
                   <stylestrategy>PreferDefault</stylestrategy>
                  </font>
                 </property>
@@ -3920,6 +3998,12 @@
               </item>
               <item row="2" column="1">
                <widget class="QLineEdit" name="lineEdit_dinamic_ip_real">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">padding: 4px;</string>
                 </property>
@@ -3930,6 +4014,12 @@
               </item>
               <item row="1" column="2">
                <widget class="QLineEdit" name="lineEdit_dinamicRecomend">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">padding: 4px;</string>
                 </property>
@@ -3943,7 +4033,7 @@
                 <property name="font">
                  <font>
                   <family>Segoe UI</family>
-                  <pointsize>12</pointsize>
+                  <pointsize>10</pointsize>
                   <stylestrategy>PreferDefault</stylestrategy>
                  </font>
                 </property>
@@ -3955,6 +4045,12 @@
               </item>
               <item row="5" column="1" colspan="2">
                <widget class="QLineEdit" name="lineEdit_range_pressure">
+                <property name="font">
+                 <font>
+                  <family>Segoe UI</family>
+                  <pointsize>10</pointsize>
+                 </font>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">padding: 4px;</string>
                 </property>
@@ -3999,10 +4095,16 @@
           </item>
           <item>
            <widget class="QPushButton" name="pushButton_report_generate">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="font">
              <font>
               <family>Segoe UI</family>
-              <pointsize>12</pointsize>
+              <pointsize>10</pointsize>
               <stylestrategy>PreferDefault</stylestrategy>
              </font>
             </property>
@@ -4015,6 +4117,18 @@
            <widget class="QPushButton" name="pushButton_report_open">
             <property name="enabled">
              <bool>false</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <family>Segoe UI</family>
+              <pointsize>10</pointsize>
+             </font>
             </property>
             <property name="text">
              <string>Открыть отчёт</string>

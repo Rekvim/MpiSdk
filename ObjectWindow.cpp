@@ -27,7 +27,7 @@ ObjectWindow::ObjectWindow(QWidget *parent)
 void ObjectWindow::LoadFromReg(Registry *registry)
 {
     m_registry = registry;
-    m_objectInfo = registry->GetObjectInfo();
+    m_objectInfo = registry->getObjectInfo();
     ui->lineEdit_object->setText(m_objectInfo->object);
     ui->lineEdit_manufactory->setText(m_objectInfo->manufactory);
     ui->lineEdit_department->setText(m_objectInfo->department);
@@ -56,7 +56,7 @@ void ObjectWindow::ButtonClick()
         return;
     }
 
-    if (!m_registry->CheckObject(ui->lineEdit_object->text())) {
+    if (!m_registry->checkObject(ui->lineEdit_object->text())) {
         QMessageBox::StandardButton button
             = QMessageBox::question(this,
                                     "Предупреждение",
@@ -73,7 +73,7 @@ void ObjectWindow::ButtonClick()
 
     m_objectInfo->object = ui->lineEdit_object->text();
 
-    if (!m_registry->CheckManufactory(ui->lineEdit_manufactory->text())) {
+    if (!m_registry->checkManufactory(ui->lineEdit_manufactory->text())) {
         QMessageBox::StandardButton button
             = QMessageBox::question(this,
                                     "Предупреждение",
@@ -90,7 +90,7 @@ void ObjectWindow::ButtonClick()
 
     m_objectInfo->manufactory = ui->lineEdit_manufactory->text();
 
-    if (!m_registry->CheckDepartment(ui->lineEdit_department->text())) {
+    if (!m_registry->checkDepartment(ui->lineEdit_department->text())) {
         QMessageBox::StandardButton button = QMessageBox::question(
             this,
             "Предупреждение",
@@ -106,7 +106,7 @@ void ObjectWindow::ButtonClick()
     }
 
 
-    OtherParameters *otherParameters = m_registry->GetOtherParameters();
+    OtherParameters *otherParameters = m_registry->getOtherParameters();
     otherParameters->date = ui->dateEdit->date().toString("dd.MM.yyyy");
 
     SaveObjectInfo();
@@ -120,5 +120,5 @@ void ObjectWindow::SaveObjectInfo()
     m_objectInfo->department = ui->lineEdit_department->text();
     m_objectInfo->FIO = ui->lineEdit_FIO->text();
 
-    m_registry->SaveObjectInfo();
+    m_registry->saveObjectInfo();
 }
