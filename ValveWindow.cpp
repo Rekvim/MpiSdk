@@ -589,14 +589,14 @@ void ValveWindow::setRegistry(Registry *registry)
     Q_ASSERT(registry != nullptr);
     m_registry = registry;
 
-    m_valveInfo = m_registry->GetValveInfo();
-    m_materialsOfComponentParts = m_registry->GetMaterialsOfComponentParts();
+    m_valveInfo = m_registry->getValveInfo();
+    m_materialsOfComponentParts = m_registry->getMaterialsOfComponentParts();
 
     ui->comboBox_positionNumber->clear();
-    ui->comboBox_positionNumber->addItems(m_registry->GetPositions());
+    ui->comboBox_positionNumber->addItems(m_registry->getPositions());
     ui->comboBox_positionNumber->addItem(m_manualInput);
 
-    QString lastPosition = m_registry->GetLastPosition();
+    QString lastPosition = m_registry->getLastPosition();
     if (lastPosition.isEmpty()) {
         ui->comboBox_positionNumber->setCurrentIndex(ui->comboBox_positionNumber->count() - 1);
     } else {
@@ -615,7 +615,7 @@ void ValveWindow::setRegistry(Registry *registry)
 void ValveWindow::saveValveInfo()
 {
     if (ui->comboBox_positionNumber->currentText() == m_manualInput)
-        m_valveInfo = m_registry->GetValveInfo(ui->lineEdit_positionNumber->text());
+        m_valveInfo = m_registry->getValveInfo(ui->lineEdit_positionNumber->text());
 
     if (ui->comboBox_manufacturer->currentText() == m_manualInput)
         m_valveInfo->manufacturer = ui->lineEdit_manufacturer->text();
@@ -665,14 +665,14 @@ void ValveWindow::saveValveInfo()
     m_materialsOfComponentParts->guideSleeve = ui->lineEdit_materialGuideSleeve->text();
     m_materialsOfComponentParts->stuffingBoxSeal = ui->comboBox_materialStuffingBoxSeal->currentText();
 
-    m_registry->SaveMaterialsOfComponentParts();
-    m_registry->SaveValveInfo();
+    m_registry->saveMaterialsOfComponentParts();
+    m_registry->saveValveInfo();
 }
 
 void ValveWindow::positionChanged(const QString &position)
 {
-    m_valveInfo = m_registry->GetValveInfo(position);
-    m_materialsOfComponentParts = m_registry->GetMaterialsOfComponentParts();
+    m_valveInfo = m_registry->getValveInfo(position);
+    m_materialsOfComponentParts = m_registry->getMaterialsOfComponentParts();
 
     if (position == m_manualInput) {
         ui->lineEdit_positionNumber->setEnabled(true);
@@ -816,7 +816,7 @@ void ValveWindow::on_pushButton_clicked()
         }
     }
 
-    OtherParameters *otherParameters = m_registry->GetOtherParameters();
+    OtherParameters *otherParameters = m_registry->getOtherParameters();
     otherParameters->safePosition = ui->comboBox_safePosition->currentText();
     otherParameters->movement = ui->comboBox_strokeMovement->currentText();
 

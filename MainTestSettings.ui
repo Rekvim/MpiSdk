@@ -7,8 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>385</width>
-    <height>300</height>
+    <height>261</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="font">
    <font>
@@ -43,7 +49,7 @@
            <property name="font">
             <font>
              <family>Segoe UI</family>
-             <pointsize>12</pointsize>
+             <pointsize>10</pointsize>
             </font>
            </property>
            <property name="text">
@@ -56,11 +62,11 @@
            <property name="font">
             <font>
              <family>Segoe UI</family>
-             <pointsize>12</pointsize>
+             <pointsize>10</pointsize>
             </font>
            </property>
            <property name="styleSheet">
-            <string notr="true">padding: 4px;</string>
+            <string notr="true"/>
            </property>
            <property name="maximumTime">
             <time>
@@ -111,11 +117,11 @@
       </attribute>
       <layout class="QFormLayout" name="formLayout">
        <item row="0" column="0">
-        <widget class="QLabel" name="label_2">
+        <widget class="QLabel" name="label_response">
          <property name="font">
           <font>
            <family>Segoe UI</family>
-           <pointsize>12</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="text">
@@ -125,6 +131,18 @@
        </item>
        <item row="0" column="1">
         <widget class="QDoubleSpinBox" name="doubleSpinBox_response">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="font">
           <font>
            <family>Segoe UI</family>
@@ -132,7 +150,7 @@
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">padding: 4px;</string>
+          <string notr="true"/>
          </property>
          <property name="buttonSymbols">
           <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
@@ -149,11 +167,11 @@
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="QLabel" name="label_3">
+        <widget class="QLabel" name="label_delay">
          <property name="font">
           <font>
            <family>Segoe UI</family>
-           <pointsize>12</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="text">
@@ -163,14 +181,20 @@
        </item>
        <item row="1" column="1">
         <widget class="QDoubleSpinBox" name="doubleSpinBox_delay">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="font">
           <font>
            <family>Segoe UI</family>
-           <pointsize>12</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">padding: 4px;</string>
+          <string notr="true"/>
          </property>
          <property name="buttonSymbols">
           <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
@@ -190,11 +214,11 @@
         </widget>
        </item>
        <item row="2" column="0">
-        <widget class="QLabel" name="label_4">
+        <widget class="QLabel" name="label_points">
          <property name="font">
           <font>
            <family>Segoe UI</family>
-           <pointsize>12</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="text">
@@ -204,14 +228,20 @@
        </item>
        <item row="2" column="1">
         <widget class="QDoubleSpinBox" name="doubleSpinBox_points">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="font">
           <font>
            <family>Segoe UI</family>
-           <pointsize>12</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">padding: 4px;</string>
+          <string notr="true"/>
          </property>
          <property name="buttonSymbols">
           <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
@@ -234,11 +264,11 @@
         </widget>
        </item>
        <item row="3" column="0">
-        <widget class="QLabel" name="label_5">
+        <widget class="QLabel" name="label_signal_min">
          <property name="font">
           <font>
            <family>Segoe UI</family>
-           <pointsize>12</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="text">
@@ -248,14 +278,20 @@
        </item>
        <item row="3" column="1">
         <widget class="QDoubleSpinBox" name="doubleSpinBox_signal_min">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="font">
           <font>
            <family>Segoe UI</family>
-           <pointsize>12</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">padding: 4px;</string>
+          <string notr="true"/>
          </property>
          <property name="buttonSymbols">
           <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
@@ -281,11 +317,11 @@
         </widget>
        </item>
        <item row="4" column="0">
-        <widget class="QLabel" name="label_6">
+        <widget class="QLabel" name="label_signal_max">
          <property name="font">
           <font>
            <family>Segoe UI</family>
-           <pointsize>12</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="text">
@@ -295,14 +331,20 @@
        </item>
        <item row="4" column="1">
         <widget class="QDoubleSpinBox" name="doubleSpinBox_signal_max">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="font">
           <font>
            <family>Segoe UI</family>
-           <pointsize>12</pointsize>
+           <pointsize>10</pointsize>
           </font>
          </property>
          <property name="styleSheet">
-          <string notr="true">padding: 4px;</string>
+          <string notr="true"/>
          </property>
          <property name="buttonSymbols">
           <enum>QAbstractSpinBox::ButtonSymbols::NoButtons</enum>
@@ -351,7 +393,7 @@
        <property name="font">
         <font>
          <family>Segoe UI</family>
-         <pointsize>12</pointsize>
+         <pointsize>10</pointsize>
         </font>
        </property>
        <property name="styleSheet">
@@ -367,7 +409,7 @@
        <property name="font">
         <font>
          <family>Segoe UI</family>
-         <pointsize>12</pointsize>
+         <pointsize>10</pointsize>
         </font>
        </property>
        <property name="styleSheet">

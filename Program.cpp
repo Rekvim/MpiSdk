@@ -134,7 +134,7 @@ void Program::updateSensors()
 
     QVector<Point> points;
     qreal percent = calcPercent(m_mpi.GetDAC()->GetValue(),
-                                m_registry->GetValveInfo()->safePosition != 0);
+                                m_registry->getValveInfo()->safePosition != 0);
 
     quint64 time = QDateTime::currentMSecsSinceEpoch() - m_initTime;
 
@@ -222,7 +222,7 @@ void Program::initialize()
         emit setTextColor(TextObjects::Label_connectedSensorsNumber, Qt::darkGreen);
     }
 
-    ValveInfo *valveInfo = m_registry->GetValveInfo();
+    ValveInfo *valveInfo = m_registry->getValveInfo();
     bool normalClosed = (valveInfo->safePosition == 0);
 
     emit setText(TextObjects::Label_startingPositionValue, "Измерение");
@@ -396,7 +396,7 @@ void Program::addFriction(const QVector<QPointF> &points)
 {
     QVector<Point> chartPoints;
 
-    ValveInfo *valveInfo = m_registry->GetValveInfo();
+    ValveInfo *valveInfo = m_registry->getValveInfo();
 
     qreal k = 5 * M_PI * valveInfo->diameter * valveInfo->diameter / 4;
 
@@ -422,7 +422,7 @@ void Program::updateCharts_mainTest()
 {
     QVector<Point> points;
     qreal percent = calcPercent(m_mpi.GetDAC()->GetValue(),
-                                m_registry->GetValveInfo()->safePosition != 0);
+                                m_registry->getValveInfo()->safePosition != 0);
 
     qreal task = m_mpi[0]->GetValueFromPercent(percent);
     qreal X = m_mpi.GetDAC()->GetValue();
@@ -447,7 +447,7 @@ void Program::getPoints_maintest(QVector<QVector<QPointF>> &points)
 
 void Program::results_mainTest(const MainTest::TestResults &results)
 {
-    ValveInfo *valveInfo = m_registry->GetValveInfo();
+    ValveInfo *valveInfo = m_registry->getValveInfo();
 
     qreal k = 5 * M_PI * valveInfo->diameter * valveInfo->diameter / 4;
 
@@ -534,7 +534,7 @@ void Program::updateCharts_strokeTest()
     QVector<Point> points;
 
     qreal percent = calcPercent(m_mpi.GetDAC()->GetValue(),
-                                m_registry->GetValveInfo()->safePosition != 0);
+                                m_registry->getValveInfo()->safePosition != 0);
 
     quint64 time = QDateTime::currentMSecsSinceEpoch() - m_startTime;
 
@@ -582,7 +582,7 @@ void Program::runningOptionalTest(const quint8 testNum)
 
         task.delay = parameters.delay;
 
-        ValveInfo *valveInfo = m_registry->GetValveInfo();
+        ValveInfo *valveInfo = m_registry->getValveInfo();
 
         bool normalOpen = (valveInfo->safePosition != 0);
 
@@ -636,7 +636,7 @@ void Program::runningOptionalTest(const quint8 testNum)
 
         task.delay = parameters.delay;
 
-        ValveInfo *valveInfo = m_registry->GetValveInfo();
+        ValveInfo *valveInfo = m_registry->getValveInfo();
 
         bool normalOpen = (valveInfo->safePosition != 0);
 
@@ -687,7 +687,7 @@ void Program::runningOptionalTest(const quint8 testNum)
         emit totalTestTimeMs(totalMs);
 
         task.delay = parameters.delay;
-        ValveInfo *valveInfo = m_registry->GetValveInfo();
+        ValveInfo *valveInfo = m_registry->getValveInfo();
 
         qreal start_value = 4.0;
         qreal end_value = 20.0;
@@ -787,7 +787,7 @@ void Program::updateCharts_optionTest(Charts chart)
     QVector<Point> points;
 
     qreal percent = calcPercent(m_mpi.GetDAC()->GetValue(),
-                                m_registry->GetValveInfo()->safePosition != 0);
+                                m_registry->getValveInfo()->safePosition != 0);
 
     quint64 time = QDateTime::currentMSecsSinceEpoch() - m_startTime;
 

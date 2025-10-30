@@ -673,6 +673,7 @@ border-radius: 6px;</string>
              <font>
               <family>Segoe UI</family>
               <pointsize>12</pointsize>
+              <bold>false</bold>
              </font>
             </property>
             <property name="styleSheet">

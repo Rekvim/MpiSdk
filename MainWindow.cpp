@@ -354,9 +354,9 @@ void MainWindow::setRegistry(Registry *registry)
 
     m_reportSaver->SetRegistry(registry);
 
-    ValveInfo *valveInfo = m_registry->GetValveInfo();
+    ValveInfo *valveInfo = m_registry->getValveInfo();
 
-    ObjectInfo *objectInfo = m_registry->GetObjectInfo();
+    ObjectInfo *objectInfo = m_registry->getObjectInfo();
 
     ui->lineEdit_object->setText(objectInfo->object);
     ui->lineEdit_manufacture->setText(objectInfo->manufactory);
@@ -364,7 +364,7 @@ void MainWindow::setRegistry(Registry *registry)
     ui->lineEdit_FIO->setText(objectInfo->FIO);
 
 
-    OtherParameters *otherParameters = m_registry->GetOtherParameters();
+    OtherParameters *otherParameters = m_registry->getOtherParameters();
 
     ui->lineEdit_date->setText(otherParameters->date);
     ui->lineEdit_movement->setText(otherParameters->movement);
@@ -386,7 +386,7 @@ void MainWindow::setRegistry(Registry *registry)
     ui->lineEdit_range_recomend->setText(valveInfo->range);
 
 
-    MaterialsOfComponentParts *materialInfo = m_registry->GetMaterialsOfComponentParts();
+    MaterialsOfComponentParts *materialInfo = m_registry->getMaterialsOfComponentParts();
 
     ui->lineEdit_materialStuffingBoxSeal->setText(materialInfo->stuffingBoxSeal);
     ui->lineEdit_materialCap->setText(materialInfo->cap);
@@ -715,7 +715,7 @@ void MainWindow::on_pushButton_optionalTests_save_clicked()
 
 void MainWindow::initCharts()
 {
-    ValveInfo *valveInfo = m_registry->GetValveInfo();
+    ValveInfo *valveInfo = m_registry->getValveInfo();
     bool rotate = (valveInfo->strokeMovement != 0);
 
     m_charts[Charts::Task] = ui->Chart_task;
