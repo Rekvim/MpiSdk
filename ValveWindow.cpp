@@ -652,6 +652,7 @@ void ValveWindow::saveValveInfo()
     m_valveInfo->safePosition = ui->comboBox_safePosition->currentIndex();
     m_valveInfo->driveType = ui->comboBox_driveType->currentIndex();
     m_valveInfo->strokeMovement = ui->comboBox_strokeMovement->currentIndex();
+    m_valveInfo->dinamicError = ui->comboBox_dinamicError->currentIndex();
     m_valveInfo->toolNumber = ui->comboBox_toolNumber->currentIndex();
 
     // m_materialsOfComponentParts->saddle = ui->comboBox_materialSaddle->currentText();
@@ -694,7 +695,6 @@ void ValveWindow::positionChanged(const QString &position)
     ui->lineEdit_PN->setText(QString::number(m_valveInfo->PN));
     ui->lineEdit_strokValve->setText(m_valveInfo->valveStroke);
     ui->lineEdit_positionerModel->setText(m_valveInfo->positionerModel);
-    // ui->lineEdit_dinamicError->setText(m_valveInfo->dinamicError);
 
     const QString loaded = m_valveInfo->driveModel;
     int idx = ui->comboBox_driveModel->findText(loaded);
@@ -732,6 +732,7 @@ void ValveWindow::positionChanged(const QString &position)
     ui->comboBox_driveType->setCurrentIndex(m_valveInfo->driveType);
     ui->comboBox_strokeMovement->setCurrentIndex(m_valveInfo->strokeMovement);
     ui->comboBox_toolNumber->setCurrentIndex(m_valveInfo->toolNumber);
+    // ui->comboBox_dinamicError->setCurrentIndex(QString::number(m_valveInfo->dinamicError));
 
     ui->lineEdit_diameterPulley->setText(QString::number(m_valveInfo->pulley));
     ui->lineEdit_driveDiameter->setText(QString::number(m_valveInfo->diameter));

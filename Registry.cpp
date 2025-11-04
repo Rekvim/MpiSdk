@@ -40,7 +40,7 @@ ValveInfo *Registry::getValveInfo(const QString &positionNumber)
     m_valveInfo.PN = m_settings.value("PN", "").toInt();
     m_valveInfo.valveStroke = m_settings.value("valveStroke", "").toString();
     m_valveInfo.positionerModel = m_settings.value("positionerModel", "").toString();
-    m_valveInfo.dinamicError = m_settings.value("dinamicError", "").toString();
+    m_valveInfo.dinamicError = m_settings.value("dinamicError", "").toDouble();
     m_valveInfo.driveModel = m_settings.value("modelDrive", "").toString();
     m_valveInfo.range = m_settings.value("range", "").toString();
     m_valveInfo.diameter = m_settings.value("diameter", "").toDouble();

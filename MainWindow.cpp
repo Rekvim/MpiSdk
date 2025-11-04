@@ -196,6 +196,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->label_arrowUp->installEventFilter(this);
     ui->label_arrowDown->installEventFilter(this);
+
+    ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tab_mainTests), false);
+    ui->tabWidget->setTabEnabled(1, true);
+    ui->tabWidget->setTabEnabled(2, true);
+    ui->tabWidget->setTabEnabled(3, true);
+    ui->tabWidget->setTabEnabled(4, true);
 }
 
 MainWindow::~MainWindow()
@@ -381,7 +387,7 @@ void MainWindow::setRegistry(Registry *registry)
     ui->lineEdit_positionerModel->setText(valveInfo->positionerModel);
     ui->lineEdit_modelDrive->setText(valveInfo->driveModel);
 
-    ui->lineEdit_dinamicRecomend->setText(valveInfo->dinamicError);
+    ui->lineEdit_dinamicRecomend->setText(QString::number(valveInfo->dinamicError));
     ui->lineEdit_stroke_recomend->setText(valveInfo->valveStroke);
     ui->lineEdit_range_recomend->setText(valveInfo->range);
 
@@ -477,7 +483,7 @@ void MainWindow::setSensorsNumber(quint8 num)
 
     ui->pushButton_strokeTest_start->setEnabled(!noSensors);
     ui->pushButton_optionalTests_start->setEnabled(!noSensors);
-    ui->pushButton_mainTest_start->setEnabled(num > 1);
+    // ui->pushButton_mainTest_start->setEnabled(num > 1);
 
     ui->tabWidget->setTabEnabled(1, num > 1);
     ui->tabWidget->setTabEnabled(2, !noSensors);
