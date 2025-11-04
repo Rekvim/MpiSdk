@@ -652,7 +652,9 @@ void ValveWindow::saveValveInfo()
     m_valveInfo->safePosition = ui->comboBox_safePosition->currentIndex();
     m_valveInfo->driveType = ui->comboBox_driveType->currentIndex();
     m_valveInfo->strokeMovement = ui->comboBox_strokeMovement->currentIndex();
-    m_valveInfo->dinamicError = ui->comboBox_dinamicError->currentIndex();
+    // m_valveInfo->dinamicError = ui->comboBox_dinamicError->currentIndex();
+    m_valveInfo->dinamicError = ui->comboBox_dinamicError->currentText().toDouble();
+
     m_valveInfo->toolNumber = ui->comboBox_toolNumber->currentIndex();
 
     // m_materialsOfComponentParts->saddle = ui->comboBox_materialSaddle->currentText();
@@ -773,34 +775,21 @@ void ValveWindow::diameterChanged(const QString &text)
 }
 
 void ValveWindow::fillReport(ReportSaver::Report &report) {
-
-    report.data.push_back({56, 10, ui->lineEdit_plunger->text()});
-
-    report.data.push_back({57, 10, ui->lineEdit_saddle->text()});
-
-    report.data.push_back({58, 10, ui->lineEdit_upperBushing->text()});
-
-    report.data.push_back({59, 10, ui->lineEdit_lowerBushing->text()});
-
-    report.data.push_back({60, 10, ui->lineEdit_upperORing->text()});
-
-    report.data.push_back({61, 10, ui->lineEdit_lowerORing->text()});
-
-    report.data.push_back({62, 10, ui->lineEdit_stuffingBoxSeal->text()});
-
-    report.data.push_back({63, 10, ui->lineEdit_driveDiaphragm->text()});
-
-    report.data.push_back({64, 10, ui->lineEdit_covers->text()});
-
-    report.data.push_back({65, 10, ui->lineEdit_shaft->text()});
-
-    report.data.push_back({65, 10, ui->lineEdit_saddleLock->text()});
+    report.data.push_back({55, 10, ui->lineEdit_plunger->text()});
+    report.data.push_back({56, 10, ui->lineEdit_saddle->text()});
+    report.data.push_back({57, 10, ui->lineEdit_upperBushing->text() + " / " + ui->lineEdit_lowerBushing->text()});
+    report.data.push_back({58, 10, ui->lineEdit_upperORing->text() + " / " + ui->lineEdit_lowerORing->text()});
+    report.data.push_back({59, 10, ui->lineEdit_stuffingBoxSeal->text()});
+    report.data.push_back({60, 10, ui->lineEdit_driveDiaphragm->text()});
+    report.data.push_back({61, 10, ui->lineEdit_covers->text()});
+    report.data.push_back({62, 10, ui->lineEdit_shaft->text()});
+    report.data.push_back({63, 10, ui->lineEdit_saddleLock->text()});
 }
 
 void ValveWindow::on_pushButton_clicked()
 {
     if (ui->lineEdit_positionNumber->text().isEmpty()) {
-        QMessageBox::warning(this, "Ошибка", "Введите номер позиции");
+        QMessageBox::warning(this, QStringLiteral("Ошибка"), QStringLiteral("Введите номер позиции"));
         return;
     }
 
@@ -809,8 +798,8 @@ void ValveWindow::on_pushButton_clicked()
         or (ui->lineEdit_driveRange->text().isEmpty())) {
         QMessageBox::StandardButton button
             = QMessageBox::question(this,
-                                    "Предупреждение",
-                                    "Введены не все данные, вы действительно хотите продолжить?");
+                                    QStringLiteral("Предупреждение"),
+                                    QStringLiteral("Введены не все данные, вы действительно хотите продолжить?"));
 
         if (button == QMessageBox::StandardButton::No) {
             return;
@@ -827,25 +816,24 @@ void ValveWindow::on_pushButton_clicked()
 
 void ValveWindow::on_pushButton_clear_clicked()
 {
-    ui->lineEdit_manufacturer->setText("");
-    ui->lineEdit_serialNumber->setText("");
-    ui->lineEdit_PN->setText("");
-    ui->lineEdit_strokValve->setText("");
-    ui->lineEdit_positionerModel->setText("");
-    // ui->lineEdit_dinamicError->setText("");
-    ui->lineEdit_driveModel->setText("");
-    ui->lineEdit_driveRange->setText("");
-    ui->lineEdit_valveModel->setText("");
+    ui->lineEdit_manufacturer->clear();
+    ui->lineEdit_serialNumber->clear();
+    ui->lineEdit_PN->clear();
+    ui->lineEdit_strokValve->clear();
+    ui->lineEdit_positionerModel->clear();
+    ui->lineEdit_driveModel->clear();
+    ui->lineEdit_driveRange->clear();
+    ui->lineEdit_valveModel->clear();
 
-    ui->lineEdit_materialCorpus->setText("");
-    ui->lineEdit_materialCap->setText("");
-    ui->lineEdit_materialBall->setText("");
-    ui->lineEdit_materialDisk->setText("");
-    ui->lineEdit_materialPlunger->setText("");
-    ui->lineEdit_materialShaft->setText("");
-    ui->lineEdit_materialStock->setText("");
-    ui->lineEdit_materialGuideSleeve->setText("");
-
+    ui->lineEdit_materialCorpus->clear();
+    ui->lineEdit_materialCap->clear();
+    ui->lineEdit_materialBall->clear();
+    ui->lineEdit_materialDisk->clear();
+    ui->lineEdit_materialPlunger->clear();
+    ui->lineEdit_materialShaft->clear();
+    ui->lineEdit_materialStock->clear();
+    ui->lineEdit_materialGuideSleeve->clear();
+    ui->comboBox_materialSaddle->setCurrentIndex(0);
     ui->comboBox_materialStuffingBoxSeal->setCurrentIndex(0);
     ui->comboBox_DN->setCurrentIndex(0);
     ui->comboBox_safePosition->setCurrentIndex(0);

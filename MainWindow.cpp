@@ -283,10 +283,10 @@ void MainWindow::onTotalTestTimeMs(quint64 totalMs)
         const quint64 msec = ms % 1000ULL;
 
         return QString("%1:%2:%3.%4")
-            .arg(hours,   2, 10, QChar('0'))
+            .arg(hours, 2, 10, QChar('0'))
             .arg(minutes, 2, 10, QChar('0'))
             .arg(seconds, 2, 10, QChar('0'))
-            .arg(msec,    3, 10, QChar('0'));
+            .arg(msec, 3, 10, QChar('0'));
     };
 
     ui->statusbar->showMessage(
@@ -300,7 +300,7 @@ void MainWindow::onTotalTestTimeMs(quint64 totalMs)
 void MainWindow::endTest()
 {
     m_testing = false;
-    ui->statusbar->showMessage("Тест завершен");
+    ui->statusbar->showMessage(QStringLiteral("Тест завершен"));
 
     if (m_durationTimer) {
         m_durationTimer->stop();
@@ -456,13 +456,13 @@ void MainWindow::setTextColor(TextObjects object, const QColor color)
 void MainWindow::setStepTestResults(const QVector<StepTest::TestResult> &results, quint32 T_value)
 {
     ui->tableWidget_stepResults->setHorizontalHeaderLabels(
-        {QString("T%1").arg(T_value), "Перерегулирование"});
+        {QString("T%1").arg(T_value), QStringLiteral("Перерегулирование")});
 
     ui->tableWidget_stepResults->setRowCount(results.size());
     QStringList rowNames;
     for (int i = 0; i < results.size(); ++i) {
         QString time = results.at(i).T_value == 0
-            ? "Ошибка"
+                           ? QStringLiteral("Ошибка")
             : QTime(0, 0).addMSecs(results.at(i).T_value).toString("m:ss.zzz");
         ui->tableWidget_stepResults->setItem(i, 0, new QTableWidgetItem(time));
         QString overshoot = QString("%1%").arg(results.at(i).overshoot, 4, 'f', 2);
@@ -621,20 +621,20 @@ void MainWindow::question(const QString &title, const QString &text, bool &resul
 void MainWindow::getDirectory(const QString &currentPath, QString &result)
 {
     result = QFileDialog::getExistingDirectory(this,
-        "Выберите папку для сохранения изображений",
+                                               QStringLiteral("Выберите папку для сохранения изображений"),
         currentPath);
 }
 
 void MainWindow::startTest()
 {
     m_testing = true;
-    ui->statusbar->showMessage("Тест в процессе");
+    ui->statusbar->showMessage(QStringLiteral("Тест в процессе"));
 }
 
 void MainWindow::on_pushButton_mainTest_start_clicked()
 {
     if (m_testing) {
-        if (QMessageBox::question(this, "Внимание!", "Вы действительно хотите завершить тест")
+        if (QMessageBox::question(this, QStringLiteral("Внимание!"), QStringLiteral("Вы действительно хотите завершить тест"))
             == QMessageBox::Yes) {
             emit stopTest();
         }
@@ -661,8 +661,8 @@ void MainWindow::promptSaveCharts()
 
     auto answer = QMessageBox::question(
         this,
-        tr("Сохранение результатов"),
-        tr("Тест MainTest завершён.\nСохранитаь графики Task, Pressure и Friction?"),
+        QStringLiteral("Сохранение результатов"),
+        QStringLiteral("Тест MainTest завершён.\nСохранитаь графики Task, Pressure и Friction?"),
         QMessageBox::Yes | QMessageBox::No,
         QMessageBox::Yes
         );
@@ -673,8 +673,8 @@ void MainWindow::promptSaveCharts()
         saveChart(Charts::Friction);
         QMessageBox::information(
             this,
-            tr("Готово"),
-            tr("Графики сохранены в текущую папку отчётов.")
+            QStringLiteral("Готово"),
+            QStringLiteral("Графики сохранены в текущую папку отчётов.")
             );
     }
 }
@@ -682,7 +682,7 @@ void MainWindow::promptSaveCharts()
 void MainWindow::on_pushButton_strokeTest_start_clicked()
 {
     if (m_testing) {
-        if (QMessageBox::question(this, "Внимание!", "Вы действительно хотите завершить тест")
+        if (QMessageBox::question(this, QStringLiteral("Внимание!"), QStringLiteral("Вы действительно хотите завершить тест"))
             == QMessageBox::Yes) {
             emit stopTest();
         }
@@ -699,7 +699,7 @@ void MainWindow::on_pushButton_strokeTest_save_clicked()
 void MainWindow::on_pushButton_optionalTests_start_clicked()
 {
     if (m_testing) {
-        if (QMessageBox::question(this, "Внимание!", "Вы действительно хотите завершить тест")
+        if (QMessageBox::question(this, QStringLiteral("Внимание!"), QStringLiteral("Вы действительно хотите завершить тест"))
             == QMessageBox::Yes) {
             emit stopTest();
         }
@@ -912,9 +912,9 @@ void MainWindow::setReport(const ReportSaver::Report &report)
 void MainWindow::getImage(QLabel *label, QImage *image)
 {
     QString imgPath = QFileDialog::getOpenFileName(this,
-        "Выберите файл",
+                                                   QStringLiteral("Выберите файл"),
         m_reportSaver->Directory().absolutePath(),
-        "Изображения (*.jpg *.png *.bmp)");
+                                                   QStringLiteral("Изображения (*.jpg *.png *.bmp)"));
 
     if (!imgPath.isEmpty()) {
         QImage img(imgPath);
@@ -941,59 +941,59 @@ void MainWindow::initReport()
     auto dataFromOtherFiles = m_report.data;
 
     // Общие поля
-    m_report.data.push_back({5, 4, ui->lineEdit_object->text()});
-    m_report.data.push_back({6, 4, ui->lineEdit_manufacture->text()});
-    m_report.data.push_back({7, 4, ui->lineEdit_department->text()});
+    m_report.data.push_back({4, 4, ui->lineEdit_object->text()});
+    m_report.data.push_back({5, 4, ui->lineEdit_manufacture->text()});
+    m_report.data.push_back({6, 4, ui->lineEdit_department->text()});
 
     // Параметры клапана
-    m_report.data.push_back({5, 13, ui->lineEdit_positionNumber->text()});
-    m_report.data.push_back({6, 13, ui->lineEdit_serialNumber->text()});
-    m_report.data.push_back({7, 13, ui->lineEdit_valveModel->text()});
-    m_report.data.push_back({8, 13, ui->lineEdit_manufacturer->text()});
+    m_report.data.push_back({4, 13, ui->lineEdit_positionNumber->text()});
+    m_report.data.push_back({5, 13, ui->lineEdit_serialNumber->text()});
+    m_report.data.push_back({6, 13, ui->lineEdit_valveModel->text()});
+    m_report.data.push_back({7, 13, ui->lineEdit_manufacturer->text()});
+    m_report.data.push_back({8, 13, ui->lineEdit_DN->text() + "/" + ui->lineEdit_PN->text()});
+    m_report.data.push_back({9, 13, ui->lineEdit_positionerModel->text()});
+    m_report.data.push_back({10, 13, ui->lineEdit_pressure->text()});
+    m_report.data.push_back({11, 13, ui->lineEdit_safePosition->text()});
+    m_report.data.push_back({12, 13, ui->lineEdit_modelDrive->text()});
+    m_report.data.push_back({13, 13, ui->lineEdit_movement->text()});
+    m_report.data.push_back({14, 13, ui->lineEdit_materialStuffingBoxSeal->text()});
 
-    m_report.data.push_back({9, 13, ui->lineEdit_DN->text() + "/" + ui->lineEdit_PN->text()});
-    m_report.data.push_back({10, 13, ui->lineEdit_positionerModel->text()});
-    m_report.data.push_back({11, 13, ui->lineEdit_pressure->text()});
-    m_report.data.push_back({12, 13, ui->lineEdit_safePosition->text()});
-    m_report.data.push_back({13, 6, ui->lineEdit_CV->text()});
-    m_report.data.push_back({13, 13, ui->lineEdit_modelDrive->text()});
-    m_report.data.push_back({14, 13, ui->lineEdit_movement->text()});
-    m_report.data.push_back({15, 13, ui->lineEdit_materialStuffingBoxSeal->text()});
+    // Материал деталей
+    m_report.data.push_back({9, 4, ui->lineEdit_materialCorpus->text()});
+    m_report.data.push_back({10, 4, ui->lineEdit_materialCap->text()});
+    m_report.data.push_back({11, 4, ui->lineEdit_materialSaddle->text()});
+    m_report.data.push_back({11, 6, ui->lineEdit_CV->text()});
+    m_report.data.push_back({12, 4, ui->lineEdit_materialBall->text()});
+    m_report.data.push_back({13, 4, ui->lineEdit_materialDisk->text()});
+    m_report.data.push_back({14, 4, ui->lineEdit_materialPlunger->text()});
+    m_report.data.push_back({15, 4, ui->lineEdit_materialShaft->text()});
+    m_report.data.push_back({16, 4, ui->lineEdit_materialStock->text()});
+    m_report.data.push_back({17, 4, ui->lineEdit_materialGuideSleeve->text()});
 
     // Динамические характеристики
-    m_report.data.push_back({26, 5, ui->lineEdit_dinamic_real->text()});
-    m_report.data.push_back({26, 8, ui->lineEdit_dinamicRecomend->text()});
-    m_report.data.push_back({28, 5, ui->lineEdit_dinamic_ip_real->text()});
-    m_report.data.push_back({28, 8, ui->lineEdit_dinamic_ip_recomend->text()});
-    m_report.data.push_back({30, 5, ui->lineEdit_stroke_real->text()});
-    m_report.data.push_back({30, 8, ui->lineEdit_stroke_recomend->text()});
-    m_report.data.push_back({32, 5, ui->lineEdit_range_real->text()});
-    m_report.data.push_back({32, 8, ui->lineEdit_range_recomend->text()});
-    m_report.data.push_back({34, 5, ui->lineEdit_range_pressure->text()});
-    m_report.data.push_back({36, 5, ui->lineEdit_friction_percent->text()});
-    m_report.data.push_back({38, 5, ui->lineEdit_friction->text()});
+    m_report.data.push_back({25, 5, ui->lineEdit_dinamic_real->text()});
+    m_report.data.push_back({25, 8, ui->lineEdit_dinamicRecomend->text()});
+    m_report.data.push_back({27, 5, ui->lineEdit_dinamic_ip_real->text()});
+    m_report.data.push_back({27, 8, ui->lineEdit_dinamic_ip_recomend->text()});
+    m_report.data.push_back({29, 5, ui->lineEdit_stroke_real->text()});
+    m_report.data.push_back({29, 8, ui->lineEdit_stroke_recomend->text()});
+    m_report.data.push_back({31, 5, ui->lineEdit_range_real->text()});
+    m_report.data.push_back({31, 8, ui->lineEdit_range_recomend->text()});
+    m_report.data.push_back({33, 5, ui->lineEdit_range_pressure->text()});
+    m_report.data.push_back({35, 5, ui->lineEdit_friction_percent->text()});
+    m_report.data.push_back({37, 5, ui->lineEdit_friction->text()});
 
     // Временные показатели
-    m_report.data.push_back({52, 5,  ui->lineEdit_time_forward->text()});
-    m_report.data.push_back({52, 8,  ui->lineEdit_time_backward->text()});
+    m_report.data.push_back({51, 5,  ui->lineEdit_time_forward->text()});
+    m_report.data.push_back({51, 8,  ui->lineEdit_time_backward->text()});
 
     // Пользователь и дата
     m_report.data.push_back({74, 4, ui->lineEdit_FIO->text()});
 
-    m_report.data.push_back({66, 12, ui->lineEdit_date->text()});
-    m_report.data.push_back({159, 12, ui->lineEdit_date->text()});
+    m_report.data.push_back({65, 12, ui->lineEdit_date->text()});
+    m_report.data.push_back({158, 12, ui->lineEdit_date->text()});
 
-    // Материалы
-    m_report.data.push_back({11, 4, ui->lineEdit_materialCorpus->text()});
-    m_report.data.push_back({12, 4, ui->lineEdit_materialCap->text()});
-    m_report.data.push_back({13, 4, ui->lineEdit_materialSaddle->text()});
-    m_report.data.push_back({14, 4, ui->lineEdit_materialBall->text()});
-    m_report.data.push_back({15, 4, ui->lineEdit_materialDisk->text()});
-    m_report.data.push_back({16, 4, ui->lineEdit_materialPlunger->text()});
-    m_report.data.push_back({17, 4, ui->lineEdit_materialShaft->text()});
-    m_report.data.push_back({18, 4, ui->lineEdit_materialStock->text()});
-    m_report.data.push_back({19, 4, ui->lineEdit_materialGuideSleeve->text()});
-
+    // Материалы модели
     for (const auto &data : dataFromOtherFiles) {
         m_report.data.push_back(data);
     }

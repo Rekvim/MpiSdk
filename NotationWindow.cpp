@@ -95,30 +95,23 @@ void NotationWindow::SetRegistry(Registry *registry)
 }
 
 void NotationWindow::fillReport(ReportSaver::Report &report) {
-    qDebug() << "PressureSensor1:" << getPressureSensor1();
-    qDebug() << "PressureSensor2:" << getPressureSensor2();
-    qDebug() << "PressureSensor3:" << getPressureSensor3();
-    qDebug() << "PressureSensor4:" << getPressureSensor4();
-    qDebug() << "LinearMotion:" << getLinearMotionSensor();
-
-
     if (!getPressureSensor1().isEmpty()) {
-        report.data.push_back({67, 5, getPressureSensor1()});
+        report.data.push_back({66, 5, getPressureSensor1()});
     }
 
     if (!getPressureSensor2().isEmpty()) {
-        report.data.push_back({68, 5, getPressureSensor2()});
+        report.data.push_back({67, 5, getPressureSensor2()});
 
     }
     if (!getPressureSensor3().isEmpty()) {
-        report.data.push_back({69, 5, getPressureSensor3()});
+        report.data.push_back({68, 5, getPressureSensor3()});
     }
     if (!getPressureSensor4().isEmpty()) {
-        report.data.push_back({70, 5, getPressureSensor4()});
+        report.data.push_back({69, 5, getPressureSensor4()});
 
     }
     if (!getLinearMotionSensor().isEmpty()) {
-        report.data.push_back({71, 5, getLinearMotionSensor()});
+        report.data.push_back({70, 5, getLinearMotionSensor()});
     }
 }
 
