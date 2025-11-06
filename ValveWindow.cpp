@@ -426,7 +426,7 @@ std::optional<int> ValveWindow::resolveSaddleMaterialIdFromManual() const
     const QString typed = ui->lineEdit_materialSaddle->text().trimmed();
     if (typed.isEmpty()) return std::nullopt;
 
-    const auto list = m_db.getSaddleMaterialsForModel(*midOpt); // контейнер пар <id, QString>
+    const auto list = m_db.getSaddleMaterialsForModel(*midOpt);
     for (const auto& [id, text] : list) {
         if (QString::compare(text.trimmed(), typed, Qt::CaseInsensitive) == 0)
             return id;

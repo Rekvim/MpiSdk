@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>654</width>
-    <height>715</height>
+    <height>736</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -560,6 +560,9 @@
             </property>
             <property name="styleSheet">
              <string notr="true"/>
+            </property>
+            <property name="currentIndex">
+             <number>-1</number>
             </property>
            </widget>
           </item>
@@ -1663,6 +1666,9 @@
           </item>
           <item>
            <widget class="QLineEdit" name="lineEdit_diameterPulley">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="font">
              <font>
               <family>Segoe UI</family>
