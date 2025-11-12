@@ -7,13 +7,14 @@
 #include "Registry.h"
 #include "ValveWindow.h"
 
-// #include "./src/Repository/ObjectInfoRepository.h"
-// #include "./src/Repository/ValveRepository.h"
-// #include "./src/Repository/MaterialsRepository.h"
-
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    QTranslator qtTranslator;
+
+    if (qtTranslator.load("qt_ru.qm", ":/translations"))
+        a.installTranslator(&qtTranslator);
+
     Registry registry;
     ValveDatabase database;
 
@@ -22,8 +23,7 @@ int main(int argc, char *argv[])
     if (objectWindow.exec() != QDialog::Accepted)
         return 0;
 
-    NotationWindow notationWindow;
-    notationWindow.SetRegistry(&registry);
+    NotationWindow notationWindow(registry);
     if (notationWindow.exec() != QDialog::Accepted)
         return 0;
 
@@ -32,21 +32,8 @@ int main(int argc, char *argv[])
     if (valveWindow.exec() != QDialog::Accepted)
         return 0;
 
-    ReportSaver::Report report;
-
-    notationWindow.fillReport(report);
-    valveWindow.fillReport(report);
-
-    ReportSaver saver;
-    saver.SetRegistry(&registry);
-    if (!saver.SaveReport(report)) {
-        QMessageBox::warning(nullptr, "Ошибка", "Не удалось сохранить отчет");
-    }
-
     MainWindow mainWindow;
     mainWindow.setRegistry(&registry);
-
-    mainWindow.setReport(report);
     mainWindow.show();
 
     return a.exec();

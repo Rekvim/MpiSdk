@@ -10,6 +10,39 @@ Registry::Registry(QObject *parent)
     m_objectInfo.FIO = m_settings.value("FIO", "").toString();
 }
 
+Sensors* Registry::getSensors() {
+    m_settings.beginGroup(m_objectInfo.object);
+    m_settings.beginGroup(m_objectInfo.manufactory);
+    m_settings.beginGroup(m_objectInfo.department);
+
+    m_sensors.Pressure1 = m_settings.value("Pressure1", "").toString();
+    m_sensors.Pressure2 = m_settings.value("Pressure2", "").toString();
+    m_sensors.Pressure3 = m_settings.value("Pressure3", "").toString();
+    m_sensors.Pressure4 = m_settings.value("Pressure4", "").toString();
+    m_sensors.Motion = m_settings.value("Motion", "").toString();
+
+    m_settings.endGroup();
+    m_settings.endGroup();
+    m_settings.endGroup();
+    return &m_sensors;
+}
+void Registry::saveSensors()
+{
+    m_settings.beginGroup(m_objectInfo.object);
+    m_settings.beginGroup(m_objectInfo.manufactory);
+    m_settings.beginGroup(m_objectInfo.department);
+
+    m_settings.setValue("Pressure1", m_sensors.Pressure1);
+    m_settings.setValue("Pressure2", m_sensors.Pressure2);
+    m_settings.setValue("Pressure3", m_sensors.Pressure3);
+    m_settings.setValue("Pressure4", m_sensors.Pressure4);
+    m_settings.setValue("Motion", m_sensors.Motion);
+
+    m_settings.endGroup();
+    m_settings.endGroup();
+    m_settings.endGroup();
+}
+
 ObjectInfo *Registry::getObjectInfo()
 {
     return &m_objectInfo;
@@ -153,32 +186,36 @@ void Registry::saveMaterialsOfComponentParts()
     m_settings.sync();
 }
 
-void Registry::saveAccessoriesSeries()
+void Registry::saveListDetails()
 {
     m_settings.beginGroup(m_objectInfo.object);
     m_settings.beginGroup(m_objectInfo.manufactory);
     m_settings.beginGroup(m_objectInfo.department);
     m_settings.beginGroup(m_valveInfo.positionNumber);
 
-    m_settings.setValue("accessoryPlunger", m_accessoriesSeries.plunger);
-    m_settings.setValue("accessorySaddle", m_accessoriesSeries.saddle);
-    m_settings.setValue("accessoryBushing", m_accessoriesSeries.bushing);
-    m_settings.setValue("accessoryORing", m_accessoriesSeries.oRing);
-    m_settings.setValue("accessoryStuffingSeal", m_accessoriesSeries.stuffingSeal);
-    m_settings.setValue("accessoryDiaphragm", m_accessoriesSeries.diaphragm);
-    m_settings.setValue("accessoryCovers", m_accessoriesSeries.covers);
-    m_settings.setValue("accessoryShaft", m_accessoriesSeries.shaft);
-    m_settings.setValue("accessorySaddleLock",m_accessoriesSeries.saddleLock);
+    m_settings.setValue("ListDetails_Plunger", m_listDetails.plunger);
+    m_settings.setValue("ListDetails_Saddle", m_listDetails.saddle);
+    m_settings.setValue("ListDetails_UpperBushing", m_listDetails.upperBushing);
+    m_settings.setValue("ListDetails_LowerBushing", m_listDetails.lowerBushing);
+    m_settings.setValue("ListDetails_UpperORing", m_listDetails.upperORing);
+    m_settings.setValue("ListDetails_LowerORing", m_listDetails.lowerORing);
+    m_settings.setValue("ListDetails_StuffingBoxSeal", m_listDetails.stuffingBoxSeal);
+    m_settings.setValue("ListDetails_DriveDiaphragm", m_listDetails.driveDiaphragm);
+    m_settings.setValue("ListDetails_Covers", m_listDetails.covers);
+    m_settings.setValue("ListDetails_Shaft", m_listDetails.shaft);
+    m_settings.setValue("ListDetails_SaddleLock",m_listDetails.saddleLock);
 
     m_settings.endGroup();
     m_settings.endGroup();
     m_settings.endGroup();
     m_settings.endGroup();
+
+    m_settings.sync();
 }
 
-AccessoriesSeries *Registry::getAccessoriesSeries()
+ListDetails *Registry::getListDetails()
 {
-    return &m_accessoriesSeries;
+    return &m_listDetails;
 }
 
 OtherParameters *Registry::getOtherParameters()

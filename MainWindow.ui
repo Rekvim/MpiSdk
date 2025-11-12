@@ -29,7 +29,7 @@
        </font>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab_manual">
        <attribute name="title">
@@ -3705,7 +3705,7 @@
                </widget>
               </item>
               <item row="4" column="1">
-               <widget class="QLineEdit" name="lineEdit_range_real">
+               <widget class="QLineEdit" name="lineEdit_driveRangeReal">
                 <property name="font">
                  <font>
                   <family>Segoe UI</family>
@@ -3816,7 +3816,7 @@
                </widget>
               </item>
               <item row="3" column="1">
-               <widget class="QLineEdit" name="lineEdit_stroke_real">
+               <widget class="QLineEdit" name="lineEdit_strokeReal">
                 <property name="font">
                  <font>
                   <family>Segoe UI</family>
@@ -3890,7 +3890,7 @@
                </widget>
               </item>
               <item row="1" column="1">
-               <widget class="QLineEdit" name="lineEdit_dinamic_real">
+               <widget class="QLineEdit" name="lineEdit_dynamicErrorReal">
                 <property name="font">
                  <font>
                   <family>Segoe UI</family>
@@ -3935,7 +3935,7 @@
                </widget>
               </item>
               <item row="6" column="1" colspan="2">
-               <widget class="QLineEdit" name="lineEdit_friction">
+               <widget class="QLineEdit" name="lineEdit_frictionForceValue">
                 <property name="font">
                  <font>
                   <family>Segoe UI</family>
@@ -3966,7 +3966,7 @@
                </widget>
               </item>
               <item row="7" column="1" colspan="2">
-               <widget class="QLineEdit" name="lineEdit_friction_percent">
+               <widget class="QLineEdit" name="lineEdit_frictionPercentValue">
                 <property name="font">
                  <font>
                   <family>Segoe UI</family>
@@ -4044,7 +4044,7 @@
                </widget>
               </item>
               <item row="5" column="1" colspan="2">
-               <widget class="QLineEdit" name="lineEdit_range_pressure">
+               <widget class="QLineEdit" name="lineEdit_rangePressure">
                 <property name="font">
                  <font>
                   <family>Segoe UI</family>
@@ -4189,11 +4189,11 @@
   <tabstop>pushButton_imageChartTask</tabstop>
   <tabstop>pushButton_imageChartPressure</tabstop>
   <tabstop>pushButton_imageChartFriction</tabstop>
-  <tabstop>lineEdit_dinamic_real</tabstop>
-  <tabstop>lineEdit_stroke_real</tabstop>
-  <tabstop>lineEdit_range_real</tabstop>
-  <tabstop>lineEdit_friction</tabstop>
-  <tabstop>lineEdit_friction_percent</tabstop>
+  <tabstop>lineEdit_dynamicErrorReal</tabstop>
+  <tabstop>lineEdit_strokeReal</tabstop>
+  <tabstop>lineEdit_driveRangeReal</tabstop>
+  <tabstop>lineEdit_frictionForceValue</tabstop>
+  <tabstop>lineEdit_frictionPercentValue</tabstop>
   <tabstop>lineEdit_time_forward</tabstop>
   <tabstop>lineEdit_time_backward</tabstop>
   <tabstop>lineEdit_range_recomend</tabstop>
@@ -4210,7 +4210,7 @@
   <tabstop>tableWidget_stepResults</tabstop>
   <tabstop>lineEdit_dinamic_ip_recomend</tabstop>
   <tabstop>lineEdit_dinamic_ip_real</tabstop>
-  <tabstop>lineEdit_range_pressure</tabstop>
+  <tabstop>lineEdit_rangePressure</tabstop>
  </tabstops>
  <resources>
   <include location="img.qrc"/>

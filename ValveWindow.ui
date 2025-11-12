@@ -1796,7 +1796,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_plunger">
+             <widget class="QLineEdit" name="lineEdit_listDetails_plunger">
               <property name="font">
                <font>
                 <family>Segoe UI</family>
@@ -1835,7 +1835,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_saddle">
+             <widget class="QLineEdit" name="lineEdit_listDetails_saddle">
               <property name="font">
                <font>
                 <family>Segoe UI</family>
@@ -1874,7 +1874,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_covers">
+             <widget class="QLineEdit" name="lineEdit_listDetails_covers">
               <property name="font">
                <font>
                 <family>Segoe UI</family>
@@ -1913,7 +1913,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_lowerBushing">
+             <widget class="QLineEdit" name="lineEdit_listDetails_lowerBushing">
               <property name="font">
                <font>
                 <family>Segoe UI</family>
@@ -1952,7 +1952,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_upperBushing">
+             <widget class="QLineEdit" name="lineEdit_listDetails_upperBushing">
               <property name="font">
                <font>
                 <family>Segoe UI</family>
@@ -1991,7 +1991,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_upperORing">
+             <widget class="QLineEdit" name="lineEdit_listDetails_upperORing">
               <property name="font">
                <font>
                 <family>Segoe UI</family>
@@ -2030,7 +2030,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_shaft">
+             <widget class="QLineEdit" name="lineEdit_listDetails_shaft">
               <property name="font">
                <font>
                 <family>Segoe UI</family>
@@ -2069,7 +2069,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_driveDiaphragm">
+             <widget class="QLineEdit" name="lineEdit_listDetails_driveDiaphragm">
               <property name="font">
                <font>
                 <family>Segoe UI</family>
@@ -2108,7 +2108,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_stuffingBoxSeal">
+             <widget class="QLineEdit" name="lineEdit_listDetails_stuffingBoxSeal">
               <property name="font">
                <font>
                 <family>Segoe UI</family>
@@ -2147,7 +2147,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_lowerORing">
+             <widget class="QLineEdit" name="lineEdit_listDetails_lowerORing">
               <property name="font">
                <font>
                 <family>Segoe UI</family>
@@ -2186,7 +2186,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_saddleLock">
+             <widget class="QLineEdit" name="lineEdit_listDetails_saddleLock">
               <property name="font">
                <font>
                 <family>Segoe UI</family>
@@ -2665,26 +2665,26 @@
   <tabstop>comboBox_materialStuffingBoxSeal</tabstop>
   <tabstop>pushButton</tabstop>
   <tabstop>pushButton_clear</tabstop>
-  <tabstop>lineEdit_saddleLock</tabstop>
-  <tabstop>lineEdit_materialGuideSleeve</tabstop>
-  <tabstop>lineEdit_stuffingBoxSeal</tabstop>
-  <tabstop>lineEdit_materialDisk</tabstop>
-  <tabstop>lineEdit_shaft</tabstop>
-  <tabstop>lineEdit_materialPlunger</tabstop>
-  <tabstop>lineEdit_plunger</tabstop>
-  <tabstop>lineEdit_saddle</tabstop>
-  <tabstop>lineEdit_driveDiaphragm</tabstop>
-  <tabstop>lineEdit_upperBushing</tabstop>
-  <tabstop>lineEdit_lowerBushing</tabstop>
-  <tabstop>lineEdit_upperORing</tabstop>
-  <tabstop>lineEdit_materialShaft</tabstop>
-  <tabstop>lineEdit_materialCap</tabstop>
-  <tabstop>lineEdit_covers</tabstop>
-  <tabstop>lineEdit_materialBall</tabstop>
-  <tabstop>lineEdit_lowerORing</tabstop>
-  <tabstop>tabWidget_Data</tabstop>
+  <tabstop>lineEdit_listDetails_plunger</tabstop>
+  <tabstop>lineEdit_listDetails_saddle</tabstop>
+  <tabstop>lineEdit_listDetails_covers</tabstop>
+  <tabstop>lineEdit_listDetails_lowerBushing</tabstop>
+  <tabstop>lineEdit_listDetails_upperBushing</tabstop>
+  <tabstop>lineEdit_listDetails_upperORing</tabstop>
+  <tabstop>lineEdit_listDetails_shaft</tabstop>
+  <tabstop>lineEdit_listDetails_driveDiaphragm</tabstop>
+  <tabstop>lineEdit_listDetails_stuffingBoxSeal</tabstop>
+  <tabstop>lineEdit_listDetails_lowerORing</tabstop>
+  <tabstop>lineEdit_listDetails_saddleLock</tabstop>
   <tabstop>lineEdit_materialCorpus</tabstop>
+  <tabstop>lineEdit_materialCap</tabstop>
+  <tabstop>lineEdit_materialBall</tabstop>
+  <tabstop>lineEdit_materialDisk</tabstop>
+  <tabstop>lineEdit_materialPlunger</tabstop>
+  <tabstop>lineEdit_materialShaft</tabstop>
   <tabstop>lineEdit_materialStock</tabstop>
+  <tabstop>lineEdit_materialGuideSleeve</tabstop>
+  <tabstop>tabWidget_Data</tabstop>
  </tabstops>
  <resources/>
  <connections/>

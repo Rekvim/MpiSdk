@@ -39,16 +39,13 @@ public:
     QStringList getSaddleMaterials() const;
     QStringList getBodyMaterials() const;
     QStringList getDNList() const;
-
-
-
     QJsonObject getValveData() const;
 private:
     QMap<QString, QMap<
                       double,
                       QMap<
-                          QString,                  // saddleMaterial
-                          QMap<QString, QString>    // partKey → partNumber
+                          QString,
+                          QMap<QString, QString>
                           >
                       >> m_data;
     QJsonObject m_rootObj;

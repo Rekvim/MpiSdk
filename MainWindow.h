@@ -8,7 +8,7 @@
 #include <QPointF>
 #include <QThread>
 
-#include "./ReportSaver.h"
+#include "./Src/Report/ReportSaver.h"
 #include "./Src/CustomChart/MyChart.h"
 #include "Program.h"
 #include "Registry.h"
@@ -50,6 +50,7 @@ private:
     qint64 m_totalTestMs = 0;
 
     Registry *m_registry;
+    TelemetryStore m_telemetryStore;
 
     QHash<TextObjects, QLabel *> m_labels;
     QHash<TextObjects, QLineEdit *> m_lineEdits;
@@ -77,6 +78,7 @@ private slots:
     void setText(const TextObjects object, const QString &text);
     void setTask(qreal task);
     void setTextColor(const TextObjects object, const QColor color);
+    void onTelemetryUpdated(const TelemetryStore &TS);
 
     void setChartVisible(Charts chart, quint16 series, bool visible);
     void setStepTestResults(const QVector<StepTest::TestResult> &results, quint32 T_value);

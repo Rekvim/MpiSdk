@@ -1,11 +1,13 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+#include "Src/Report/ReportBuilder.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    qDebug() << "Окно открыто";
 
     m_testing = false;
 
@@ -18,39 +20,50 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_reportSaver = new ReportSaver(this);
 
-    m_labels[TextObjects::Label_deviceStatusValue] = ui->label_deviceStatusValue;
-    m_labels[TextObjects::Label_deviceInitValue] = ui->label_deviceInitValue;
-    m_labels[TextObjects::Label_connectedSensorsNumber] = ui->label_connectedSensorsNumber;
-    m_labels[TextObjects::Label_startingPositionValue] = ui->label_startingPositionValue;
-    m_labels[TextObjects::Label_finalPositionValue] = ui->label_finalPositionValue;
-    m_labels[TextObjects::Label_pressureDifferenceValue] = ui->label_pressureDifferenceValue;
-    m_labels[TextObjects::Label_frictionForceValue] = ui->label_frictionForceValue;
-    m_labels[TextObjects::Label_frictionPercentValue] = ui->label_frictionPercentValue;
-    m_labels[TextObjects::Label_dynamicErrorMean] = ui->label_dynamicErrorMean;
-    m_labels[TextObjects::Label_dynamicErrorMeanPercent] = ui->label_dynamicErrorMeanPercent;
-    m_labels[TextObjects::Label_dynamicErrorMax] = ui->label_dynamicErrorMax;
-    m_labels[TextObjects::Label_dynamicErrorMaxPercent] = ui->label_dynamicErrorMaxPercent;
-    m_labels[TextObjects::Label_lowLimitValue] = ui->label_lowLimitValue;
-    m_labels[TextObjects::Label_highLimitValue] = ui->label_highLimitValue;
-    m_labels[TextObjects::Label_forward] = ui->label_forward;
-    m_labels[TextObjects::Label_backward] = ui->label_backward;
+    ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tab_mainTests), false);
+    ui->tabWidget->setTabEnabled(1, false);
+    ui->tabWidget->setTabEnabled(2, false);
+    ui->tabWidget->setTabEnabled(3, false);
 
     m_lineEdits[TextObjects::LineEdit_linearSensor] = ui->lineEdit_linearSensor;
     m_lineEdits[TextObjects::LineEdit_linearSensorPercent] = ui->lineEdit_linearSensorPercent;
     m_lineEdits[TextObjects::LineEdit_pressureSensor_1] = ui->lineEdit_pressureSensor_1;
     m_lineEdits[TextObjects::LineEdit_pressureSensor_2] = ui->lineEdit_pressureSensor_2;
     m_lineEdits[TextObjects::LineEdit_pressureSensor_3] = ui->lineEdit_pressureSensor_3;
-    m_lineEdits[TextObjects::LineEdit_dinamic_error] = ui->lineEdit_dinamic_real;
 
-    m_lineEdits[TextObjects::LineEdit_stroke] = ui->lineEdit_stroke_real;
-    m_labels[TextObjects::Label_valveStroke_range] = ui->label_valveStroke_range;
+    // m_labels[TextObjects::Label_deviceStatusValue] = ui->label_deviceStatusValue;
+    // m_labels[TextObjects::Label_deviceInitValue] = ui->label_deviceInitValue;
+    // m_labels[TextObjects::Label_connectedSensorsNumber] = ui->label_connectedSensorsNumber;
+    // m_labels[TextObjects::Label_startingPositionValue] = ui->label_startingPositionValue;
+    // m_labels[TextObjects::Label_finalPositionValue] = ui->label_finalPositionValue;
+    // m_labels[TextObjects::Label_pressureDifferenceValue] = ui->label_pressureDifferenceValue;
+    // m_labels[TextObjects::Label_frictionForceValue] = ui->label_frictionForceValue;
+    // m_labels[TextObjects::Label_frictionPercentValue] = ui->label_frictionPercentValue;
+    // m_labels[TextObjects::Label_dynamicErrorMean] = ui->label_dynamicErrorMean;
+    // m_labels[TextObjects::Label_dynamicErrorMeanPercent] = ui->label_dynamicErrorMeanPercent;
+    // m_labels[TextObjects::Label_dynamicErrorMax] = ui->label_dynamicErrorMax;
+    // m_labels[TextObjects::Label_dynamicErrorMaxPercent] = ui->label_dynamicErrorMaxPercent;
+    // m_labels[TextObjects::Label_lowLimitValue] = ui->label_lowLimitValue;
+    // m_labels[TextObjects::Label_highLimitValue] = ui->label_highLimitValue;
+    // m_labels[TextObjects::Label_forward] = ui->label_forward;
+    // m_labels[TextObjects::Label_backward] = ui->label_backward;
 
-    m_lineEdits[TextObjects::LineEdit_range] = ui->lineEdit_range_real;
-    m_lineEdits[TextObjects::LineEdit_friction] = ui->lineEdit_friction;
-    m_lineEdits[TextObjects::LineEdit_friction_percent] = ui->lineEdit_friction_percent;
-    m_lineEdits[TextObjects::LineEdit_forward] = ui->lineEdit_time_forward;
-    m_lineEdits[TextObjects::LineEdit_backward] = ui->lineEdit_time_backward;
-    m_lineEdits[TextObjects::LineEdit_range_pressure] = ui->lineEdit_range_pressure;
+    // m_lineEdits[TextObjects::LineEdit_linearSensor] = ui->lineEdit_linearSensor;
+    // m_lineEdits[TextObjects::LineEdit_linearSensorPercent] = ui->lineEdit_linearSensorPercent;
+    // m_lineEdits[TextObjects::LineEdit_pressureSensor_1] = ui->lineEdit_pressureSensor_1;
+    // m_lineEdits[TextObjects::LineEdit_pressureSensor_2] = ui->lineEdit_pressureSensor_2;
+    // m_lineEdits[TextObjects::LineEdit_pressureSensor_3] = ui->lineEdit_pressureSensor_3;
+    // m_lineEdits[TextObjects::LineEdit_dinamic_error] = ui->lineEdit_dinamic_real;
+
+    // m_lineEdits[TextObjects::LineEdit_stroke] = ui->lineEdit_stroke_real;
+    // m_labels[TextObjects::Label_valveStroke_range] = ui->label_valveStroke_range;
+
+    // m_lineEdits[TextObjects::LineEdit_range] = ui->lineEdit_range_real;
+    // m_lineEdits[TextObjects::LineEdit_friction] = ui->lineEdit_friction;
+    // m_lineEdits[TextObjects::LineEdit_friction_percent] = ui->lineEdit_friction_percent;
+    // m_lineEdits[TextObjects::LineEdit_forward] = ui->lineEdit_time_forward;
+    // m_lineEdits[TextObjects::LineEdit_backward] = ui->lineEdit_time_backward;
+    // m_lineEdits[TextObjects::LineEdit_range_pressure] = ui->lineEdit_range_pressure;
 
     m_program = new Program;
     m_programThread = new QThread(this);
@@ -68,7 +81,7 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::onTotalTestTimeMs);
 
     connect(ui->pushButton_init, &QPushButton::clicked,
-            m_program, &Program::initialize);
+            m_program, &Program::initialization);
 
     connect(ui->pushButton_set, &QPushButton::clicked,
             m_program, &Program::button_set_position);
@@ -179,6 +192,10 @@ MainWindow::MainWindow(QWidget *parent)
         ui->pushButton_set->setEnabled(state == Qt::Unchecked);
     });
 
+    connect(m_program, &Program::telemetryUpdated,
+            this, &MainWindow::onTelemetryUpdated,
+            Qt::QueuedConnection);
+
     setSensorsNumber(0);
 
     ui->tableWidget_stepResults->setColumnCount(2);
@@ -196,12 +213,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->label_arrowUp->installEventFilter(this);
     ui->label_arrowDown->installEventFilter(this);
-
-    ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tab_mainTests), false);
-    ui->tabWidget->setTabEnabled(1, true);
-    ui->tabWidget->setTabEnabled(2, true);
-    ui->tabWidget->setTabEnabled(3, true);
-    ui->tabWidget->setTabEnabled(4, true);
 }
 
 MainWindow::~MainWindow()
@@ -209,6 +220,122 @@ MainWindow::~MainWindow()
     delete ui;
     m_programThread->quit();
     m_programThread->wait();
+}
+
+void MainWindow::onTelemetryUpdated(const TelemetryStore &TS) {
+
+    m_telemetryStore = TS;
+    // Init
+    ui->label_deviceStatusValue->setText(TS.init.deviceStatusText);
+    ui->label_deviceStatusValue->setStyleSheet(
+        "color:" + TS.init.deviceStatusColor.name(QColor::HexRgb));
+
+    ui->label_deviceInitValue->setText(TS.init.initStatusText);
+    ui->label_deviceInitValue->setStyleSheet(
+        "color:" + TS.init.initStatusColor.name(QColor::HexRgb));
+
+    ui->label_connectedSensorsNumber->setText(TS.init.connectedSensorsText);
+    ui->label_connectedSensorsNumber->setStyleSheet(
+        "color:" + TS.init.connectedSensorsColor.name(QColor::HexRgb));
+
+    ui->label_startingPositionValue->setText(TS.init.startingPositionText);
+    ui->label_startingPositionValue->setStyleSheet(
+        "color:" + TS.init.startingPositionColor.name(QColor::HexRgb));
+
+    ui->label_finalPositionValue->setText(TS.init.finalPositionText);
+    ui->label_finalPositionValue->setStyleSheet(
+        "color:" + TS.init.finalPositionColor.name(QColor::HexRgb));
+
+    // MainTest
+    ui->label_pressureDifferenceValue->setText(
+        QString("%1 bar")
+            .arg(TS.mainTestRecord.pressureDifference, 0, 'f', 3)
+        );
+    ui->label_frictionForceValue->setText(
+        QString("%1 H")
+            .arg(TS.mainTestRecord.frictionForce, 0, 'f', 3)
+        );
+
+    ui->label_frictionPercentValue->setText(
+        QString("%1 %")
+            .arg(TS.mainTestRecord.frictionPercent, 0, 'f', 2)
+        );
+    ui->lineEdit_frictionForceValue->setText(
+        QString("%1")
+            .arg(TS.mainTestRecord.frictionForce, 0, 'f', 3)
+        );
+    ui->lineEdit_frictionPercentValue->setText(
+        QString("%1")
+            .arg(TS.mainTestRecord.frictionPercent, 0, 'f', 2)
+        );
+
+    ui->label_dynamicErrorMeanPercent->setText(
+        QString("%1 %")
+            .arg(TS.mainTestRecord.dynamicError_meanPercent, 0, 'f', 2)
+        );
+    ui->label_dynamicErrorMean->setText(
+        QString("%1 mA")
+            .arg(TS.mainTestRecord.dynamicError_mean, 0, 'f', 3)
+        );
+    ui->label_dynamicErrorMaxPercent->setText(
+        QString("%1 %")
+            .arg(TS.mainTestRecord.dynamicError_maxPercent, 0, 'f', 2)
+        );
+    ui->label_dynamicErrorMax->setText(
+        QString("%1 mA")
+            .arg(TS.mainTestRecord.dynamicError_max, 0, 'f', 3)
+        );
+    ui->lineEdit_dynamicErrorReal->setText(
+        QString("%1 %")
+            .arg(TS.mainTestRecord.dynamicErrorReal, 0, 'f', 2)
+        );
+
+    ui->label_dynamicErrorMax->setText(
+        QString("%1 bar")
+            .arg(TS.mainTestRecord.lowLimitPressure, 0, 'f', 2)
+        );
+    ui->label_dynamicErrorMax->setText(
+        QString("%1 bar")
+            .arg(TS.mainTestRecord.highLimitPressure, 0, 'f', 2)
+        );
+
+    ui->label_valveStroke_range->setText(
+        QString("%1")
+            .arg(TS.valveStrokeRecord.range)
+        );
+
+    ui->label_lowLimitValue->setText(
+        QString("%1")
+            .arg(TS.mainTestRecord.lowLimitPressure)
+        );
+    ui->label_highLimitValue->setText(
+        QString("%1")
+            .arg(TS.mainTestRecord.highLimitPressure)
+        );
+
+    ui->lineEdit_rangePressure->setText(
+        QString("%1–%2")
+            .arg(TS.mainTestRecord.lowLimitPressure, 0, 'f', 2)
+            .arg(TS.mainTestRecord.highLimitPressure, 0, 'f', 2)
+        );
+
+    ui->lineEdit_driveRangeReal->setText(
+        QString("%1–%2")
+            .arg(TS.mainTestRecord.springLow, 0, 'f', 2)
+            .arg(TS.mainTestRecord.springHigh, 0, 'f', 2)
+        );
+
+    // StrokeTest
+
+    ui->label_forward->setText(TS.strokeTestRecord.timeForwardMs);
+    ui->lineEdit_time_forward->setText(TS.strokeTestRecord.timeForwardMs);
+
+    ui->label_backward->setText(TS.strokeTestRecord.timeBackwardMs);
+    ui->lineEdit_time_backward->setText(TS.strokeTestRecord.timeBackwardMs);
+
+    // StrokeRecord
+    ui->lineEdit_strokeReal->setText(
+        QString("%1").arg(TS.valveStrokeRecord.real, 0, 'f', 2));
 }
 
 void MainWindow::on_pushButton_signal_4mA_clicked()
@@ -291,7 +418,7 @@ void MainWindow::onTotalTestTimeMs(quint64 totalMs)
 
     ui->statusbar->showMessage(
         QStringLiteral("Плановая длительность теста: %1").arg(formatHMS(m_totalTestMs))
-        );
+    );
 
     m_durationTimer->start();
     onCountdownTimeout();
@@ -358,7 +485,7 @@ void MainWindow::setRegistry(Registry *registry)
 {
     m_registry = registry;
 
-    m_reportSaver->SetRegistry(registry);
+    m_reportSaver->setRegistry(registry);
 
     ValveInfo *valveInfo = m_registry->getValveInfo();
 
@@ -417,7 +544,7 @@ void MainWindow::setRegistry(Registry *registry)
     m_program->setRegistry(registry);
     m_programThread->start();
 
-    m_reportSaver->SetRegistry(registry);
+    // m_reportSaver->SetRegistry(registry);
     // InitReport();
 }
 
@@ -546,6 +673,7 @@ void MainWindow::enableSetTask(bool enable)
 {
     ui->verticalSlider_task->setEnabled(enable);
     ui->doubleSpinBox_task->setEnabled(enable);
+    ui->groupBox_SettingCurrentSignal->setEnabled(enable);
 }
 
 void MainWindow::getPoints(QVector<QVector<QPointF>> &points, Charts chart)
@@ -636,9 +764,11 @@ void MainWindow::on_pushButton_mainTest_start_clicked()
     if (m_testing) {
         if (QMessageBox::question(this, QStringLiteral("Внимание!"), QStringLiteral("Вы действительно хотите завершить тест"))
             == QMessageBox::Yes) {
+            m_userCanceled = true;
             emit stopTest();
         }
     } else {
+        m_userCanceled = false;
         emit runMainTest();
         startTest();
     }
@@ -671,11 +801,6 @@ void MainWindow::promptSaveCharts()
         saveChart(Charts::Task);
         saveChart(Charts::Pressure);
         saveChart(Charts::Friction);
-        QMessageBox::information(
-            this,
-            QStringLiteral("Готово"),
-            QStringLiteral("Графики сохранены в текущую папку отчётов.")
-            );
     }
 }
 
@@ -850,23 +975,11 @@ void MainWindow::initCharts()
         this, &MainWindow::getPoints,
         Qt::BlockingQueuedConnection
     );
-
-    ui->checkBox_showCurve_task->setCheckState(Qt::Unchecked);
-    ui->checkBox_showCurve_moving->setCheckState(Qt::Unchecked);
-    ui->checkBox_showCurve_pressure_1->setCheckState(Qt::Unchecked);
-    ui->checkBox_showCurve_pressure_2->setCheckState(Qt::Unchecked);
-    ui->checkBox_showCurve_pressure_3->setCheckState(Qt::Unchecked);
-
-    ui->checkBox_showCurve_task->setVisible(false);
-    ui->checkBox_showCurve_moving->setVisible(false);
-    ui->checkBox_showCurve_pressure_1->setVisible(false);
-    ui->checkBox_showCurve_pressure_2->setVisible(false);
-    ui->checkBox_showCurve_pressure_3->setVisible(false);
 }
 
 void MainWindow::saveChart(Charts chart)
 {
-    m_reportSaver->SaveImage(m_charts[chart]);
+    m_reportSaver->saveImage(m_charts[chart]);
 
     QPixmap pix = m_charts[chart]->grab();
     QImage img = pix.toImage();
@@ -913,7 +1026,7 @@ void MainWindow::getImage(QLabel *label, QImage *image)
 {
     QString imgPath = QFileDialog::getOpenFileName(this,
                                                    QStringLiteral("Выберите файл"),
-        m_reportSaver->Directory().absolutePath(),
+                                                    m_reportSaver->directory().absolutePath(),
                                                    QStringLiteral("Изображения (*.jpg *.png *.bmp)"));
 
     if (!imgPath.isEmpty()) {
@@ -938,84 +1051,101 @@ void MainWindow::on_pushButton_imageChartFriction_clicked()
 
 void MainWindow::initReport()
 {
-    auto dataFromOtherFiles = m_report.data;
+    // auto dataFromOtherFiles = m_report.data;
 
     // Общие поля
-    m_report.data.push_back({4, 4, ui->lineEdit_object->text()});
-    m_report.data.push_back({5, 4, ui->lineEdit_manufacture->text()});
-    m_report.data.push_back({6, 4, ui->lineEdit_department->text()});
+    // m_report.data.push_back({4, 4, ui->lineEdit_object->text()});
+    // m_report.data.push_back({5, 4, ui->lineEdit_manufacture->text()});
+    // m_report.data.push_back({6, 4, ui->lineEdit_department->text()});
 
-    // Параметры клапана
-    m_report.data.push_back({4, 13, ui->lineEdit_positionNumber->text()});
-    m_report.data.push_back({5, 13, ui->lineEdit_serialNumber->text()});
-    m_report.data.push_back({6, 13, ui->lineEdit_valveModel->text()});
-    m_report.data.push_back({7, 13, ui->lineEdit_manufacturer->text()});
-    m_report.data.push_back({8, 13, ui->lineEdit_DN->text() + "/" + ui->lineEdit_PN->text()});
-    m_report.data.push_back({9, 13, ui->lineEdit_positionerModel->text()});
-    m_report.data.push_back({10, 13, ui->lineEdit_pressure->text()});
-    m_report.data.push_back({11, 13, ui->lineEdit_safePosition->text()});
-    m_report.data.push_back({12, 13, ui->lineEdit_modelDrive->text()});
-    m_report.data.push_back({13, 13, ui->lineEdit_movement->text()});
-    m_report.data.push_back({14, 13, ui->lineEdit_materialStuffingBoxSeal->text()});
+    // // Параметры клапана
+    // m_report.data.push_back({4, 13, ui->lineEdit_positionNumber->text()});
+    // m_report.data.push_back({5, 13, ui->lineEdit_serialNumber->text()});
+    // m_report.data.push_back({6, 13, ui->lineEdit_valveModel->text()});
+    // m_report.data.push_back({7, 13, ui->lineEdit_manufacturer->text()});
+    // m_report.data.push_back({8, 13, ui->lineEdit_DN->text() + "/" + ui->lineEdit_PN->text()});
+    // m_report.data.push_back({9, 13, ui->lineEdit_positionerModel->text()});
+    // m_report.data.push_back({10, 13, ui->lineEdit_pressure->text()});
+    // m_report.data.push_back({11, 13, ui->lineEdit_safePosition->text()});
+    // m_report.data.push_back({12, 13, ui->lineEdit_modelDrive->text()});
+    // m_report.data.push_back({13, 13, ui->lineEdit_movement->text()});
+    // m_report.data.push_back({14, 13, ui->lineEdit_materialStuffingBoxSeal->text()});
 
-    // Материал деталей
-    m_report.data.push_back({9, 4, ui->lineEdit_materialCorpus->text()});
-    m_report.data.push_back({10, 4, ui->lineEdit_materialCap->text()});
-    m_report.data.push_back({11, 4, ui->lineEdit_materialSaddle->text()});
-    m_report.data.push_back({11, 6, ui->lineEdit_CV->text()});
-    m_report.data.push_back({12, 4, ui->lineEdit_materialBall->text()});
-    m_report.data.push_back({13, 4, ui->lineEdit_materialDisk->text()});
-    m_report.data.push_back({14, 4, ui->lineEdit_materialPlunger->text()});
-    m_report.data.push_back({15, 4, ui->lineEdit_materialShaft->text()});
-    m_report.data.push_back({16, 4, ui->lineEdit_materialStock->text()});
-    m_report.data.push_back({17, 4, ui->lineEdit_materialGuideSleeve->text()});
+    // // Материал деталей
+    // m_report.data.push_back({9, 4, ui->lineEdit_materialCorpus->text()});
+    // m_report.data.push_back({10, 4, ui->lineEdit_materialCap->text()});
+    // m_report.data.push_back({11, 4, ui->lineEdit_materialSaddle->text()});
+    // m_report.data.push_back({11, 6, ui->lineEdit_CV->text()});
+    // m_report.data.push_back({12, 4, ui->lineEdit_materialBall->text()});
+    // m_report.data.push_back({13, 4, ui->lineEdit_materialDisk->text()});
+    // m_report.data.push_back({14, 4, ui->lineEdit_materialPlunger->text()});
+    // m_report.data.push_back({15, 4, ui->lineEdit_materialShaft->text()});
+    // m_report.data.push_back({16, 4, ui->lineEdit_materialStock->text()});
+    // m_report.data.push_back({17, 4, ui->lineEdit_materialGuideSleeve->text()});
 
-    // Динамические характеристики
-    m_report.data.push_back({25, 5, ui->lineEdit_dinamic_real->text()});
-    m_report.data.push_back({25, 8, ui->lineEdit_dinamicRecomend->text()});
-    m_report.data.push_back({27, 5, ui->lineEdit_dinamic_ip_real->text()});
-    m_report.data.push_back({27, 8, ui->lineEdit_dinamic_ip_recomend->text()});
-    m_report.data.push_back({29, 5, ui->lineEdit_stroke_real->text()});
-    m_report.data.push_back({29, 8, ui->lineEdit_stroke_recomend->text()});
-    m_report.data.push_back({31, 5, ui->lineEdit_range_real->text()});
-    m_report.data.push_back({31, 8, ui->lineEdit_range_recomend->text()});
-    m_report.data.push_back({33, 5, ui->lineEdit_range_pressure->text()});
-    m_report.data.push_back({35, 5, ui->lineEdit_friction_percent->text()});
-    m_report.data.push_back({37, 5, ui->lineEdit_friction->text()});
+    // // Динамические характеристики
+    // m_report.data.push_back({25, 5, ui->lineEdit_dinamic_real->text()});
+    // m_report.data.push_back({25, 8, ui->lineEdit_dinamicRecomend->text()});
+    // m_report.data.push_back({27, 5, ui->lineEdit_dinamic_ip_real->text()});
+    // m_report.data.push_back({27, 8, ui->lineEdit_dinamic_ip_recomend->text()});
+    // m_report.data.push_back({29, 5, ui->lineEdit_stroke_real->text()});
+    // m_report.data.push_back({29, 8, ui->lineEdit_stroke_recomend->text()});
+    // m_report.data.push_back({31, 5, ui->lineEdit_range_real->text()});
+    // m_report.data.push_back({31, 8, ui->lineEdit_range_recomend->text()});
+    // m_report.data.push_back({33, 5, ui->lineEdit_range_pressure->text()});
+    // m_report.data.push_back({35, 5, ui->lineEdit_friction_percent->text()});
+    // m_report.data.push_back({37, 5, ui->lineEdit_friction->text()});
 
-    // Временные показатели
-    m_report.data.push_back({51, 5,  ui->lineEdit_time_forward->text()});
-    m_report.data.push_back({51, 8,  ui->lineEdit_time_backward->text()});
+    // // Временные показатели
+    // m_report.data.push_back({51, 5,  ui->lineEdit_time_forward->text()});
+    // m_report.data.push_back({51, 8,  ui->lineEdit_time_backward->text()});
 
-    // Пользователь и дата
-    m_report.data.push_back({74, 4, ui->lineEdit_FIO->text()});
+    // // Пользователь и дата
+    // m_report.data.push_back({74, 4, ui->lineEdit_FIO->text()});
 
-    m_report.data.push_back({65, 12, ui->lineEdit_date->text()});
-    m_report.data.push_back({158, 12, ui->lineEdit_date->text()});
+    // m_report.data.push_back({65, 12, ui->lineEdit_date->text()});
+    // m_report.data.push_back({158, 12, ui->lineEdit_date->text()});
 
-    // Материалы модели
-    for (const auto &data : dataFromOtherFiles) {
-        m_report.data.push_back(data);
-    }
+    // // Материалы модели
+    // for (const auto &data : dataFromOtherFiles) {
+    //     m_report.data.push_back(data);
+    // }
 
-    m_report.validation = {
-       {"=ЗИП!$A$1:$A$37", "J56:J65"},
-       {"=Заключение!$B$1:$B$4", "E42"},
-       {"=Заключение!$C$1:$C$3", "E44"},
-       {"=Заключение!$E$1:$E$4", "E46"},
-       {"=Заключение!$D$1:$D$5", "E48"},
-       {"=Заключение!$F$3", "E50"},
-    };
+    // m_report.validation = {
+    //    {"=ЗИП!$A$1:$A$37", "J56:J65"},
+    //    {"=Заключение!$B$1:$B$4", "E42"},
+    //    {"=Заключение!$C$1:$C$3", "E44"},
+    //    {"=Заключение!$E$1:$E$4", "E46"},
+    //    {"=Заключение!$D$1:$D$5", "E48"},
+    //    {"=Заключение!$F$3", "E50"},
+    // };
 }
 
-void MainWindow::on_pushButton_report_generate_clicked() {
-    initReport();
-    bool ok = m_reportSaver->SaveReport(m_report);
-    ui->pushButton_report_open->setEnabled(ok);
+void MainWindow::on_pushButton_report_generate_clicked()
+{
+    std::unique_ptr<ReportBuilder> reportBuilder;
+
+    reportBuilder = std::make_unique<ReportBuilder>();
+
+    ReportSaver::Report report;
+    reportBuilder->buildReport(report,
+                               m_telemetryStore,
+                               *m_registry->getObjectInfo(),
+                               *m_registry->getSensors(),
+                               *m_registry->getValveInfo(),
+                               *m_registry->getOtherParameters(),
+                               *m_registry->getMaterialsOfComponentParts(),
+                               *m_registry->getListDetails(),
+                               m_imageChartTask, m_imageChartPressure, m_imageChartFriction, m_imageChartStep);
+
+    qDebug() << "Путь к шаблону:" << reportBuilder->templatePath();
+
+    bool saved = m_reportSaver->saveReport(report, reportBuilder->templatePath());
+    ui->pushButton_report_open->setEnabled(saved);
 }
 
 void MainWindow::on_pushButton_report_open_clicked()
 {
     QDesktopServices::openUrl(
-        QUrl::fromLocalFile(m_reportSaver->Directory().filePath("report.xlsx")));
+        QUrl::fromLocalFile(m_reportSaver->directory().filePath("report.xlsx")));
 }

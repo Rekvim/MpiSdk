@@ -22,8 +22,9 @@ SOURCES += \
     OtherTestSettings.cpp \
     Program.cpp \
     Registry.cpp \
-    ReportSaver.cpp \
     Sensor.cpp \
+    Src/Report/ReportBuilder.cpp \
+    Src/Report/ReportSaver.cpp \
     StepTestSettings.cpp \
     ValveWindow.cpp \
     main.cpp \
@@ -53,8 +54,9 @@ HEADERS += \
     OtherTestSettings.h \
     Program.h \
     Registry.h \
-    ReportSaver.h \
     Sensor.h \
+    Src/Report/ReportBuilder.h \
+    Src/Report/ReportSaver.h \
     StepTestSettings.h \
     ValveWindow.h \
     Src/CustomChart/MyChart.h \

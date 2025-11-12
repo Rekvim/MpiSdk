@@ -51,6 +51,8 @@ private:
     Registry *m_registry;
     ValveInfo *m_valveInfo;
     MaterialsOfComponentParts *m_materialsOfComponentParts;
+    ListDetails *m_listDetails;
+
     QJsonObject m_valveDataObj;
     ValveDataLoader m_loader;
     ValveDatabase& m_db;

@@ -14,6 +14,8 @@
 #include "StepTestSettings.h"
 
 #include "./Src/Mpi/Mpi.h"
+#include "./Src/Telemetry/TelemetryStore.h"
+
 #include "./Src/Tests/StepTest.h"
 #include "./Src/Tests/MainTest.h"
 
@@ -81,10 +83,13 @@ class Program : public QObject
 public:
     explicit Program(QObject *parent = nullptr);
     void setRegistry(Registry *registry);
+    bool isInitialized() const;
 
 signals:
     void setText(const TextObjects object, const QString &text);
     void setTextColor(const TextObjects object, const QColor color);
+    void telemetryUpdated(const TelemetryStore &store);
+
     void setTask(qreal task);
     void setSensorNumber(quint8 num);
     void setButtonInitEnabled(bool enable);
@@ -125,7 +130,7 @@ public slots:
     void setDac_real(qreal value);
     void setDac_int(quint16 value);
 
-    void initialize();
+    void initialization();
 
     void runningMainTest();
     void runningStrokeTest();
@@ -139,6 +144,8 @@ public slots:
 
 private:
     Registry *m_registry;
+    TelemetryStore m_telemetryStore;
+
     MPI m_mpi;
     QTimer *m_timerSensors;
     QTimer *m_timerDI;
@@ -148,12 +155,25 @@ private:
     QEventLoop *m_dacEventloop;
     bool m_stopSetDac;
     bool m_waitForButton = false;
+    bool m_isInitialized = false;
 
     inline qreal calcPercent(qreal value, bool invert = false) {
         qreal percent = ((value - 4.0) / 16.0) * 100.0;
         percent = qBound<qreal>(0.0, percent, 100.0);
         return invert ? (100.0 - percent) : percent;
     }
+
+    // init
+    bool connectAndInitDevice();
+    bool detectAndReportSensors();
+    void waitForDacCycle();
+
+    void measureStartPosition(bool normalClosed);
+    void measureEndPosition(bool normalClosed);
+
+    void calculateAndApplyCoefficients();
+    void recordStrokeRange(bool normalClosed);
+    void finalizeInitialization();
 
 private slots:
     void updateSensors();

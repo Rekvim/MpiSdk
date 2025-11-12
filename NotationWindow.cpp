@@ -1,122 +1,82 @@
 #include "NotationWindow.h"
 #include "ui_NotationWindow.h"
-#include "ReportSaver.h"
 
-NotationWindow::NotationWindow(QWidget *parent)
+NotationWindow::NotationWindow(Registry &registry, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::NotationWindow)
-    , m_settings("MPPI", "Data")
+    , m_registry(registry)
 {
     ui->setupUi(this);
 
-    loadSettings();
+    loadFromRegistry();
+    syncUIFromSensors();
 
-    connect(ui->entry_testing, &QPushButton::clicked, this, &NotationWindow::accept);
+    connect(ui->entry_testing, &QPushButton::clicked, this, [this]{
+        persist();
+        accept();
+    });
 
-    onCheckBoxChanged();
+    connect(ui->comboBox_movings, &QComboBox::currentIndexChanged,
+            this, &NotationWindow::onComboBoxIndexChanged);
 
-    connect(ui->comboBox_movings, &QComboBox::currentIndexChanged, this, &NotationWindow::onComboBoxIndexChanged);
-    connect(ui->checkBox_pressureSensor_1, &QCheckBox::toggled, this, &NotationWindow::onCheckBoxChanged);
-    connect(ui->checkBox_pressureSensor_2, &QCheckBox::toggled, this, &NotationWindow::onCheckBoxChanged);
-    connect(ui->checkBox_pressureSensor_3, &QCheckBox::toggled, this, &NotationWindow::onCheckBoxChanged);
-    connect(ui->checkBox_pressureSensor_4, &QCheckBox::toggled, this, &NotationWindow::onCheckBoxChanged);
-
-    onComboBoxIndexChanged(ui->comboBox_movings->currentIndex());
+    connect(ui->checkBox_pressureSensor_1, &QCheckBox::toggled,
+            this, &NotationWindow::onCheckBoxChanged);
+    connect(ui->checkBox_pressureSensor_2, &QCheckBox::toggled,
+            this, &NotationWindow::onCheckBoxChanged);
+    connect(ui->checkBox_pressureSensor_3, &QCheckBox::toggled,
+            this, &NotationWindow::onCheckBoxChanged);
+    connect(ui->checkBox_pressureSensor_4, &QCheckBox::toggled,
+            this, &NotationWindow::onCheckBoxChanged);
 }
 
-void NotationWindow::loadSettings()
+void NotationWindow::loadFromRegistry()
 {
-    m_settings.beginGroup("NotationWindow");
-
-    int idx = m_settings.value("comboIndex", 0).toInt();
-    ui->comboBox_movings->setCurrentIndex(idx);
-
-    ui->checkBox_pressureSensor_1->setChecked(
-        m_settings.value("pressureSensor_1", false).toBool());
-    ui->checkBox_pressureSensor_2->setChecked(
-        m_settings.value("pressureSensor_2", false).toBool());
-    ui->checkBox_pressureSensor_3->setChecked(
-        m_settings.value("pressureSensor_3", false).toBool());
-    ui->checkBox_pressureSensor_4->setChecked(
-        m_settings.value("pressureSensor_4", false).toBool());
-
-    m_settings.endGroup();
-
-    m_pressureSensor1 = ui->checkBox_pressureSensor_1->isChecked()
-                            ? ui->checkBox_pressureSensor_1->text() : "";
-    m_pressureSensor2 = ui->checkBox_pressureSensor_2->isChecked()
-                            ? ui->checkBox_pressureSensor_2->text() : "";
-    m_pressureSensor3 = ui->checkBox_pressureSensor_3->isChecked()
-                            ? ui->checkBox_pressureSensor_3->text() : "";
-    m_pressureSensor4 = ui->checkBox_pressureSensor_4->isChecked()
-                            ? ui->checkBox_pressureSensor_4->text() : "";
-
-    m_linearMotionSensor = ui->comboBox_movings->currentText();
-
+    m_sensors = m_registry.getSensors();
+    Q_ASSERT(m_sensors);
 }
 
-void NotationWindow::saveSettings()
+void NotationWindow::persist()
 {
-    m_settings.beginGroup("NotationWindow");
-
-    m_settings.setValue("comboIndex",
-                        ui->comboBox_movings->currentIndex());
-
-    m_settings.setValue("pressureSensor_1",
-                        ui->checkBox_pressureSensor_1->isChecked());
-    m_settings.setValue("pressureSensor_2",
-                        ui->checkBox_pressureSensor_2->isChecked());
-    m_settings.setValue("pressureSensor_3",
-                        ui->checkBox_pressureSensor_3->isChecked());
-    m_settings.setValue("pressureSensor_4",
-                        ui->checkBox_pressureSensor_4->isChecked());
-
-    m_settings.endGroup();
-}
-
-void NotationWindow::onComboBoxIndexChanged(int index)
-{
-    m_linearMotionSensor = ui->comboBox_movings->itemText(index);
-        saveSettings();
+    // Редактируем тот же объект, что и в Registry, так что просто сохраняем
+    m_registry.saveSensors();
 }
 
 void NotationWindow::onCheckBoxChanged()
 {
-    m_pressureSensor1 = ui->checkBox_pressureSensor_1->isChecked() ? ui->checkBox_pressureSensor_1->text() : "";
-    m_pressureSensor2 = ui->checkBox_pressureSensor_2->isChecked() ? ui->checkBox_pressureSensor_2->text() : "";
-    m_pressureSensor3 = ui->checkBox_pressureSensor_3->isChecked() ? ui->checkBox_pressureSensor_3->text() : "";
-    m_pressureSensor4 = ui->checkBox_pressureSensor_4->isChecked() ? ui->checkBox_pressureSensor_4->text() : "";
-    saveSettings();
+    auto apply = [](QString &field, const QCheckBox *cb)
+    {
+        if (!cb->isChecked())
+            field.clear();
+        else if (field.isEmpty())
+            field = cb->text();
+    };
+
+    // dereference pointer
+    apply(m_sensors->Pressure1, ui->checkBox_pressureSensor_1);
+    apply(m_sensors->Pressure2, ui->checkBox_pressureSensor_2);
+    apply(m_sensors->Pressure3, ui->checkBox_pressureSensor_3);
+    apply(m_sensors->Pressure4, ui->checkBox_pressureSensor_4);
 }
 
-void NotationWindow::SetRegistry(Registry *registry)
+void NotationWindow::onComboBoxIndexChanged(int index)
 {
-    m_registry = registry;
+    m_sensors->Motion = ui->comboBox_movings->itemText(index);
 }
 
-void NotationWindow::fillReport(ReportSaver::Report &report) {
-    if (!getPressureSensor1().isEmpty()) {
-        report.data.push_back({66, 5, getPressureSensor1()});
-    }
-
-    if (!getPressureSensor2().isEmpty()) {
-        report.data.push_back({67, 5, getPressureSensor2()});
-
-    }
-    if (!getPressureSensor3().isEmpty()) {
-        report.data.push_back({68, 5, getPressureSensor3()});
-    }
-    if (!getPressureSensor4().isEmpty()) {
-        report.data.push_back({69, 5, getPressureSensor4()});
-
-    }
-    if (!getLinearMotionSensor().isEmpty()) {
-        report.data.push_back({70, 5, getLinearMotionSensor()});
-    }
-}
-
-
-NotationWindow::~NotationWindow()
+void NotationWindow::syncUIFromSensors()
 {
-    delete ui;
+    QSignalBlocker b1(ui->checkBox_pressureSensor_1);
+    QSignalBlocker b2(ui->checkBox_pressureSensor_2);
+    QSignalBlocker b3(ui->checkBox_pressureSensor_3);
+    QSignalBlocker b4(ui->checkBox_pressureSensor_4);
+    QSignalBlocker b5(ui->comboBox_movings);
+
+    ui->checkBox_pressureSensor_1->setChecked(!m_sensors->Pressure1.isEmpty());
+    ui->checkBox_pressureSensor_2->setChecked(!m_sensors->Pressure2.isEmpty());
+    ui->checkBox_pressureSensor_3->setChecked(!m_sensors->Pressure3.isEmpty());
+    ui->checkBox_pressureSensor_4->setChecked(!m_sensors->Pressure4.isEmpty());
+
+    const int idx = ui->comboBox_movings->findText(
+        m_sensors->Motion, Qt::MatchFixedString);
+    ui->comboBox_movings->setCurrentIndex(idx >= 0 ? idx : 0);
 }

@@ -2,7 +2,6 @@
 #define REGISTRY_H
 
 #pragma once
-#include <QDate>
 #include <QObject>
 #include <QSettings>
 
@@ -14,29 +13,41 @@ struct ObjectInfo
     QString FIO;
 };
 
-struct AccessoriesSeries {
+struct Sensors {
+    QString Pressure1;
+    QString Pressure2;
+    QString Pressure3;
+    QString Pressure4;
+    QString Motion;
+};
+
+struct ListDetails {
     QString plunger;
     QString saddle;
-    QString bushing;
-    QString oRing;
-    QString stuffingSeal;
-    QString diaphragm;
+    QString upperBushing;
+    QString lowerBushing;
+    QString upperORing;
+    QString lowerORing;
+    QString stuffingBoxSeal;
+    QString driveDiaphragm;
     QString covers;
     QString shaft;
     QString saddleLock;
 };
+
 struct MaterialsOfComponentParts {
+    QString plunger;
     QString saddle;
-    QString corpus;
     QString cap;
+    QString corpus;
     QString ball;
     QString disk;
-    QString plunger;
     QString shaft;
     QString stock;
     QString guideSleeve;
     QString stuffingBoxSeal;
 };
+
 struct ValveInfo
 {
     QString positionNumber;
@@ -79,6 +90,10 @@ public:
     ObjectInfo *getObjectInfo();
     void saveObjectInfo();
 
+    Sensors *getSensors();
+    void saveSensors();
+    // void loadSensors();
+
     ValveInfo *getValveInfo(const QString &positionNumber);
     ValveInfo *getValveInfo();
     void saveValveInfo();
@@ -86,8 +101,8 @@ public:
     MaterialsOfComponentParts *getMaterialsOfComponentParts();
     void saveMaterialsOfComponentParts();
 
-    AccessoriesSeries *getAccessoriesSeries();
-    void saveAccessoriesSeries();
+    ListDetails *getListDetails();
+    void saveListDetails();
 
     OtherParameters *getOtherParameters();
     bool checkObject(const QString &object);
@@ -99,8 +114,9 @@ public:
 
 private:
     ObjectInfo m_objectInfo;
+    Sensors m_sensors;
     ValveInfo m_valveInfo;
-    AccessoriesSeries m_accessoriesSeries;
+    ListDetails m_listDetails;
     MaterialsOfComponentParts m_materialsOfComponentParts;
 
     QSettings m_settings;

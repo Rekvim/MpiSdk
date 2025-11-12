@@ -64,17 +64,17 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
 
     diameterChanged(ui->lineEdit_driveDiameter->text());
 
-    m_partFields.insert("plunger", ui->lineEdit_plunger);
-    m_partFields.insert("saddle", ui->lineEdit_saddle);
-    m_partFields.insert("UpperBushing", ui->lineEdit_upperBushing);
-    m_partFields.insert("LowerBushing", ui->lineEdit_lowerBushing);
-    m_partFields.insert("UpperORingSealingRing", ui->lineEdit_upperORing);
-    m_partFields.insert("LowerORingSealingRing", ui->lineEdit_lowerORing);
-    m_partFields.insert("stuffingBoxSeal", ui->lineEdit_stuffingBoxSeal);
-    m_partFields.insert("driveDiaphragm", ui->lineEdit_driveDiaphragm);
-    m_partFields.insert("setOfCovers", ui->lineEdit_covers);
-    m_partFields.insert("shaft", ui->lineEdit_shaft);
-    m_partFields.insert("saddleLock", ui->lineEdit_saddleLock);
+    m_partFields.insert("plunger", ui->lineEdit_listDetails_plunger);
+    m_partFields.insert("saddle", ui->lineEdit_listDetails_saddle);
+    m_partFields.insert("UpperBushing", ui->lineEdit_listDetails_upperBushing);
+    m_partFields.insert("LowerBushing", ui->lineEdit_listDetails_lowerBushing);
+    m_partFields.insert("UpperORingSealingRing", ui->lineEdit_listDetails_upperORing);
+    m_partFields.insert("LowerORingSealingRing", ui->lineEdit_listDetails_lowerORing);
+    m_partFields.insert("stuffingBoxSeal", ui->lineEdit_listDetails_stuffingBoxSeal);
+    m_partFields.insert("driveDiaphragm", ui->lineEdit_listDetails_driveDiaphragm);
+    m_partFields.insert("setOfCovers", ui->lineEdit_listDetails_covers);
+    m_partFields.insert("shaft", ui->lineEdit_listDetails_shaft);
+    m_partFields.insert("saddleLock", ui->lineEdit_listDetails_saddleLock);
 
     populateCombo(ui->comboBox_manufacturer, m_db.getManufacturers(), true);
 
@@ -591,6 +591,7 @@ void ValveWindow::setRegistry(Registry *registry)
 
     m_valveInfo = m_registry->getValveInfo();
     m_materialsOfComponentParts = m_registry->getMaterialsOfComponentParts();
+    m_listDetails = m_registry->getListDetails();
 
     ui->comboBox_positionNumber->clear();
     ui->comboBox_positionNumber->addItems(m_registry->getPositions());
@@ -614,8 +615,24 @@ void ValveWindow::setRegistry(Registry *registry)
 }
 void ValveWindow::saveValveInfo()
 {
+    const QString pos = (ui->comboBox_positionNumber->currentText() == m_manualInput)
+                            ? ui->lineEdit_positionNumber->text().trimmed()
+                            : ui->comboBox_positionNumber->currentText().trimmed();
+
+    if (pos.isEmpty()) {
+        QMessageBox::warning(this, "Ошибка", "Введите номер позиции.");
+        return;
+    }
+
+    m_valveInfo = m_registry->getValveInfo(pos);
+
     if (ui->comboBox_positionNumber->currentText() == m_manualInput)
         m_valveInfo = m_registry->getValveInfo(ui->lineEdit_positionNumber->text());
+
+    if (pos.isEmpty()) {
+        QMessageBox::warning(this, "Ошибка", "Введите номер позиции.");
+        return;
+    }
 
     if (ui->comboBox_manufacturer->currentText() == m_manualInput)
         m_valveInfo->manufacturer = ui->lineEdit_manufacturer->text();
@@ -668,6 +685,20 @@ void ValveWindow::saveValveInfo()
     m_materialsOfComponentParts->guideSleeve = ui->lineEdit_materialGuideSleeve->text();
     m_materialsOfComponentParts->stuffingBoxSeal = ui->comboBox_materialStuffingBoxSeal->currentText();
 
+    // Перечень деталей
+    m_listDetails->plunger = ui->lineEdit_listDetails_plunger->text();
+    m_listDetails->saddle = ui->lineEdit_listDetails_saddle->text();
+    m_listDetails->upperBushing = ui->lineEdit_listDetails_upperBushing->text();
+    m_listDetails->lowerBushing = ui->lineEdit_listDetails_lowerBushing->text();
+    m_listDetails->upperORing = ui->lineEdit_listDetails_upperORing->text();
+    m_listDetails->lowerORing = ui->lineEdit_listDetails_lowerORing->text();
+    m_listDetails->stuffingBoxSeal = ui->lineEdit_listDetails_stuffingBoxSeal->text();
+    m_listDetails->driveDiaphragm = ui->lineEdit_listDetails_driveDiaphragm->text();
+    m_listDetails->covers = ui->lineEdit_listDetails_covers->text();
+    m_listDetails->shaft = ui->lineEdit_listDetails_shaft->text();
+    m_listDetails->saddleLock = ui->lineEdit_listDetails_saddleLock->text();
+
+    m_registry->saveListDetails();
     m_registry->saveMaterialsOfComponentParts();
     m_registry->saveValveInfo();
 }
@@ -676,6 +707,7 @@ void ValveWindow::positionChanged(const QString &position)
 {
     m_valveInfo = m_registry->getValveInfo(position);
     m_materialsOfComponentParts = m_registry->getMaterialsOfComponentParts();
+    m_listDetails = m_registry->getListDetails();
 
     if (position == m_manualInput) {
         ui->lineEdit_positionNumber->setEnabled(true);
@@ -748,6 +780,18 @@ void ValveWindow::positionChanged(const QString &position)
     ui->lineEdit_materialShaft->setText(m_materialsOfComponentParts->shaft);
     ui->lineEdit_materialStock->setText(m_materialsOfComponentParts->stock);
     ui->lineEdit_materialGuideSleeve->setText(m_materialsOfComponentParts->guideSleeve);
+
+    ui->lineEdit_listDetails_plunger->setText(m_listDetails->plunger);
+    ui->lineEdit_listDetails_saddle->setText(m_listDetails->saddle);
+    ui->lineEdit_listDetails_upperBushing->setText(m_listDetails->upperBushing);
+    ui->lineEdit_listDetails_lowerBushing->setText(m_listDetails->lowerBushing);
+    ui->lineEdit_listDetails_upperORing->setText(m_listDetails->upperORing);
+    ui->lineEdit_listDetails_lowerORing->setText(m_listDetails->lowerORing);
+    ui->lineEdit_listDetails_stuffingBoxSeal->setText(m_listDetails->stuffingBoxSeal);
+    ui->lineEdit_listDetails_driveDiaphragm->setText(m_listDetails->driveDiaphragm);
+    ui->lineEdit_listDetails_covers->setText(m_listDetails->covers);
+    ui->lineEdit_listDetails_shaft->setText(m_listDetails->shaft);
+    ui->lineEdit_listDetails_saddleLock->setText(m_listDetails->saddleLock);
 }
 
 void ValveWindow::strokeChanged(quint16 n)
@@ -775,15 +819,15 @@ void ValveWindow::diameterChanged(const QString &text)
 }
 
 void ValveWindow::fillReport(ReportSaver::Report &report) {
-    report.data.push_back({55, 10, ui->lineEdit_plunger->text()});
-    report.data.push_back({56, 10, ui->lineEdit_saddle->text()});
-    report.data.push_back({57, 10, ui->lineEdit_upperBushing->text() + " / " + ui->lineEdit_lowerBushing->text()});
-    report.data.push_back({58, 10, ui->lineEdit_upperORing->text() + " / " + ui->lineEdit_lowerORing->text()});
-    report.data.push_back({59, 10, ui->lineEdit_stuffingBoxSeal->text()});
-    report.data.push_back({60, 10, ui->lineEdit_driveDiaphragm->text()});
-    report.data.push_back({61, 10, ui->lineEdit_covers->text()});
-    report.data.push_back({62, 10, ui->lineEdit_shaft->text()});
-    report.data.push_back({63, 10, ui->lineEdit_saddleLock->text()});
+    // report.data.push_back({55, 10, ui->lineEdit_listDetails_plunger->text()});
+    // report.data.push_back({56, 10, ui->lineEdit_listDetails_saddle->text()});
+    // report.data.push_back({57, 10, ui->lineEdit_listDetails_upperBushing->text() + " / " + ui->lineEdit_listDetails_lowerBushing->text()});
+    // report.data.push_back({58, 10, ui->lineEdit_listDetails_upperORing->text() + " / " + ui->lineEdit_listDetails_lowerORing->text()});
+    // report.data.push_back({59, 10, ui->lineEdit_listDetails_stuffingBoxSeal->text()});
+    // report.data.push_back({60, 10, ui->lineEdit_listDetails_driveDiaphragm->text()});
+    // report.data.push_back({61, 10, ui->lineEdit_listDetails_covers->text()});
+    // report.data.push_back({62, 10, ui->lineEdit_listDetails_shaft->text()});
+    // report.data.push_back({63, 10, ui->lineEdit_listDetails_saddleLock->text()});
 }
 
 void ValveWindow::on_pushButton_clicked()
