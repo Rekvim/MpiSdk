@@ -11,8 +11,7 @@ void ReportBuilder::buildReport(
     const ListDetails& listDetails,
     const QImage& imageChartTask,
     const QImage& imageChartPressure,
-    const QImage& imageChartFriction,
-    const QImage& imageChartStep
+    const QImage& imageChartFriction
     ) {
     QString sheet_1 = "Отчет ОТ";
 

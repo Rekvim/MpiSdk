@@ -9,7 +9,7 @@
 
 class ValveDatabase {
 public:
-    explicit ValveDatabase();
+    explicit ValveDatabase(QSqlDatabase &database);
     ~ValveDatabase();
 
     int getSeriesIdByName(int manufacturerId, const QString &seriesName);
@@ -43,7 +43,7 @@ public:
                                               int saddleMaterialId);
 
 private:
-    QSqlDatabase m_db;
+    QSqlDatabase &m_db;
 };
 
 #endif // VALVEDATABASE_H

@@ -21,8 +21,7 @@ public:
         const ListDetails& listDetails,
         const QImage& imageChartTask = QImage(),
         const QImage& imageChartPressure = QImage(),
-        const QImage& imageChartFriction = QImage(),
-        const QImage& imageChartStep = QImage()
+        const QImage& imageChartFriction = QImage()
         );
 
     QString templatePath() const { return QStringLiteral(":/excel/Report.xlsx"); }

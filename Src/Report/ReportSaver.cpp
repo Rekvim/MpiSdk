@@ -57,11 +57,6 @@ QDir ReportSaver::directory()
 
 bool ReportSaver::saveReport(const Report &report, const QString &templatePath)
 {
-
-    if (!QFile::exists(templatePath)) {
-        qCritical() << "Excel template not found:" << templatePath;
-        return false;
-    }
     if (!m_created)
         createDir();
 

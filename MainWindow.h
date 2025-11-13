@@ -67,12 +67,10 @@ private:
     QImage m_imageChartTask;
     QImage m_imageChartPressure;
     QImage m_imageChartFriction;
-    QImage m_imageChartStep;
 
     void initCharts();
     void saveChart(Charts chart);
     void getImage(QLabel *label, QImage *image);
-    void initReport();
 
 private slots:
     void setText(const TextObjects object, const QString &text);

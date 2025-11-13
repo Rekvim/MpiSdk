@@ -818,18 +818,6 @@ void ValveWindow::diameterChanged(const QString &text)
     ui->label_square->setText(QString::number(M_PI * value * value / 4.0, 'f', 2));
 }
 
-void ValveWindow::fillReport(ReportSaver::Report &report) {
-    // report.data.push_back({55, 10, ui->lineEdit_listDetails_plunger->text()});
-    // report.data.push_back({56, 10, ui->lineEdit_listDetails_saddle->text()});
-    // report.data.push_back({57, 10, ui->lineEdit_listDetails_upperBushing->text() + " / " + ui->lineEdit_listDetails_lowerBushing->text()});
-    // report.data.push_back({58, 10, ui->lineEdit_listDetails_upperORing->text() + " / " + ui->lineEdit_listDetails_lowerORing->text()});
-    // report.data.push_back({59, 10, ui->lineEdit_listDetails_stuffingBoxSeal->text()});
-    // report.data.push_back({60, 10, ui->lineEdit_listDetails_driveDiaphragm->text()});
-    // report.data.push_back({61, 10, ui->lineEdit_listDetails_covers->text()});
-    // report.data.push_back({62, 10, ui->lineEdit_listDetails_shaft->text()});
-    // report.data.push_back({63, 10, ui->lineEdit_listDetails_saddleLock->text()});
-}
-
 void ValveWindow::on_pushButton_clicked()
 {
     if (ui->lineEdit_positionNumber->text().isEmpty()) {

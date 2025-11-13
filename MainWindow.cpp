@@ -996,7 +996,6 @@ void MainWindow::saveChart(Charts chart)
     case Charts::Resolution:
         break;
     case Charts::Step:
-        m_imageChartStep = img;
         break;
     case Charts::Pressure:
         ui->label_imageChartPressure->setPixmap(pix);
@@ -1049,78 +1048,6 @@ void MainWindow::on_pushButton_imageChartFriction_clicked()
     getImage(ui->label_imageChartFriction, &m_imageChartFriction);
 }
 
-void MainWindow::initReport()
-{
-    // auto dataFromOtherFiles = m_report.data;
-
-    // Общие поля
-    // m_report.data.push_back({4, 4, ui->lineEdit_object->text()});
-    // m_report.data.push_back({5, 4, ui->lineEdit_manufacture->text()});
-    // m_report.data.push_back({6, 4, ui->lineEdit_department->text()});
-
-    // // Параметры клапана
-    // m_report.data.push_back({4, 13, ui->lineEdit_positionNumber->text()});
-    // m_report.data.push_back({5, 13, ui->lineEdit_serialNumber->text()});
-    // m_report.data.push_back({6, 13, ui->lineEdit_valveModel->text()});
-    // m_report.data.push_back({7, 13, ui->lineEdit_manufacturer->text()});
-    // m_report.data.push_back({8, 13, ui->lineEdit_DN->text() + "/" + ui->lineEdit_PN->text()});
-    // m_report.data.push_back({9, 13, ui->lineEdit_positionerModel->text()});
-    // m_report.data.push_back({10, 13, ui->lineEdit_pressure->text()});
-    // m_report.data.push_back({11, 13, ui->lineEdit_safePosition->text()});
-    // m_report.data.push_back({12, 13, ui->lineEdit_modelDrive->text()});
-    // m_report.data.push_back({13, 13, ui->lineEdit_movement->text()});
-    // m_report.data.push_back({14, 13, ui->lineEdit_materialStuffingBoxSeal->text()});
-
-    // // Материал деталей
-    // m_report.data.push_back({9, 4, ui->lineEdit_materialCorpus->text()});
-    // m_report.data.push_back({10, 4, ui->lineEdit_materialCap->text()});
-    // m_report.data.push_back({11, 4, ui->lineEdit_materialSaddle->text()});
-    // m_report.data.push_back({11, 6, ui->lineEdit_CV->text()});
-    // m_report.data.push_back({12, 4, ui->lineEdit_materialBall->text()});
-    // m_report.data.push_back({13, 4, ui->lineEdit_materialDisk->text()});
-    // m_report.data.push_back({14, 4, ui->lineEdit_materialPlunger->text()});
-    // m_report.data.push_back({15, 4, ui->lineEdit_materialShaft->text()});
-    // m_report.data.push_back({16, 4, ui->lineEdit_materialStock->text()});
-    // m_report.data.push_back({17, 4, ui->lineEdit_materialGuideSleeve->text()});
-
-    // // Динамические характеристики
-    // m_report.data.push_back({25, 5, ui->lineEdit_dinamic_real->text()});
-    // m_report.data.push_back({25, 8, ui->lineEdit_dinamicRecomend->text()});
-    // m_report.data.push_back({27, 5, ui->lineEdit_dinamic_ip_real->text()});
-    // m_report.data.push_back({27, 8, ui->lineEdit_dinamic_ip_recomend->text()});
-    // m_report.data.push_back({29, 5, ui->lineEdit_stroke_real->text()});
-    // m_report.data.push_back({29, 8, ui->lineEdit_stroke_recomend->text()});
-    // m_report.data.push_back({31, 5, ui->lineEdit_range_real->text()});
-    // m_report.data.push_back({31, 8, ui->lineEdit_range_recomend->text()});
-    // m_report.data.push_back({33, 5, ui->lineEdit_range_pressure->text()});
-    // m_report.data.push_back({35, 5, ui->lineEdit_friction_percent->text()});
-    // m_report.data.push_back({37, 5, ui->lineEdit_friction->text()});
-
-    // // Временные показатели
-    // m_report.data.push_back({51, 5,  ui->lineEdit_time_forward->text()});
-    // m_report.data.push_back({51, 8,  ui->lineEdit_time_backward->text()});
-
-    // // Пользователь и дата
-    // m_report.data.push_back({74, 4, ui->lineEdit_FIO->text()});
-
-    // m_report.data.push_back({65, 12, ui->lineEdit_date->text()});
-    // m_report.data.push_back({158, 12, ui->lineEdit_date->text()});
-
-    // // Материалы модели
-    // for (const auto &data : dataFromOtherFiles) {
-    //     m_report.data.push_back(data);
-    // }
-
-    // m_report.validation = {
-    //    {"=ЗИП!$A$1:$A$37", "J56:J65"},
-    //    {"=Заключение!$B$1:$B$4", "E42"},
-    //    {"=Заключение!$C$1:$C$3", "E44"},
-    //    {"=Заключение!$E$1:$E$4", "E46"},
-    //    {"=Заключение!$D$1:$D$5", "E48"},
-    //    {"=Заключение!$F$3", "E50"},
-    // };
-}
-
 void MainWindow::on_pushButton_report_generate_clicked()
 {
     std::unique_ptr<ReportBuilder> reportBuilder;
@@ -1136,9 +1063,7 @@ void MainWindow::on_pushButton_report_generate_clicked()
                                *m_registry->getOtherParameters(),
                                *m_registry->getMaterialsOfComponentParts(),
                                *m_registry->getListDetails(),
-                               m_imageChartTask, m_imageChartPressure, m_imageChartFriction, m_imageChartStep);
-
-    qDebug() << "Путь к шаблону:" << reportBuilder->templatePath();
+                               m_imageChartTask, m_imageChartPressure, m_imageChartFriction);
 
     bool saved = m_reportSaver->saveReport(report, reportBuilder->templatePath());
     ui->pushButton_report_open->setEnabled(saved);

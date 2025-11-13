@@ -8,16 +8,17 @@
 #include <QIODevice>
 #include <QCoreApplication>
 
-ValveDatabase::ValveDatabase()
+ValveDatabase::ValveDatabase(QSqlDatabase &database) :
+    m_db(database)
 {
-    m_db = QSqlDatabase::addDatabase("QSQLITE");
-    auto path = QCoreApplication::applicationDirPath() + "/database.db";
-    m_db.setDatabaseName(path);
-    qDebug() << path;
+    // m_db = QSqlDatabase::addDatabase("QSQLITE");
+    // auto path = QCoreApplication::applicationDirPath() + "/database.db";
+    // m_db.setDatabaseName(path);
+    // qDebug() << path;
 
-    if (!m_db.open()) {
-        qCritical() << "Cannot open database:" << m_db.lastError().text();
-    }
+    // if (!m_db.open()) {
+    //     qCritical() << "Cannot open database:" << m_db.lastError().text();
+    // }
 }
 
 ValveDatabase::~ValveDatabase()

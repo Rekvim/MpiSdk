@@ -15,8 +15,12 @@ int main(int argc, char *argv[])
     if (qtTranslator.load("qt_ru.qm", ":/translations"))
         a.installTranslator(&qtTranslator);
 
+    QSqlDatabase database = QSqlDatabase::addDatabase("QSQLITE");
+    auto path = ":/Database/Database.db";
+    database.setDatabaseName(path);
+
     Registry registry;
-    ValveDatabase database;
+    ValveDatabase valveDatabase(database);
 
     ObjectWindow objectWindow;
     objectWindow.LoadFromReg(&registry);
@@ -27,7 +31,7 @@ int main(int argc, char *argv[])
     if (notationWindow.exec() != QDialog::Accepted)
         return 0;
 
-    ValveWindow valveWindow(database);
+    ValveWindow valveWindow(valveDatabase);
     valveWindow.setRegistry(&registry);
     if (valveWindow.exec() != QDialog::Accepted)
         return 0;

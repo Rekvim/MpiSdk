@@ -7,10 +7,9 @@
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QRegularExpression>
-
+#include <QComboBox>
 #include "Registry.h"
-#include "ReportSaver.h"
-#include "./Src/ValveConfig/ValveDataLoader.h"
+
 #include "./Src/database/ValveDatabase.h"
 
 namespace Ui {
@@ -25,7 +24,6 @@ public:
     explicit ValveWindow(ValveDatabase& db, QWidget *parent = nullptr);
     ~ValveWindow();
     void setRegistry(Registry *registry);
-    void fillReport(ReportSaver::Report &report);
 
 private:
     void saveValveInfo();
@@ -53,8 +51,6 @@ private:
     MaterialsOfComponentParts *m_materialsOfComponentParts;
     ListDetails *m_listDetails;
 
-    QJsonObject m_valveDataObj;
-    ValveDataLoader m_loader;
     ValveDatabase& m_db;
     QMap<QString, QLineEdit*> m_partFields;
     QList<QString> m_diameter = {"50.0", "86.0", "108.0", "125.0"};
