@@ -2,11 +2,15 @@
 
 #include "ui_ObjectWindow.h"
 
-ObjectWindow::ObjectWindow(QWidget *parent)
+ObjectWindow::ObjectWindow(Registry &registry, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::ObjectWindow)
+    , m_registry(registry)
 {
     ui->setupUi(this);
+
+    loadFromRegistry();
+    syncUIFromObjectInfo();
 
     QRect scr = QApplication::primaryScreen()->geometry();
     move(scr.center() - rect().center());
@@ -20,26 +24,32 @@ ObjectWindow::ObjectWindow(QWidget *parent)
     ui->lineEdit_object->setValidator(validator);
     ui->lineEdit_manufactory->setValidator(validator);
     ui->lineEdit_department->setValidator(validator);
-
-    connect(ui->pushButton, &QPushButton::clicked, this, &ObjectWindow::ButtonClick);
 }
 
-void ObjectWindow::LoadFromReg(Registry *registry)
+void ObjectWindow::loadFromRegistry()
 {
-    m_registry = registry;
-    m_objectInfo = registry->getObjectInfo();
+    m_objectInfo = m_registry.getObjectInfo();
+}
+
+void ObjectWindow::syncUIFromObjectInfo()
+{
     ui->lineEdit_object->setText(m_objectInfo->object);
     ui->lineEdit_manufactory->setText(m_objectInfo->manufactory);
     ui->lineEdit_department->setText(m_objectInfo->department);
     ui->lineEdit_FIO->setText(m_objectInfo->FIO);
 }
 
-ObjectWindow::~ObjectWindow()
+void ObjectWindow::SaveObjectInfo()
 {
-    delete ui;
+    m_objectInfo->object = ui->lineEdit_object->text();
+    m_objectInfo->manufactory = ui->lineEdit_manufactory->text();
+    m_objectInfo->department = ui->lineEdit_department->text();
+    m_objectInfo->FIO = ui->lineEdit_FIO->text();
+
+    m_registry.saveObjectInfo();
 }
 
-void ObjectWindow::ButtonClick()
+void ObjectWindow::on_pushButton_clicked()
 {
     if (ui->lineEdit_object->text().isEmpty()) {
         QMessageBox::warning(this, "Ошибка", "Введите наименование объекта");
@@ -56,7 +66,7 @@ void ObjectWindow::ButtonClick()
         return;
     }
 
-    if (!m_registry->checkObject(ui->lineEdit_object->text())) {
+    if (!m_registry.checkObject(ui->lineEdit_object->text())) {
         QMessageBox::StandardButton button
             = QMessageBox::question(this,
                                     "Предупреждение",
@@ -73,7 +83,7 @@ void ObjectWindow::ButtonClick()
 
     m_objectInfo->object = ui->lineEdit_object->text();
 
-    if (!m_registry->checkManufactory(ui->lineEdit_manufactory->text())) {
+    if (!m_registry.checkManufactory(ui->lineEdit_manufactory->text())) {
         QMessageBox::StandardButton button
             = QMessageBox::question(this,
                                     "Предупреждение",
@@ -90,7 +100,7 @@ void ObjectWindow::ButtonClick()
 
     m_objectInfo->manufactory = ui->lineEdit_manufactory->text();
 
-    if (!m_registry->checkDepartment(ui->lineEdit_department->text())) {
+    if (!m_registry.checkDepartment(ui->lineEdit_department->text())) {
         QMessageBox::StandardButton button = QMessageBox::question(
             this,
             "Предупреждение",
@@ -105,20 +115,10 @@ void ObjectWindow::ButtonClick()
         return;
     }
 
-
-    OtherParameters *otherParameters = m_registry->getOtherParameters();
+    OtherParameters *otherParameters = m_registry.getOtherParameters();
     otherParameters->date = ui->dateEdit->date().toString("dd.MM.yyyy");
 
     SaveObjectInfo();
     accept();
 }
 
-void ObjectWindow::SaveObjectInfo()
-{
-    m_objectInfo->object = ui->lineEdit_object->text();
-    m_objectInfo->manufactory = ui->lineEdit_manufactory->text();
-    m_objectInfo->department = ui->lineEdit_department->text();
-    m_objectInfo->FIO = ui->lineEdit_FIO->text();
-
-    m_registry->saveObjectInfo();
-}

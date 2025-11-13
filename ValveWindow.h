@@ -20,12 +20,16 @@ class ValveWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit ValveWindow(ValveDatabase db, QWidget *parent = nullptr);
-    ~ValveWindow();
-    void setRegistry(Registry *registry);
+    explicit ValveWindow(Registry &registry, ValveDatabase db, QWidget *parent = nullptr);
+    ~ValveWindow() = default;
 
 private:
+    void loadFromRegistry();
+    void syncUIFromRegistry();
+
     void saveValveInfo();
+    void saveMaterialsOfComponentParts();
+    void saveListDetails();
 
     void populateModelsAndDn(int seriesId);
     void refreshCvForDn(std::optional<int> dnIdOpt);
@@ -34,7 +38,7 @@ private:
 
     void ensureSaddleManualOption();
     inline bool isManual(const QComboBox* cb) const {
-        return cb->currentText() == m_manualInput;
+        return cb->currentText() == kManualInput;
     }
 
     std::optional<int> currentSeriesId() const;
@@ -43,16 +47,17 @@ private:
     std::optional<int> currentModelId() const;
     std::optional<int> resolveSaddleMaterialIdFromManual() const;
 
-    const QString m_manualInput = "Ручной ввод";
+    const QString kManualInput = tr("Ручной ввод");
     Ui::ValveWindow *ui;
-    Registry *m_registry;
+
+    Registry &m_registry;
     ValveInfo *m_valveInfo;
     MaterialsOfComponentParts *m_materialsOfComponentParts;
     ListDetails *m_listDetails;
 
     ValveDatabase m_db;
     QMap<QString, QLineEdit*> m_partFields;
-    QList<QString> m_diameter = {"50.0", "86.0", "108.0", "125.0"};
+    QList<QString> m_diameter = {QStringLiteral("50.0"), QStringLiteral("86.0"), QStringLiteral("108.0"), QStringLiteral("125.0")};
 
 private slots:
     void onSeriesEditingFinished();
@@ -83,7 +88,7 @@ protected:
             cb->addItem(text, id);
         }
         if (includeManual) {
-            cb->addItem(m_manualInput);
+            cb->addItem(kManualInput);
         }
     }
 
@@ -96,7 +101,7 @@ protected:
             cb->addItem(QString::number(val), id);
         }
         if (includeManual) {
-            cb->addItem(m_manualInput);
+            cb->addItem(kManualInput);
         }
     }
 };

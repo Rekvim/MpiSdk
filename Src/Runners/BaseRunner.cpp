@@ -1,6 +1,5 @@
 #include "./Src/Runners/BaseRunner.h"
 #include "./Src/Tests/Test.h"
-#include "./Src/Runners/ITestRunner.h"
 #include "./Src/Mpi/Mpi.h"
 #include "./Registry.h"
 
@@ -33,8 +32,8 @@ void BaseRunner::start() {
     connect(m_worker, &Test::EndTest,
             m_thread, &QThread::quit);
 
-    connect(m_worker, SIGNAL(SetDAC(quint16,quint32,bool,bool)),
-            this, SIGNAL(requestSetDAC(quint16,quint32,bool,bool)),
+    connect(m_worker, SIGNAL(SetDAC(quint16, quint32, bool, bool)),
+            this, SIGNAL(requestSetDAC(quint16, quint32, bool, bool)),
             Qt::QueuedConnection);
 
     connect(this, SIGNAL(releaseBlock()),
@@ -56,9 +55,8 @@ void BaseRunner::start() {
 }
 
 void BaseRunner::stop() {
-    if (m_worker) {
+    if (m_worker)
         QMetaObject::invokeMethod(m_worker, "StoppingTheTest", Qt::QueuedConnection);
-    }
 }
 
 void BaseRunner::releaseBlock() {

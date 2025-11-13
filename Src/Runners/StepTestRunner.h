@@ -3,8 +3,6 @@
 
 #pragma once
 #include "BaseRunner.h"
-#include "./Src/Tests/StepTest.h"
-#include "./StepTestSettings.h"
 
 class StepTestRunner : public BaseRunner {
     Q_OBJECT

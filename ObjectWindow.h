@@ -17,19 +17,20 @@ class ObjectWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit ObjectWindow(QWidget *parent = nullptr);
-    void LoadFromReg(Registry *registry);
-    ~ObjectWindow();
+    explicit ObjectWindow(Registry &registry, QWidget *parent = nullptr);
+    ~ObjectWindow() = default;
 
 private:
-
     Ui::ObjectWindow *ui;
-    Registry *m_registry;
+    Registry& m_registry;
     ObjectInfo *m_objectInfo;
 
+    void loadFromRegistry();
+    void syncUIFromObjectInfo();
     void SaveObjectInfo();
+
 private slots:
-    void ButtonClick();
+    void on_pushButton_clicked();
 };
 
 #endif // OBJECTWINDOW_H

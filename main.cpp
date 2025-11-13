@@ -41,8 +41,7 @@ int main(int argc, char *argv[])
     Registry registry;
     ValveDatabase valveDatabase(database);
 
-    ObjectWindow objectWindow;
-    objectWindow.LoadFromReg(&registry);
+    ObjectWindow objectWindow(registry);
     if (objectWindow.exec() != QDialog::Accepted)
         return 0;
 
@@ -50,8 +49,7 @@ int main(int argc, char *argv[])
     if (notationWindow.exec() != QDialog::Accepted)
         return 0;
 
-    ValveWindow valveWindow(valveDatabase);
-    valveWindow.setRegistry(&registry);
+    ValveWindow valveWindow(registry, valveDatabase);
     if (valveWindow.exec() != QDialog::Accepted)
         return 0;
 

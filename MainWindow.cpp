@@ -20,11 +20,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     m_reportSaver = new ReportSaver(this);
 
-    ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tab_mainTests), false);
-    ui->tabWidget->setTabEnabled(1, false);
-    ui->tabWidget->setTabEnabled(2, false);
-    ui->tabWidget->setTabEnabled(3, false);
-
     m_lineEdits[TextObjects::LineEdit_linearSensor] = ui->lineEdit_linearSensor;
     m_lineEdits[TextObjects::LineEdit_linearSensorPercent] = ui->lineEdit_linearSensorPercent;
     m_lineEdits[TextObjects::LineEdit_pressureSensor_1] = ui->lineEdit_pressureSensor_1;
@@ -165,7 +160,7 @@ MainWindow::MainWindow(QWidget *parent)
     setSensorsNumber(0);
 
     ui->tableWidget_stepResults->setColumnCount(2);
-    ui->tableWidget_stepResults->setHorizontalHeaderLabels({"T86", "Перерегулирование"});
+    ui->tableWidget_stepResults->setHorizontalHeaderLabels({tr("T86"), tr("Перерегулирование")});
     ui->tableWidget_stepResults->resizeColumnsToContents();
 
     ui->label_arrowUp->setCursor(Qt::PointingHandCursor);
@@ -179,15 +174,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->label_arrowUp->installEventFilter(this);
     ui->label_arrowDown->installEventFilter(this);
-
-
-    connect(m_program, &Program::getPoints_mainTest,
-            this, &MainWindow::receivedPoints_mainTest,
-            Qt::BlockingQueuedConnection);
-
-    connect(m_program, &Program::getPoints_optionTest,
-            this, &MainWindow::receivedPoints_optionTest,
-            Qt::BlockingQueuedConnection);
 }
 
 MainWindow::~MainWindow()
@@ -311,6 +297,11 @@ void MainWindow::onTelemetryUpdated(const TelemetryStore &TS) {
     // StrokeRecord
     ui->lineEdit_strokeReal->setText(
         QString("%1").arg(TS.valveStrokeRecord.real, 0, 'f', 2));
+
+    ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tab_mainTests), true);
+    ui->tabWidget->setTabEnabled(1, true);
+    ui->tabWidget->setTabEnabled(2, true);
+    ui->tabWidget->setTabEnabled(3, true);
 }
 
 void MainWindow::on_pushButton_signal_4mA_clicked()
@@ -337,12 +328,12 @@ void MainWindow::on_pushButton_signal_20mA_clicked()
 void MainWindow::onCountdownTimeout()
 {
     quint64 elapsedMs = m_elapsedTimer.elapsed();
-    qint64 remainingMs = static_cast<qint64>(m_totalTestMs) - static_cast<qint64>(elapsedMs);
+    quint64 remainingMs = static_cast<qint64>(m_totalTestMs) - static_cast<qint64>(elapsedMs);
     if (remainingMs < 0) remainingMs = 0;
 
     auto formatHMS = [](quint64 ms) -> QString {
         const quint64 hours = ms / 3600000ULL;  ms %= 3600000ULL;
-        const quint64 mins = ms / 60000ULL;  ms %=60000ULL;
+        const quint64 mins = ms / 60000ULL;  ms %= 60000ULL;
         const quint64 secs = ms / 1000ULL;
         const quint64 msec = ms % 1000ULL;
         return QString("%1:%2:%3.%4")
@@ -353,7 +344,7 @@ void MainWindow::onCountdownTimeout()
     };
 
     ui->statusbar->showMessage(
-        QStringLiteral("Тест в процессе. До завершения теста осталось: %1 (прошло %2 из %3)")
+        tr("Тест в процессе. До завершения теста осталось: %1 (прошло %2 из %3)")
             .arg(formatHMS(static_cast<quint64>(remainingMs)))
             .arg(formatHMS(static_cast<quint64>(elapsedMs)))
             .arg(formatHMS(m_totalTestMs))
@@ -392,7 +383,7 @@ void MainWindow::onTotalTestTimeMs(quint64 totalMs)
     };
 
     ui->statusbar->showMessage(
-        QStringLiteral("Плановая длительность теста: %1").arg(formatHMS(m_totalTestMs))
+        tr("Плановая длительность теста: %1").arg(formatHMS(m_totalTestMs))
     );
 
     m_durationTimer->start();
@@ -402,7 +393,7 @@ void MainWindow::onTotalTestTimeMs(quint64 totalMs)
 void MainWindow::endTest()
 {
     m_testing = false;
-    ui->statusbar->showMessage(QStringLiteral("Тест завершен"));
+    ui->statusbar->showMessage(tr("Тест завершен"));
 
     if (m_durationTimer) {
         m_durationTimer->stop();
@@ -558,18 +549,18 @@ void MainWindow::setTextColor(TextObjects object, const QColor color)
 void MainWindow::setStepTestResults(const QVector<StepTest::TestResult> &results, quint32 T_value)
 {
     ui->tableWidget_stepResults->setHorizontalHeaderLabels(
-        {QString("T%1").arg(T_value), QStringLiteral("Перерегулирование")});
-
+        {tr("T%1").arg(T_value), tr("Перерегулирование")});
+    //  QString -> tr
     ui->tableWidget_stepResults->setRowCount(results.size());
     QStringList rowNames;
     for (int i = 0; i < results.size(); ++i) {
         QString time = results.at(i).T_value == 0
-                           ? QStringLiteral("Ошибка")
+                           ? tr("Ошибка")
             : QTime(0, 0).addMSecs(results.at(i).T_value).toString("m:ss.zzz");
         ui->tableWidget_stepResults->setItem(i, 0, new QTableWidgetItem(time));
-        QString overshoot = QString("%1%").arg(results.at(i).overshoot, 4, 'f', 2);
+        QString overshoot = tr("%1%").arg(results.at(i).overshoot, 4, 'f', 2);
         ui->tableWidget_stepResults->setItem(i, 1, new QTableWidgetItem(overshoot));
-        QString rowName = QString("%1-%2").arg(results.at(i).from).arg(results.at(i).to);
+        QString rowName = tr("%1-%2").arg(results.at(i).from).arg(results.at(i).to);
         rowNames << rowName;
     }
     ui->tableWidget_stepResults->setVerticalHeaderLabels(rowNames);
@@ -651,29 +642,6 @@ void MainWindow::enableSetTask(bool enable)
     ui->groupBox_SettingCurrentSignal->setEnabled(enable);
 }
 
-// void MainWindow::getPoints(QVector<QVector<QPointF>> &points, Charts chart)
-// {
-//     points.clear();
-//     if (chart == Charts::Task) {
-//         QPair<QList<QPointF>, QList<QPointF>> pointsLinear = m_charts[Charts::Task]->getPoints(1);
-
-//         QPair<QList<QPointF>, QList<QPointF>> pointsPressure = m_charts[Charts::Pressure]->getPoints(0);
-
-//         points.push_back({pointsLinear.first.begin(), pointsLinear.first.end()});
-//         points.push_back({pointsLinear.second.begin(), pointsLinear.second.end()});
-//         points.push_back({pointsPressure.first.begin(), pointsPressure.first.end()});
-//         points.push_back({pointsPressure.second.begin(), pointsPressure.second.end()});
-//     }
-//     if (chart == Charts::Step) {
-//         QPair<QList<QPointF>, QList<QPointF>> pointsLinear = m_charts[Charts::Step]->getPoints(1);
-//         QPair<QList<QPointF>, QList<QPointF>> pointsTask = m_charts[Charts::Step]->getPoints(0);
-
-//         points.clear();
-//         points.push_back({pointsLinear.first.begin(), pointsLinear.first.end()});
-//         points.push_back({pointsTask.first.begin(), pointsTask.first.end()});
-//     }
-// }
-
 void MainWindow::receivedPoints_mainTest(QVector<QVector<QPointF>> &points, Charts chart)
 {
     points.clear();
@@ -688,18 +656,16 @@ void MainWindow::receivedPoints_mainTest(QVector<QVector<QPointF>> &points, Char
         points.push_back({pointsPressure.second.begin(), pointsPressure.second.end()});
     }
 }
-void MainWindow::receivedPoints_optionTest(QVector<QVector<QPointF>> &points, Charts chart)
+void MainWindow::receivedPoints_stepTest(QVector<QVector<QPointF>> &points, Charts chart)
 {
     points.clear();
 
-    if (chart == Charts::Step) {
-        QPair<QList<QPointF>, QList<QPointF>> pointsLinear = m_charts[chart]->getPoints(1);
-        QPair<QList<QPointF>, QList<QPointF>> pointsTask = m_charts[chart]->getPoints(0);
+    QPair<QList<QPointF>, QList<QPointF>> pointsLinear = m_charts[chart]->getPoints(1);
+    QPair<QList<QPointF>, QList<QPointF>> pointsTask = m_charts[chart]->getPoints(0);
 
-        points.clear();
-        points.push_back({pointsLinear.first.begin(), pointsLinear.first.end()});
-        points.push_back({pointsTask.first.begin(), pointsTask.first.end()});
-    }
+    points.clear();
+    points.push_back({pointsLinear.first.begin(), pointsLinear.first.end()});
+    points.push_back({pointsTask.first.begin(), pointsTask.first.end()});
 }
 
 void MainWindow::setRegressionEnable(bool enable)
@@ -752,20 +718,20 @@ void MainWindow::question(const QString &title, const QString &text, bool &resul
 void MainWindow::getDirectory(const QString &currentPath, QString &result)
 {
     result = QFileDialog::getExistingDirectory(this,
-                                               QStringLiteral("Выберите папку для сохранения изображений"),
+                                               tr("Выберите папку для сохранения изображений"),
         currentPath);
 }
 
 void MainWindow::startTest()
 {
     m_testing = true;
-    ui->statusbar->showMessage(QStringLiteral("Тест в процессе"));
+    ui->statusbar->showMessage(tr("Тест в процессе"));
 }
 
 void MainWindow::on_pushButton_mainTest_start_clicked()
 {
     if (m_testing) {
-        if (QMessageBox::question(this, QStringLiteral("Внимание!"), QStringLiteral("Вы действительно хотите завершить тест"))
+        if (QMessageBox::question(this, tr("Внимание!"), tr("Вы действительно хотите завершить тест"))
             == QMessageBox::Yes) {
             m_userCanceled = true;
             emit stopTest();
@@ -794,8 +760,8 @@ void MainWindow::promptSaveCharts()
 
     auto answer = QMessageBox::question(
         this,
-        QStringLiteral("Сохранение результатов"),
-        QStringLiteral("Тест MainTest завершён.\nСохранитаь графики Task, Pressure и Friction?"),
+        tr("Сохранение результатов"),
+        tr("Тест MainTest завершён.\nСохранитаь графики Task, Pressure и Friction?"),
         QMessageBox::Yes | QMessageBox::No,
         QMessageBox::Yes
         );
@@ -810,7 +776,7 @@ void MainWindow::promptSaveCharts()
 void MainWindow::on_pushButton_strokeTest_start_clicked()
 {
     if (m_testing) {
-        if (QMessageBox::question(this, QStringLiteral("Внимание!"), QStringLiteral("Вы действительно хотите завершить тест"))
+        if (QMessageBox::question(this, tr("Внимание!"), tr("Вы действительно хотите завершить тест"))
             == QMessageBox::Yes) {
             emit stopTest();
         }
@@ -827,7 +793,7 @@ void MainWindow::on_pushButton_strokeTest_save_clicked()
 void MainWindow::on_pushButton_optionalTests_start_clicked()
 {
     if (m_testing) {
-        if (QMessageBox::question(this, QStringLiteral("Внимание!"), QStringLiteral("Вы действительно хотите завершить тест"))
+        if (QMessageBox::question(this, tr("Внимание!"), tr("Вы действительно хотите завершить тест"))
             == QMessageBox::Yes) {
             emit stopTest();
         }
@@ -853,83 +819,83 @@ void MainWindow::initCharts()
     bool rotate = (valveInfo->strokeMovement != 0);
 
     m_charts[Charts::Task] = ui->Chart_task;
-    m_charts[Charts::Task]->setName("Task");
+    m_charts[Charts::Task]->setName(QStringLiteral("Task"));
     m_charts[Charts::Task]->useTimeaxis(false);
-    m_charts[Charts::Task]->addAxis("%.2f bar");
+    m_charts[Charts::Task]->addAxis(QStringLiteral("%.2f bar"));
     if (!rotate)
-        m_charts[Charts::Task]->addAxis("%.2f mm");
+        m_charts[Charts::Task]->addAxis(QStringLiteral("%.2f mm"));
     else
-        m_charts[Charts::Task]->addAxis("%.2f deg");
+        m_charts[Charts::Task]->addAxis(QStringLiteral("%.2f deg"));
 
-    m_charts[Charts::Task]->addSeries(1, "Задание", QColor::fromRgb(0, 0, 0));
-    m_charts[Charts::Task]->addSeries(1, "Датчик линейных перемещений", QColor::fromRgb(255, 0, 0));
-    m_charts[Charts::Task]->addSeries(0, "Датчик давления 1", QColor::fromRgb(0, 0, 255));
-    m_charts[Charts::Task]->addSeries(0, "Датчик давления 2", QColor::fromRgb(0, 200, 0));
-    m_charts[Charts::Task]->addSeries(0, "Датчик давления 3", QColor::fromRgb(150, 0, 200));
+    m_charts[Charts::Task]->addSeries(1, tr("Задание"), QColor::fromRgb(0, 0, 0));
+    m_charts[Charts::Task]->addSeries(1, tr("Датчик линейных перемещений"), QColor::fromRgb(255, 0, 0));
+    m_charts[Charts::Task]->addSeries(0, tr("Датчик давления 1"), QColor::fromRgb(0, 0, 255));
+    m_charts[Charts::Task]->addSeries(0, tr("Датчик давления 2"), QColor::fromRgb(0, 200, 0));
+    m_charts[Charts::Task]->addSeries(0, tr("Датчик давления 3"), QColor::fromRgb(150, 0, 200));
 
 
     m_charts[Charts::Friction] = ui->Chart_friction;
-    m_charts[Charts::Friction]->setName("Friction");
-    m_charts[Charts::Friction]->addAxis("%.2f H");
-    m_charts[Charts::Friction]->addSeries(0, "Трение от перемещения", QColor::fromRgb(255, 0, 0));
-    if (!rotate) {
-        m_charts[Charts::Friction]->setLabelXformat("%.2f mm");
-    } else {
-        m_charts[Charts::Friction]->setLabelXformat("%.2f deg");
-    }
+    m_charts[Charts::Friction]->setName(QStringLiteral("Friction"));
+    m_charts[Charts::Friction]->addAxis(QStringLiteral("%.2f H"));
+    m_charts[Charts::Friction]->addSeries(0, tr("Трение от перемещения"), QColor::fromRgb(255, 0, 0));
 
+    if (!rotate) {
+        m_charts[Charts::Friction]->setLabelXformat(QStringLiteral("%.2f mm"));
+    } else {
+        m_charts[Charts::Friction]->setLabelXformat(QStringLiteral("%.2f deg"));
+    }
 
     m_charts[Charts::Pressure] = ui->Chart_pressure;
-    m_charts[Charts::Pressure]->setName("Pressure");
+    m_charts[Charts::Pressure]->setName(QStringLiteral("Pressure"));
     m_charts[Charts::Pressure]->useTimeaxis(false);
-    m_charts[Charts::Pressure]->setLabelXformat("%.2f bar");
+    m_charts[Charts::Pressure]->setLabelXformat(QStringLiteral("%.2f bar"));
     if (!rotate) {
-        m_charts[Charts::Pressure]->addAxis("%.2f mm");
+        m_charts[Charts::Pressure]->addAxis(QStringLiteral("%.2f mm"));
     } else {
-        m_charts[Charts::Pressure]->addAxis("%.2f deg");
+        m_charts[Charts::Pressure]->addAxis(QStringLiteral("%.2f deg"));
     }
-    m_charts[Charts::Pressure]->addSeries(0, "Перемещение от давления", QColor::fromRgb(255, 0, 0));
-    m_charts[Charts::Pressure]->addSeries(0, "Линейная регрессия", QColor::fromRgb(0, 0, 0));
+    m_charts[Charts::Pressure]->addSeries(0, tr("Перемещение от давления"), QColor::fromRgb(255, 0, 0));
+    m_charts[Charts::Pressure]->addSeries(0, tr("Линейная регрессия"), QColor::fromRgb(0, 0, 0));
     m_charts[Charts::Pressure]->visible(1, false);
 
 
     m_charts[Charts::Resolution] = ui->Chart_resolution;
-    m_charts[Charts::Resolution]->setName("Resolution");
+    m_charts[Charts::Resolution]->setName(QStringLiteral("Resolution"));
     m_charts[Charts::Resolution]->useTimeaxis(true);
-    m_charts[Charts::Resolution]->addAxis("%.2f%%");
-    m_charts[Charts::Resolution]->addSeries(0, "Задание", QColor::fromRgb(0, 0, 0));
-    m_charts[Charts::Resolution]->addSeries(0, "Датчик линейных перемещений", QColor::fromRgb(255, 0, 0));
+    m_charts[Charts::Resolution]->addAxis(QStringLiteral("%.2f%%"));
+    m_charts[Charts::Resolution]->addSeries(0, tr("Задание"), QColor::fromRgb(0, 0, 0));
+    m_charts[Charts::Resolution]->addSeries(0, tr("Датчик линейных перемещений"), QColor::fromRgb(255, 0, 0));
 
 
     m_charts[Charts::Response] = ui->Chart_response;
-    m_charts[Charts::Response]->setName("Response");
+    m_charts[Charts::Response]->setName(QStringLiteral("Response"));
     m_charts[Charts::Response]->useTimeaxis(true);
-    m_charts[Charts::Response]->addAxis("%.2f%%");
-    m_charts[Charts::Response]->addSeries(0, "Задание", QColor::fromRgb(0, 0, 0));
-    m_charts[Charts::Response]->addSeries(0, "Датчик линейных перемещений", QColor::fromRgb(255, 0, 0));
+    m_charts[Charts::Response]->addAxis(QStringLiteral("%.2f%%"));
+    m_charts[Charts::Response]->addSeries(0, tr("Задание"), QColor::fromRgb(0, 0, 0));
+    m_charts[Charts::Response]->addSeries(0, tr("Датчик линейных перемещений"), QColor::fromRgb(255, 0, 0));
 
 
     m_charts[Charts::Stroke] = ui->Chart_stroke;
-    m_charts[Charts::Stroke]->setName("Stroke");
+    m_charts[Charts::Stroke]->setName(QStringLiteral("Stroke"));
     m_charts[Charts::Stroke]->useTimeaxis(true);
-    m_charts[Charts::Stroke]->addAxis("%.2f%%");
-    m_charts[Charts::Stroke]->addSeries(0, "Задание", QColor::fromRgb(0, 0, 0));
-    m_charts[Charts::Stroke]->addSeries(0, "Датчик линейных перемещений", QColor::fromRgb(255, 0, 0));
+    m_charts[Charts::Stroke]->addAxis(QStringLiteral("%.2f%%"));
+    m_charts[Charts::Stroke]->addSeries(0, tr("Задание"), QColor::fromRgb(0, 0, 0));
+    m_charts[Charts::Stroke]->addSeries(0, tr("Датчик линейных перемещений"), QColor::fromRgb(255, 0, 0));
 
 
     m_charts[Charts::Step] = ui->Chart_step;
-    m_charts[Charts::Step]->setName("Step");
+    m_charts[Charts::Step]->setName(QStringLiteral("Step"));
     m_charts[Charts::Step]->useTimeaxis(true);
-    m_charts[Charts::Step]->addAxis("%.2f%%");
-    m_charts[Charts::Step]->addSeries(0, "Задание", QColor::fromRgb(0, 0, 0));
-    m_charts[Charts::Step]->addSeries(0, "Датчик линейных перемещений", QColor::fromRgb(255, 0, 0));
+    m_charts[Charts::Step]->addAxis(QStringLiteral("%.2f%%"));
+    m_charts[Charts::Step]->addSeries(0, tr("Задание"), QColor::fromRgb(0, 0, 0));
+    m_charts[Charts::Step]->addSeries(0, tr("Датчик линейных перемещений"), QColor::fromRgb(255, 0, 0));
 
 
     m_charts[Charts::Trend] = ui->Chart_trend;
     m_charts[Charts::Trend]->useTimeaxis(true);
-    m_charts[Charts::Trend]->addAxis("%.2f%%");
-    m_charts[Charts::Trend]->addSeries(0, "Задание", QColor::fromRgb(0, 0, 0));
-    m_charts[Charts::Trend]->addSeries(0, "Датчик линейных перемещений", QColor::fromRgb(255, 0, 0));
+    m_charts[Charts::Trend]->addAxis(QStringLiteral("%.2f%%"));
+    m_charts[Charts::Trend]->addSeries(0, tr("Задание"), QColor::fromRgb(0, 0, 0));
+    m_charts[Charts::Trend]->addSeries(0, tr("Датчик линейных перемещений"), QColor::fromRgb(255, 0, 0));
     m_charts[Charts::Trend]->setMaxRange(60000);
 
     connect(m_program, &Program::addPoints,
@@ -978,8 +944,8 @@ void MainWindow::initCharts()
             this, &MainWindow::receivedPoints_mainTest,
             Qt::BlockingQueuedConnection);
 
-    connect(m_program, &Program::getPoints_optionTest,
-            this, &MainWindow::receivedPoints_optionTest,
+    connect(m_program, &Program::getPoints_stepTest,
+            this, &MainWindow::receivedPoints_stepTest,
             Qt::BlockingQueuedConnection);
 }
 
@@ -1030,9 +996,9 @@ void MainWindow::setReport(const ReportSaver::Report &report)
 void MainWindow::getImage(QLabel *label, QImage *image)
 {
     QString imgPath = QFileDialog::getOpenFileName(this,
-                                                   QStringLiteral("Выберите файл"),
+                                                   tr("Выберите файл"),
                                                     m_reportSaver->directory().absolutePath(),
-                                                   QStringLiteral("Изображения (*.jpg *.png *.bmp)"));
+                                                   tr("Изображения (*.jpg *.png *.bmp)"));
 
     if (!imgPath.isEmpty()) {
         QImage img(imgPath);
@@ -1078,5 +1044,5 @@ void MainWindow::on_pushButton_report_generate_clicked()
 void MainWindow::on_pushButton_report_open_clicked()
 {
     QDesktopServices::openUrl(
-        QUrl::fromLocalFile(m_reportSaver->directory().filePath("report.xlsx")));
+        QUrl::fromLocalFile(m_reportSaver->directory().filePath(QStringLiteral("report.xlsx"))));
 }

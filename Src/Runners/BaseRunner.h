@@ -24,13 +24,13 @@ public:
     ~BaseRunner() override;
 
 public slots:
-    void start() final;   // вызывает buildConfig(), заводит поток, вешает общие connect’ы
+    void start() final; // вызывает buildConfig(), заводит поток, вешает общие connect’ы
     void stop() override; // дергает worker->StoppingTheTest()
     void releaseBlock() final override;
 
 protected:
-    virtual RunnerConfig buildConfig() = 0;          // собрать worker + задать totalMs/график
-    virtual void wireSpecificSignals(Test& t) {}     // доцепить спец. сигналы текущего теста
+    virtual RunnerConfig buildConfig() = 0; // собрать worker + задать totalMs/график
+    virtual void wireSpecificSignals(Test& t) {} // доцепить спец. сигналы текущего теста
 
     Mpi& m_mpi;
     Registry& m_reg;

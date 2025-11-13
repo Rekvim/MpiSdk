@@ -97,10 +97,8 @@ private slots:
     void dublSeries();
     void enableSetTask(bool enable);
 
-    // void getPoints(QVector<QVector<QPointF>> &points, Charts chart);
     void receivedPoints_mainTest(QVector<QVector<QPointF>> &points, Charts chart);
-    void receivedPoints_optionTest(QVector<QVector<QPointF>> &points, Charts chart);
-    void receivedPoints_stepTest(QVector<QVector<QPointF>> &points);
+    void receivedPoints_stepTest(QVector<QVector<QPointF>> &points, Charts chart);
 
     void question(const QString &title, const QString &text, bool &result);
 

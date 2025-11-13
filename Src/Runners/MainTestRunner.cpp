@@ -1,4 +1,4 @@
-#include "MainTestRunner.h"
+#include "./Src/Runners/MainTestRunner.h"
 #include "./Src/Tests/MainTest.h"
 #include "./MainTestSettings.h"
 #include "./Program.h"

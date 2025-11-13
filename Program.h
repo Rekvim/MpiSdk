@@ -21,43 +21,13 @@
 #include "./Src/Tests/MainTest.h"
 
 enum class TextObjects {
+
     LineEdit_linearSensor,
     LineEdit_linearSensorPercent,
     LineEdit_pressureSensor_1,
     LineEdit_pressureSensor_2,
     LineEdit_pressureSensor_3,
-
-    Label_deviceStatusValue,
-    Label_deviceInitValue,
-    Label_connectedSensorsNumber,
-    Label_startingPositionValue,
-    Label_finalPositionValue,
-
-    Label_pressureDifferenceValue,
-    Label_frictionForceValue,
-    Label_frictionPercentValue,
-
-    Label_dynamicErrorMean,
-    Label_dynamicErrorMeanPercent,
-
-    Label_dynamicErrorMax,
-    Label_dynamicErrorMaxPercent,
-
-    Label_valveStroke_range,
-    Label_lowLimitValue,
-    Label_highLimitValue,
-
-    Label_forward,
-    Label_backward,
-
-    LineEdit_dinamic_error,
-    LineEdit_stroke,
-    LineEdit_range,
-    LineEdit_friction,
-    LineEdit_friction_percent,
-    LineEdit_forward,
-    LineEdit_backward,
-    LineEdit_range_pressure
+    LineEdit_feedback_4_20mA,
 };
 
 enum class Charts {
@@ -130,7 +100,6 @@ public slots:
     void addRegression(const QVector<QPointF> &points);
     void addFriction(const QVector<QPointF> &points);
 
-
     void endTest();
 
     void setDac_real(qreal value);
@@ -194,7 +163,7 @@ private:
     void recordStrokeRange(bool normalClosed);
     void finalizeInitialization();
 
-
+    // Runner
     std::unique_ptr<ITestRunner> m_activeRunner;
     template<typename RunnerT>
     void startRunner(std::unique_ptr<RunnerT> r) {
@@ -202,12 +171,25 @@ private:
         connect(r.get(), &ITestRunner::requestClearChart, this, [this](int chart){
             emit clearPoints(static_cast<Charts>(chart));
         });
-        connect(r.get(), &ITestRunner::requestSetDac, this, &Program::setDac);
-        connect(this, &Program::releaseBlock, r.get(), &ITestRunner::releaseBlock);
-        connect(r.get(), &ITestRunner::totalTestTimeMs, this, &Program::totalTestTimeMs);
-        connect(r.get(), &ITestRunner::endTest, this, &Program::endTest);
-        connect(this, &Program::stopTheTest, r.get(), &ITestRunner::stop);
-        connect(r.get(), &ITestRunner::endTest, this, [this]{ disposeActiveRunnerAsync(); });
+
+        connect(r.get(), &ITestRunner::requestSetDac,
+                this, &Program::setDac);
+
+        connect(this, &Program::releaseBlock,
+                r.get(), &ITestRunner::releaseBlock);
+
+        connect(r.get(), &ITestRunner::totalTestTimeMs,
+                this, &Program::totalTestTimeMs);
+
+        connect(r.get(), &ITestRunner::endTest,
+                this, &Program::endTest);
+
+        connect(this, &Program::stopTheTest,
+                r.get(), &ITestRunner::stop);
+
+        connect(r.get(), &ITestRunner::endTest,
+                this, [this]{ disposeActiveRunnerAsync(); });
+
         emit setButtonInitEnabled(false);
         m_testing = true;
         emit enableSetTask(false);
@@ -222,11 +204,9 @@ private:
 private slots:
     void updateSensors();
 
-
     void forwardGetParameters_mainTest(MainTestSettings::TestParameters &p) { emit getParameters_mainTest(p); }
     void forwardGetParameters_responseTest(OtherTestSettings::TestParameters &p) { emit getParameters_responseTest(p); }
     void forwardGetParameters_resolutionTest(OtherTestSettings::TestParameters &p) { emit getParameters_resolutionTest(p); }
-
 
     void setDac(quint16 dac,
                 quint32 sleepMs = 0,
