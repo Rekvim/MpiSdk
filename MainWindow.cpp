@@ -31,40 +31,6 @@ MainWindow::MainWindow(QWidget *parent)
     m_lineEdits[TextObjects::LineEdit_pressureSensor_2] = ui->lineEdit_pressureSensor_2;
     m_lineEdits[TextObjects::LineEdit_pressureSensor_3] = ui->lineEdit_pressureSensor_3;
 
-    // m_labels[TextObjects::Label_deviceStatusValue] = ui->label_deviceStatusValue;
-    // m_labels[TextObjects::Label_deviceInitValue] = ui->label_deviceInitValue;
-    // m_labels[TextObjects::Label_connectedSensorsNumber] = ui->label_connectedSensorsNumber;
-    // m_labels[TextObjects::Label_startingPositionValue] = ui->label_startingPositionValue;
-    // m_labels[TextObjects::Label_finalPositionValue] = ui->label_finalPositionValue;
-    // m_labels[TextObjects::Label_pressureDifferenceValue] = ui->label_pressureDifferenceValue;
-    // m_labels[TextObjects::Label_frictionForceValue] = ui->label_frictionForceValue;
-    // m_labels[TextObjects::Label_frictionPercentValue] = ui->label_frictionPercentValue;
-    // m_labels[TextObjects::Label_dynamicErrorMean] = ui->label_dynamicErrorMean;
-    // m_labels[TextObjects::Label_dynamicErrorMeanPercent] = ui->label_dynamicErrorMeanPercent;
-    // m_labels[TextObjects::Label_dynamicErrorMax] = ui->label_dynamicErrorMax;
-    // m_labels[TextObjects::Label_dynamicErrorMaxPercent] = ui->label_dynamicErrorMaxPercent;
-    // m_labels[TextObjects::Label_lowLimitValue] = ui->label_lowLimitValue;
-    // m_labels[TextObjects::Label_highLimitValue] = ui->label_highLimitValue;
-    // m_labels[TextObjects::Label_forward] = ui->label_forward;
-    // m_labels[TextObjects::Label_backward] = ui->label_backward;
-
-    // m_lineEdits[TextObjects::LineEdit_linearSensor] = ui->lineEdit_linearSensor;
-    // m_lineEdits[TextObjects::LineEdit_linearSensorPercent] = ui->lineEdit_linearSensorPercent;
-    // m_lineEdits[TextObjects::LineEdit_pressureSensor_1] = ui->lineEdit_pressureSensor_1;
-    // m_lineEdits[TextObjects::LineEdit_pressureSensor_2] = ui->lineEdit_pressureSensor_2;
-    // m_lineEdits[TextObjects::LineEdit_pressureSensor_3] = ui->lineEdit_pressureSensor_3;
-    // m_lineEdits[TextObjects::LineEdit_dinamic_error] = ui->lineEdit_dinamic_real;
-
-    // m_lineEdits[TextObjects::LineEdit_stroke] = ui->lineEdit_stroke_real;
-    // m_labels[TextObjects::Label_valveStroke_range] = ui->label_valveStroke_range;
-
-    // m_lineEdits[TextObjects::LineEdit_range] = ui->lineEdit_range_real;
-    // m_lineEdits[TextObjects::LineEdit_friction] = ui->lineEdit_friction;
-    // m_lineEdits[TextObjects::LineEdit_friction_percent] = ui->lineEdit_friction_percent;
-    // m_lineEdits[TextObjects::LineEdit_forward] = ui->lineEdit_time_forward;
-    // m_lineEdits[TextObjects::LineEdit_backward] = ui->lineEdit_time_backward;
-    // m_lineEdits[TextObjects::LineEdit_range_pressure] = ui->lineEdit_range_pressure;
-
     m_program = new Program;
     m_programThread = new QThread(this);
     m_program->moveToThread(m_programThread);
@@ -213,6 +179,15 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->label_arrowUp->installEventFilter(this);
     ui->label_arrowDown->installEventFilter(this);
+
+
+    connect(m_program, &Program::getPoints_mainTest,
+            this, &MainWindow::receivedPoints_mainTest,
+            Qt::BlockingQueuedConnection);
+
+    connect(m_program, &Program::getPoints_optionTest,
+            this, &MainWindow::receivedPoints_optionTest,
+            Qt::BlockingQueuedConnection);
 }
 
 MainWindow::~MainWindow()
@@ -676,11 +651,34 @@ void MainWindow::enableSetTask(bool enable)
     ui->groupBox_SettingCurrentSignal->setEnabled(enable);
 }
 
-void MainWindow::getPoints(QVector<QVector<QPointF>> &points, Charts chart)
+// void MainWindow::getPoints(QVector<QVector<QPointF>> &points, Charts chart)
+// {
+//     points.clear();
+//     if (chart == Charts::Task) {
+//         QPair<QList<QPointF>, QList<QPointF>> pointsLinear = m_charts[Charts::Task]->getPoints(1);
+
+//         QPair<QList<QPointF>, QList<QPointF>> pointsPressure = m_charts[Charts::Pressure]->getPoints(0);
+
+//         points.push_back({pointsLinear.first.begin(), pointsLinear.first.end()});
+//         points.push_back({pointsLinear.second.begin(), pointsLinear.second.end()});
+//         points.push_back({pointsPressure.first.begin(), pointsPressure.first.end()});
+//         points.push_back({pointsPressure.second.begin(), pointsPressure.second.end()});
+//     }
+//     if (chart == Charts::Step) {
+//         QPair<QList<QPointF>, QList<QPointF>> pointsLinear = m_charts[Charts::Step]->getPoints(1);
+//         QPair<QList<QPointF>, QList<QPointF>> pointsTask = m_charts[Charts::Step]->getPoints(0);
+
+//         points.clear();
+//         points.push_back({pointsLinear.first.begin(), pointsLinear.first.end()});
+//         points.push_back({pointsTask.first.begin(), pointsTask.first.end()});
+//     }
+// }
+
+void MainWindow::receivedPoints_mainTest(QVector<QVector<QPointF>> &points, Charts chart)
 {
     points.clear();
     if (chart == Charts::Task) {
-        QPair<QList<QPointF>, QList<QPointF>> pointsLinear = m_charts[Charts::Task]->getPoints(1);
+        QPair<QList<QPointF>, QList<QPointF>> pointsLinear = m_charts[chart]->getPoints(1);
 
         QPair<QList<QPointF>, QList<QPointF>> pointsPressure = m_charts[Charts::Pressure]->getPoints(0);
 
@@ -689,9 +687,14 @@ void MainWindow::getPoints(QVector<QVector<QPointF>> &points, Charts chart)
         points.push_back({pointsPressure.first.begin(), pointsPressure.first.end()});
         points.push_back({pointsPressure.second.begin(), pointsPressure.second.end()});
     }
+}
+void MainWindow::receivedPoints_optionTest(QVector<QVector<QPointF>> &points, Charts chart)
+{
+    points.clear();
+
     if (chart == Charts::Step) {
-        QPair<QList<QPointF>, QList<QPointF>> pointsLinear = m_charts[Charts::Step]->getPoints(1);
-        QPair<QList<QPointF>, QList<QPointF>> pointsTask = m_charts[Charts::Step]->getPoints(0);
+        QPair<QList<QPointF>, QList<QPointF>> pointsLinear = m_charts[chart]->getPoints(1);
+        QPair<QList<QPointF>, QList<QPointF>> pointsTask = m_charts[chart]->getPoints(0);
 
         points.clear();
         points.push_back({pointsLinear.first.begin(), pointsLinear.first.end()});
@@ -971,10 +974,13 @@ void MainWindow::initCharts()
         m_charts[Charts::Pressure]->visible(1, k != 0);
     });
 
-    connect( m_program, &Program::getPoints,
-        this, &MainWindow::getPoints,
-        Qt::BlockingQueuedConnection
-    );
+    connect(m_program, &Program::getPoints_mainTest,
+            this, &MainWindow::receivedPoints_mainTest,
+            Qt::BlockingQueuedConnection);
+
+    connect(m_program, &Program::getPoints_optionTest,
+            this, &MainWindow::receivedPoints_optionTest,
+            Qt::BlockingQueuedConnection);
 }
 
 void MainWindow::saveChart(Charts chart)

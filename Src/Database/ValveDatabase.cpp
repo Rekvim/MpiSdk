@@ -1,33 +1,9 @@
 #include "ValveDatabase.h"
 #include <QSqlError>
 #include <QSqlQuery>
-#include <QVariant>
-#include <QDebug>
-#include <QStandardPaths>
-#include <QFile>
-#include <QIODevice>
-#include <QCoreApplication>
 
-ValveDatabase::ValveDatabase(QSqlDatabase &database) :
-    m_db(database)
-{
-    // m_db = QSqlDatabase::addDatabase("QSQLITE");
-    // auto path = QCoreApplication::applicationDirPath() + "/database.db";
-    // m_db.setDatabaseName(path);
-    // qDebug() << path;
-
-    // if (!m_db.open()) {
-    //     qCritical() << "Cannot open database:" << m_db.lastError().text();
-    // }
-}
-
-ValveDatabase::~ValveDatabase()
-{
-    if (m_db.isOpen())
-        m_db.close();
-}
-
-QVector<QPair<int, QString>> ValveDatabase::getManufacturers()
+QVector<QPair<int, QString>>
+ValveDatabase::getManufacturers() const
 {
     QVector<QPair<int, QString>> out;
     QSqlQuery q("SELECT id, name FROM manufacturers");
@@ -37,7 +13,8 @@ QVector<QPair<int, QString>> ValveDatabase::getManufacturers()
     return out;
 }
 
-QVector<QPair<int, QString>> ValveDatabase::getValveSeries(int manufacturerId)
+QVector<QPair<int, QString>>
+ValveDatabase::getValveSeries(int manufacturerId) const
 {
     QVector<QPair<int, QString>> out;
     QSqlQuery q;
@@ -53,7 +30,8 @@ QVector<QPair<int, QString>> ValveDatabase::getValveSeries(int manufacturerId)
     return out;
 }
 
-int ValveDatabase::getSeriesIdByName(int manufacturerId, const QString &seriesName)
+int
+ValveDatabase::getSeriesIdByName(int manufacturerId, const QString &seriesName) const
 {
     QSqlQuery q(m_db);
     q.prepare(R"sql(
@@ -73,7 +51,8 @@ int ValveDatabase::getSeriesIdByName(int manufacturerId, const QString &seriesNa
     return -1;
 }
 
-QVector<QPair<int, QString>> ValveDatabase::getAllSeries()
+QVector<QPair<int, QString>>
+ValveDatabase::getAllSeries() const
 {
     QVector<QPair<int, QString>> out;
     QSqlQuery q("SELECT id, name FROM valve_series");
@@ -87,7 +66,8 @@ QVector<QPair<int, QString>> ValveDatabase::getAllSeries()
     return out;
 }
 
-QVector<QPair<int, QString>> ValveDatabase::getValveModels(int seriesId)
+QVector<QPair<int, QString>>
+ValveDatabase::getValveModels(int seriesId) const
 {
     QVector<QPair<int, QString>> out;
     QSqlQuery q;
@@ -103,7 +83,8 @@ QVector<QPair<int, QString>> ValveDatabase::getValveModels(int seriesId)
     return out;
 }
 
-QVector<QPair<int, QString>> ValveDatabase::getSaddleMaterialsForModel(int valveModelId)
+QVector<QPair<int, QString>>
+ValveDatabase::getSaddleMaterialsForModel(int valveModelId) const
 {
     QVector<QPair<int, QString>> out;
     QSqlQuery q(m_db);
@@ -126,7 +107,8 @@ QVector<QPair<int, QString>> ValveDatabase::getSaddleMaterialsForModel(int valve
     return out;
 }
 
-int ValveDatabase::getValveModelIdByName(int seriesId, const QString &modelName)
+int
+ValveDatabase::getValveModelIdByName(int seriesId, const QString &modelName) const
 {
     QSqlQuery q(m_db);
     q.prepare(R"sql(
@@ -146,7 +128,8 @@ int ValveDatabase::getValveModelIdByName(int seriesId, const QString &modelName)
     return -1;
 }
 
-QVector<QPair<int, qreal>> ValveDatabase::getDynamicErrors(int valveModelId)
+QVector<QPair<int, qreal>>
+ValveDatabase::getDynamicErrors(int valveModelId) const
 {
     QVector<QPair<int, qreal>> out;
     QSqlQuery q(m_db);
@@ -163,7 +146,8 @@ QVector<QPair<int, qreal>> ValveDatabase::getDynamicErrors(int valveModelId)
     }
     return out;
 }
-QVector<QPair<int, int>> ValveDatabase::getValveDnSizes(int seriesId)
+QVector<QPair<int, int>>
+ValveDatabase::getValveDnSizes(int seriesId) const
 {
     QVector<QPair<int, int>> out;
     QSqlQuery q;
@@ -179,7 +163,8 @@ QVector<QPair<int, int>> ValveDatabase::getValveDnSizes(int seriesId)
     return out;
 }
 
-QVector<QPair<int, double>> ValveDatabase::getCvValues(int valveDnSizeId)
+QVector<QPair<int, double>>
+ValveDatabase::getCvValues(int valveDnSizeId) const
 {
     QVector<QPair<int, double>> out;
     QSqlQuery q;
@@ -195,7 +180,8 @@ QVector<QPair<int, double>> ValveDatabase::getCvValues(int valveDnSizeId)
     return out;
 }
 
-QVector<QPair<int, QString>> ValveDatabase::getDriveModel()
+QVector<QPair<int, QString>>
+ValveDatabase::getDriveModel() const
 {
     QVector<QPair<int, QString>> out;
     QSqlQuery q("SELECT id, name FROM drive_model");
@@ -205,7 +191,8 @@ QVector<QPair<int, QString>> ValveDatabase::getDriveModel()
     return out;
 }
 
-QVector<QPair<int, QString>> ValveDatabase::getSaddleMaterials()
+QVector<QPair<int, QString>>
+ValveDatabase::getSaddleMaterials() const
 {
     QVector<QPair<int, QString>> out;
     QSqlQuery q("SELECT id, name FROM saddle_materials");
@@ -215,7 +202,8 @@ QVector<QPair<int, QString>> ValveDatabase::getSaddleMaterials()
     return out;
 }
 
-QVector<QPair<int, QString>> ValveDatabase::getBodyMaterials()
+QVector<QPair<int, QString>>
+ValveDatabase::getBodyMaterials() const
 {
     QVector<QPair<int, QString>> out;
     QSqlQuery q("SELECT id, name FROM body_materials");
@@ -225,9 +213,8 @@ QVector<QPair<int, QString>> ValveDatabase::getBodyMaterials()
     return out;
 }
 
-QMap<QString, QString> ValveDatabase::getValveComponents(int valveDnSizeId,
-                                                         int cvValueId,
-                                                         int saddleMaterialId)
+QMap<QString, QString>
+ValveDatabase::getValveComponents(int valveDnSizeId, int cvValueId, int saddleMaterialId) const
 {
     QMap<QString, QString> m;
     QSqlQuery q;

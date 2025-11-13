@@ -25,6 +25,13 @@ SOURCES += \
     Sensor.cpp \
     Src/Report/ReportBuilder.cpp \
     Src/Report/ReportSaver.cpp \
+    Src/Runners/BaseRunner.cpp \
+    Src/Runners/MainTestRunner.cpp \
+    Src/Runners/OptionResolutionRunner.cpp \
+    Src/Runners/OptionResponseRunner.cpp \
+    Src/Runners/RunnerFactory.cpp \
+    Src/Runners/StepTestRunner.cpp \
+    Src/Runners/StrokeTestRunner.cpp \
     StepTestSettings.cpp \
     ValveWindow.cpp \
     main.cpp \
@@ -43,8 +50,7 @@ SOURCES += \
     Src/Uart/UartMessage.cpp \
     Src/Uart/UartReader.cpp \
     Src/ValidatorFactory/ValidatorFactory.cpp \
-    Src/ValveConfig/ValveDataLoader.cpp \
-    Src/database/ValveDatabase.cpp
+    Src/Database/ValveDatabase.cpp
 
 HEADERS += \
     MainTestSettings.h \
@@ -57,6 +63,14 @@ HEADERS += \
     Sensor.h \
     Src/Report/ReportBuilder.h \
     Src/Report/ReportSaver.h \
+    Src/Runners/BaseRunner.h \
+    Src/Runners/ITestRunner.h \
+    Src/Runners/MainTestRunner.h \
+    Src/Runners/OptionResolutionRunner.h \
+    Src/Runners/OptionResponseRunner.h \
+    Src/Runners/RunnerFactory.h \
+    Src/Runners/StepTestRunner.h \
+    Src/Runners/StrokeTestRunner.h \
     StepTestSettings.h \
     ValveWindow.h \
     Src/CustomChart/MyChart.h \
@@ -75,8 +89,7 @@ HEADERS += \
     Src/Uart/UartReader.h \
     Src/ValidatorFactory/RegexPatterns.h \
     Src/ValidatorFactory/ValidatorFactory.h \
-    Src/ValveConfig/ValveDataLoader.h \
-    Src/database/ValveDatabase.h
+    Src/Database/ValveDatabase.h
 
 FORMS += \
     MainTestSettings.ui \

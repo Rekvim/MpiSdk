@@ -9,8 +9,7 @@
 #include <QRegularExpression>
 #include <QComboBox>
 #include "Registry.h"
-
-#include "./Src/database/ValveDatabase.h"
+#include "./Src/Database/ValveDatabase.h"
 
 namespace Ui {
 class ValveWindow;
@@ -21,7 +20,7 @@ class ValveWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit ValveWindow(ValveDatabase& db, QWidget *parent = nullptr);
+    explicit ValveWindow(ValveDatabase db, QWidget *parent = nullptr);
     ~ValveWindow();
     void setRegistry(Registry *registry);
 
@@ -51,7 +50,7 @@ private:
     MaterialsOfComponentParts *m_materialsOfComponentParts;
     ListDetails *m_listDetails;
 
-    ValveDatabase& m_db;
+    ValveDatabase m_db;
     QMap<QString, QLineEdit*> m_partFields;
     QList<QString> m_diameter = {"50.0", "86.0", "108.0", "125.0"};
 

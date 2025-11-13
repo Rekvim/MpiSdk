@@ -37,7 +37,6 @@ void NotationWindow::loadFromRegistry()
 
 void NotationWindow::persist()
 {
-    // Редактируем тот же объект, что и в Registry, так что просто сохраняем
     m_registry.saveSensors();
 }
 
@@ -51,7 +50,6 @@ void NotationWindow::onCheckBoxChanged()
             field = cb->text();
     };
 
-    // dereference pointer
     apply(m_sensors->Pressure1, ui->checkBox_pressureSensor_1);
     apply(m_sensors->Pressure2, ui->checkBox_pressureSensor_2);
     apply(m_sensors->Pressure3, ui->checkBox_pressureSensor_3);

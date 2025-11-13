@@ -3,7 +3,7 @@
 
 // #include "./Src/ValidatorFactory/ValidatorFactory.h"
 
-ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
+ValveWindow::ValveWindow(ValveDatabase db, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::ValveWindow)
     , m_db(db)
@@ -153,16 +153,6 @@ ValveWindow::ValveWindow(ValveDatabase& db, QWidget *parent)
     if (ui->comboBox_DN->count() > 0)
         onDNChanged(0);
 
-    // connect(ui->comboBox_manufacturer, QOverload<int>::of(&QComboBox::currentIndexChanged),
-    //         this, [this](int){
-    //             ui->lineEdit_valveSeries->clear();
-    //             ui->comboBox_DN->clear();
-    //             ui->comboBox_CV->clear();
-    //             ui->lineEdit_valveModel->clear();
-    //             //ui->comboBox_dinamicError->clear();
-    //             ui->comboBox_materialSaddle->clear();
-    //         });
-
     ui->lineEdit_driveModel->setEnabled(false);
 
     connect(ui->comboBox_driveModel,
@@ -237,10 +227,9 @@ void ValveWindow::setDnCvManualMode(bool manual)
     ui->comboBox_CV->clear();
 
     if (manual) {
-        // Только "Ручной ввод" в обоих комбобоксах
         ui->comboBox_DN->addItem(m_manualInput);
-        ui->comboBox_CV->addItem(m_manualInput);
         ui->comboBox_DN->setCurrentIndex(0);
+        ui->comboBox_CV->addItem(m_manualInput);
         ui->comboBox_CV->setCurrentIndex(0);
 
         ui->lineEdit_DN->setEnabled(true);
@@ -272,7 +261,6 @@ void ValveWindow::setSaddleManualMode(bool manual)
 
         for (auto* le : m_partFields) le->clear();
     } else {
-        // обычный режим — просто гарантируем наличие пункта
         ensureSaddleManualOption();
         ui->lineEdit_materialSaddle->clear();
         ui->lineEdit_materialSaddle->setEnabled(false);
@@ -629,11 +617,6 @@ void ValveWindow::saveValveInfo()
     if (ui->comboBox_positionNumber->currentText() == m_manualInput)
         m_valveInfo = m_registry->getValveInfo(ui->lineEdit_positionNumber->text());
 
-    if (pos.isEmpty()) {
-        QMessageBox::warning(this, "Ошибка", "Введите номер позиции.");
-        return;
-    }
-
     if (ui->comboBox_manufacturer->currentText() == m_manualInput)
         m_valveInfo->manufacturer = ui->lineEdit_manufacturer->text();
     else
@@ -652,29 +635,20 @@ void ValveWindow::saveValveInfo()
     m_valveInfo->serialNumber = ui->lineEdit_serialNumber->text();
     m_valveInfo->valveStroke = ui->lineEdit_strokValve->text();
     m_valveInfo->positionerModel = ui->lineEdit_positionerModel->text();
-
     m_valveInfo->range = ui->lineEdit_driveRange->text();
-
     m_valveInfo->valveSeries = ui->lineEdit_valveSeries->text();
-
     m_valveInfo->valveModel = ui->lineEdit_valveModel->text();
-
     m_valveInfo->diameter = ui->lineEdit_driveDiameter->text().toDouble();
     m_valveInfo->pulley = ui->lineEdit_diameterPulley->text().toDouble();
-
     m_valveInfo->DN = ui->comboBox_DN->currentText().toInt();
     m_valveInfo->CV = ui->comboBox_CV->currentText().toInt();
     m_valveInfo->PN = ui->lineEdit_PN->text().toInt();
-
     m_valveInfo->safePosition = ui->comboBox_safePosition->currentIndex();
     m_valveInfo->driveType = ui->comboBox_driveType->currentIndex();
     m_valveInfo->strokeMovement = ui->comboBox_strokeMovement->currentIndex();
-    // m_valveInfo->dinamicError = ui->comboBox_dinamicError->currentIndex();
     m_valveInfo->dinamicError = ui->comboBox_dinamicError->currentText().toDouble();
-
     m_valveInfo->toolNumber = ui->comboBox_toolNumber->currentIndex();
 
-    // m_materialsOfComponentParts->saddle = ui->comboBox_materialSaddle->currentText();
     m_materialsOfComponentParts->corpus = ui->lineEdit_materialCorpus->text();
     m_materialsOfComponentParts->cap = ui->lineEdit_materialCap->text();
     m_materialsOfComponentParts->ball = ui->lineEdit_materialBall->text();

@@ -12,6 +12,7 @@
 #include "OtherTestSettings.h"
 #include "Registry.h"
 #include "StepTestSettings.h"
+#include "./Src/Runners/ITestRunner.h"
 
 #include "./Src/Mpi/Mpi.h"
 #include "./Src/Telemetry/TelemetryStore.h"
@@ -95,6 +96,7 @@ signals:
     void setButtonInitEnabled(bool enable);
     void setGroupDOVisible(bool visible);
     void stopTest();
+    void stopTheTest();
 
     void addPoints(Charts chart, QVector<Point> points);
     void setVisible(Charts chart, quint16 series, bool visible);
@@ -102,7 +104,7 @@ signals:
     void showDots(bool visible);
     void enableSetTask(bool enable);
     void dublSeries();
-    void getPoints(QVector<QVector<QPointF>> &points, Charts chart);
+    // void getPoints(QVector<QVector<QPointF>> &points, Charts chart);
     void releaseBlock();
     void setRegressionEnable(bool enable);
 
@@ -111,6 +113,10 @@ signals:
     void getParameters_stepTest(StepTestSettings::TestParameters &parameters);
     void getParameters_resolutionTest(OtherTestSettings::TestParameters &parameters);
     void getParameters_responseTest(OtherTestSettings::TestParameters &parameters);
+
+    void getPoints_mainTest(QVector<QVector<QPointF>> &points, Charts chart);
+    void getPoints_stepTest(QVector<QVector<QPointF>> &points, Charts chart);
+    void getPoints_optionTest(QVector<QVector<QPointF>> &points, Charts chart);
 
     void question(QString &title, QString &text, bool &result);
 
@@ -123,12 +129,14 @@ signals:
 public slots:
     void addRegression(const QVector<QPointF> &points);
     void addFriction(const QVector<QPointF> &points);
-    void getPoints_maintest(QVector<QVector<QPointF>> &points);
-    void getPoints_steptest(QVector<QVector<QPointF>> &points);
+
+
     void endTest();
 
     void setDac_real(qreal value);
     void setDac_int(quint16 value);
+
+    void setTimeStart();
 
     void initialization();
 
@@ -142,11 +150,22 @@ public slots:
     void button_DO(quint8 DO_num, bool state);
     void checkbox_autoinit(int state);
 
+    void updateCharts_mainTest();
+    void updateCharts_strokeTest();
+    void updateCharts_optionTest(Charts chart);
+
+    void results_mainTest(const MainTest::TestResults &results);
+    void results_strokeTest(const quint64 forwardTime, const quint64 backwardTime);
+    void results_stepTest(const QVector<StepTest::TestResult> &results, const quint32 T_value);
+
+    void receivedPoints_mainTest(QVector<QVector<QPointF>> &points);
+    void receivedPoints_stepTest(QVector<QVector<QPointF>> &points);
+
 private:
     Registry *m_registry;
     TelemetryStore m_telemetryStore;
 
-    MPI m_mpi;
+    Mpi m_mpi;
     QTimer *m_timerSensors;
     QTimer *m_timerDI;
     quint64 m_startTime;
@@ -175,17 +194,39 @@ private:
     void recordStrokeRange(bool normalClosed);
     void finalizeInitialization();
 
+
+    std::unique_ptr<ITestRunner> m_activeRunner;
+    template<typename RunnerT>
+    void startRunner(std::unique_ptr<RunnerT> r) {
+        disposeActiveRunnerAsync();
+        connect(r.get(), &ITestRunner::requestClearChart, this, [this](int chart){
+            emit clearPoints(static_cast<Charts>(chart));
+        });
+        connect(r.get(), &ITestRunner::requestSetDac, this, &Program::setDac);
+        connect(this, &Program::releaseBlock, r.get(), &ITestRunner::releaseBlock);
+        connect(r.get(), &ITestRunner::totalTestTimeMs, this, &Program::totalTestTimeMs);
+        connect(r.get(), &ITestRunner::endTest, this, &Program::endTest);
+        connect(this, &Program::stopTheTest, r.get(), &ITestRunner::stop);
+        connect(r.get(), &ITestRunner::endTest, this, [this]{ disposeActiveRunnerAsync(); });
+        emit setButtonInitEnabled(false);
+        m_testing = true;
+        emit enableSetTask(false);
+
+        m_activeRunner = std::move(r);
+        m_activeRunner->start();
+    }
+\
+    void disposeActiveRunnerAsync();
+
+
 private slots:
     void updateSensors();
-    void updateCharts_mainTest();
-    void updateCharts_strokeTest();
-    void updateCharts_optionTest(Charts chart);
 
-    void results_mainTest(const MainTest::TestResults &results);
-    void results_strokeTest(const quint64 forwardTime, const quint64 backwardTime);
-    void results_stepTest(const QVector<StepTest::TestResult> &results, const quint32 T_value);
 
-    void setTimeStart();
+    void forwardGetParameters_mainTest(MainTestSettings::TestParameters &p) { emit getParameters_mainTest(p); }
+    void forwardGetParameters_responseTest(OtherTestSettings::TestParameters &p) { emit getParameters_responseTest(p); }
+    void forwardGetParameters_resolutionTest(OtherTestSettings::TestParameters &p) { emit getParameters_resolutionTest(p); }
+
 
     void setDac(quint16 dac,
                 quint32 sleepMs = 0,

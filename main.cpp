@@ -1,11 +1,13 @@
 #include <QApplication>
 #include <QTranslator>
+#include <QSqlDatabase>
 
 #include "MainWindow.h"
 #include "NotationWindow.h"
 #include "ObjectWindow.h"
 #include "Registry.h"
 #include "ValveWindow.h"
+#include "./Src/Database/ValveDatabase.h"
 
 int main(int argc, char *argv[])
 {
@@ -16,8 +18,25 @@ int main(int argc, char *argv[])
         a.installTranslator(&qtTranslator);
 
     QSqlDatabase database = QSqlDatabase::addDatabase("QSQLITE");
-    auto path = ":/Database/Database.db";
-    database.setDatabaseName(path);
+
+    QString writablePath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QDir().mkpath(writablePath);
+    QString dbPath = writablePath + "/Database.db";
+
+    if (!QFile::exists(dbPath)) {
+        if (!QFile::copy(":/Database/Database.db", dbPath)) {
+            qCritical() << "Не удалось скопировать БД";
+            return -1;
+        }
+        QFile::setPermissions(dbPath, QFileDevice::ReadOwner | QFileDevice::WriteOwner);
+    }
+
+    database.setDatabaseName(dbPath);
+
+    if (!database.open()) {
+        qCritical() << "Не могу открыть базу данных:";
+        return -1;
+    }
 
     Registry registry;
     ValveDatabase valveDatabase(database);
