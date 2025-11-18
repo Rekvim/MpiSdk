@@ -57,6 +57,8 @@ public:
     bool isInitialized() const;
 
 signals:
+    void testFinished();
+
     void setText(const TextObjects object, const QString &text);
     void setTextColor(const TextObjects object, const QColor color);
     void telemetryUpdated(const TelemetryStore &store);
@@ -186,9 +188,6 @@ private:
 
         connect(this, &Program::stopTheTest,
                 r.get(), &ITestRunner::stop);
-
-        connect(r.get(), &ITestRunner::endTest,
-                this, [this]{ disposeActiveRunnerAsync(); });
 
         emit setButtonInitEnabled(false);
         m_testing = true;

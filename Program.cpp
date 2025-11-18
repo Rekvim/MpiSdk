@@ -149,22 +149,19 @@ void Program::updateSensors()
     emit addPoints(Charts::Trend, points);
 }
 
-void Program::endTest()
-{
+void Program::endTest() {
     m_testing = false;
     emit enableSetTask(true);
     emit setButtonInitEnabled(true);
-    setDac_int(0);
-    emit stopTest();
-    emit stopTheTest();
+
     emit setTask(m_mpi.GetDac()->GetValue());
-    disposeActiveRunnerAsync();
+
+    m_activeRunner.reset();
+    emit testFinished();
 }
 
 void Program::disposeActiveRunnerAsync() {
-    if (!m_activeRunner) return;
-    QObject* obj = m_activeRunner.release();
-    QMetaObject::invokeMethod(obj, "deleteLater", Qt::QueuedConnection);
+    m_activeRunner.reset();
 }
 
 void Program::setDac_real(qreal value)

@@ -1,9 +1,6 @@
 #include "StepTestRunner.h"
-
 #include "./Program.h"
 #include "./Registry.h"
-#include "./Src/Tests/StepTest.h"
-#include "./StepTestSettings.h"
 
 static QVector<quint16> buildSequence(const StepTestSettings::TestParameters& p,
                                       Mpi& mpi, bool normalOpen)
@@ -56,12 +53,14 @@ void StepTestRunner::wireSpecificSignals(Test& base) {
     auto owner = qobject_cast<Program*>(parent()); Q_ASSERT(owner);
 
     connect(&t, &StepTest::UpdateGraph,
-            owner, [owner]{ owner->updateCharts_optionTest(Charts::Step); });
+            owner, [owner]{ owner->updateCharts_optionTest(Charts::Step); },
+            Qt::QueuedConnection);
 
     connect(&t, &StepTest::GetPoints,
             owner, &Program::receivedPoints_stepTest,
             Qt::BlockingQueuedConnection);
 
     connect(&t, &StepTest::Results,
-            owner, &Program::results_stepTest);
+            owner, &Program::results_stepTest,
+            Qt::QueuedConnection);
 }

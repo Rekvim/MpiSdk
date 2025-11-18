@@ -166,6 +166,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->label_arrowUp->setCursor(Qt::PointingHandCursor);
     ui->label_arrowDown->setCursor(Qt::PointingHandCursor);
 
+    connect(m_program, &Program::testFinished,
+            this,        &MainWindow::endTest);
+
     ui->label_arrowUp->installEventFilter(this);
     ui->label_arrowDown->installEventFilter(this);
 
@@ -178,9 +181,15 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    delete ui;
+    emit stopTest();
+
+    QMetaObject::invokeMethod(m_program, "terminateTest", Qt::BlockingQueuedConnection);
+
     m_programThread->quit();
     m_programThread->wait();
+
+    m_program->deleteLater();
+    delete ui;
 }
 
 void MainWindow::onTelemetryUpdated(const TelemetryStore &TS) {

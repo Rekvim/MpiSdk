@@ -113,5 +113,4 @@ RESOURCES += \
     Database.qrc \
     Excel.qrc \
     Translations.qrc \
-    db_valveData.qrc \
     img.qrc
