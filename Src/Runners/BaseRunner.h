@@ -24,6 +24,7 @@ public:
     ~BaseRunner() override;
 
 public slots:
+<<<<<<< Updated upstream
     void start() final;   // вызывает buildConfig(), заводит поток, вешает общие connect’ы
     void stop() override; // дергает worker->StoppingTheTest()
     void releaseBlock() final override;
@@ -31,6 +32,15 @@ public slots:
 protected:
     virtual RunnerConfig buildConfig() = 0;          // собрать worker + задать totalMs/график
     virtual void wireSpecificSignals(Test& t) {}     // доцепить спец. сигналы текущего теста
+=======
+    void start() final;
+    void stop() override;
+    void releaseBlock() final override;
+
+protected:
+    virtual RunnerConfig buildConfig() = 0;
+    virtual void wireSpecificSignals(Test& t) {}
+>>>>>>> Stashed changes
 
     Mpi& m_mpi;
     Registry& m_reg;
