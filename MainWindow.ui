@@ -29,7 +29,11 @@
        </font>
       </property>
       <property name="currentIndex">
+<<<<<<< Updated upstream
        <number>4</number>
+=======
+       <number>3</number>
+>>>>>>> Stashed changes
       </property>
       <widget class="QWidget" name="tab_manual">
        <attribute name="title">
@@ -2111,7 +2115,11 @@
            </font>
           </property>
           <property name="currentIndex">
+<<<<<<< Updated upstream
            <number>3</number>
+=======
+           <number>1</number>
+>>>>>>> Stashed changes
           </property>
           <widget class="QWidget" name="tab_optionalTests_response">
            <attribute name="title">
