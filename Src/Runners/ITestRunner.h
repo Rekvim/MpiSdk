@@ -28,7 +28,6 @@ signals:
 
     void telemetryUpdated(const TelemetryStore&);
     void requestSetDac(quint16 dac, quint32 sleepMs, bool waitForStop, bool waitForStart);
-
 };
 
 
