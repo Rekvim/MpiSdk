@@ -4,7 +4,6 @@
 #pragma once
 #include <QByteArray>
 
-static constexpr char startbyte = 0xAA;
 
 enum class Command : quint8 {
     DAC = 0xC2,
@@ -24,6 +23,8 @@ enum class Command : quint8 {
 class UartMessage
 {
 public:
+    static constexpr char startbyte = 0xAA;
+
     UartMessage() = default;
     UartMessage(const Command command);
     UartMessage(const Command command, const QByteArray &data);

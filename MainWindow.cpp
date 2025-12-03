@@ -7,9 +7,6 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    qDebug() << "Окно открыто";
-
-    m_testing = false;
 
     ui->tabWidget->setCurrentIndex(0);
 
