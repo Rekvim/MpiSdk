@@ -24,10 +24,6 @@ public:
     ~BaseRunner() override;
 
 public slots:
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
     void start() final;
     void stop() override;
     void releaseBlock() final override;
