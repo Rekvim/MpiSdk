@@ -128,13 +128,11 @@ qint64 OtherTestSettings::totalTestTimeMillis() const
 {
     TestParameters params = getParameters();
 
-    int P = params.points.size(); // количество точек
-    int S = params.steps.size();  // количество шагов
-    qint64 delay = params.delay;  // задержка в миллисекундах
+    int P = params.points.size();
+    int S = params.steps.size();
+    qint64 delay = params.delay;
 
-    // N_values = 1 старт + 2 прохода по всем точкам (каждый: 1 базовая + S шагов)
     qint64 N_values = 1 + 2 * P * (1 + S);
 
-    // total = 10 сек на первый уровень + delay на каждый элемент массива
     return 10000 + N_values * delay;
 }

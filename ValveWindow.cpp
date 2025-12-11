@@ -1,7 +1,6 @@
 #include "ui_ValveWindow.h"
 #include "ValveWindow.h"
-
-// #include "./Src/ValidatorFactory/ValidatorFactory.h"
+#include "./Src/ValidatorFactory/ValidatorFactory.h"
 
 ValveWindow::ValveWindow(Registry &registry, ValveDatabase db, QWidget *parent)
     : QDialog(parent)
@@ -10,34 +9,9 @@ ValveWindow::ValveWindow(Registry &registry, ValveDatabase db, QWidget *parent)
     , m_db(db)
 {
     ui->setupUi(this);
-
+    setupValidators();
     loadFromRegistry();
 
-    // QValidator *validatorDigits = ValidatorFactory::create(ValidatorFactory::Type::Digits, this);
-    // QValidator *validatorDigitsDot = ValidatorFactory::create(ValidatorFactory::Type::DigitsDot, this);
-    // QValidator *validatorDigitsHyphens = ValidatorFactory::create(ValidatorFactory::Type::DigitsHyphens, this);
-    // QValidator *noSpecialChars = ValidatorFactory::create(ValidatorFactory::Type::NoSpecialChars, this);
-
-    // ui->lineEdit_valveSeries->setValidator(validatorDigits);
-    // ui->lineEdit_valveModel->setValidator(validatorDigitsHyphens);
-    // ui->lineEdit_driveRange->setValidator(validatorDigitsDot);
-    // ui->lineEdit_serialNumber->setValidator(validatorDigitsHyphens);
-    // ui->lineEdit_PN->setValidator(validatorDigits);
-    // ui->lineEdit_valveStroke->setValidator(validatorDigitsDot);
-    // ui->lineEdit_positionerModel->setValidator(validatorDigitsHyphens);
-    // ui->lineEdit_driveModel->setValidator(nullptr);
-
-    // ui->lineEdit_materialCorpus->setValidator(noSpecialChars);
-    // ui->lineEdit_materialCap->setValidator(noSpecialChars);
-    // ui->lineEdit_materialBall->setValidator(noSpecialChars);
-    // ui->lineEdit_materialDisk->setValidator(noSpecialChars);
-    // ui->lineEdit_materialPlunger->setValidator(noSpecialChars);
-    // ui->lineEdit_materialShaft->setValidator(noSpecialChars);
-    // ui->lineEdit_materialStock->setValidator(noSpecialChars);
-    // ui->lineEdit_materialGuideSleeve->setValidator(noSpecialChars);
-    // ui->lineEdit_positionNumber->setValidator(noSpecialChars);
-
-    // ui->lineEdit_manufacturer->setValidator(noSpecialChars);
     ui->lineEdit_manufacturer->setEnabled(false);
 
     connect(ui->comboBox_manufacturer, QOverload<int>::of(&QComboBox::currentIndexChanged),
@@ -198,6 +172,48 @@ void ValveWindow::loadFromRegistry()
     m_valveInfo = m_registry.getValveInfo();
     m_materialsOfComponentParts = m_registry.getMaterialsOfComponentParts();
     m_listDetails = m_registry.getListDetails();
+}
+
+void ValveWindow::setupValidators()
+{
+    // Базовые регулярки из фабрики
+    auto *validatorDigits =
+        ValidatorFactory::create(ValidatorFactory::Type::Digits, this);
+    auto *validatorDigitsDot =
+        ValidatorFactory::create(ValidatorFactory::Type::DigitsDot, this);
+    auto *validatorDigitsHyphens =
+        ValidatorFactory::create(ValidatorFactory::Type::DigitsHyphens, this);
+    auto *validatorFloatRange =
+        ValidatorFactory::create(ValidatorFactory::Type::FloatRange, this);
+    auto *validatorNoSpecialChars =
+        ValidatorFactory::create(ValidatorFactory::Type::NoSpecialChars, this);
+
+    auto *validatorDiameter = new QDoubleValidator(0.0, 10000.0, 2, this);
+    validatorDiameter->setNotation(QDoubleValidator::StandardNotation);
+
+    ui->lineEdit_valveSeries->setValidator(validatorDigits);
+    // ui->lineEdit_valveModel->setValidator(validatorDigitsHyphens);
+    // ui->lineEdit_serialNumber->setValidator(validatorDigitsHyphens);
+    ui->lineEdit_PN->setValidator(validatorDigits);
+    ui->lineEdit_CV->setValidator(validatorDigits);
+    ui->lineEdit_DN->setValidator(validatorDigits);
+
+    ui->lineEdit_strokValve->setValidator(validatorDigitsDot);
+    ui->lineEdit_driveRange->setValidator(validatorFloatRange);
+
+    ui->lineEdit_driveDiameter->setValidator(validatorDiameter);
+    ui->lineEdit_diameterPulley->setValidator(validatorDiameter);
+
+    ui->lineEdit_materialCorpus->setValidator(validatorNoSpecialChars);
+    ui->lineEdit_materialCap->setValidator(validatorNoSpecialChars);
+    ui->lineEdit_materialBall->setValidator(validatorNoSpecialChars);
+    ui->lineEdit_materialDisk->setValidator(validatorNoSpecialChars);
+    ui->lineEdit_materialPlunger->setValidator(validatorNoSpecialChars);
+    ui->lineEdit_materialShaft->setValidator(validatorNoSpecialChars);
+    ui->lineEdit_materialStock->setValidator(validatorNoSpecialChars);
+    ui->lineEdit_materialGuideSleeve->setValidator(validatorNoSpecialChars);
+    ui->lineEdit_positionNumber->setValidator(validatorNoSpecialChars);
+    ui->lineEdit_manufacturer->setValidator(validatorNoSpecialChars);
 }
 
 void ValveWindow::syncUIFromRegistry()

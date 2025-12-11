@@ -24,6 +24,7 @@ public:
     ~ValveWindow() = default;
 
 private:
+    void setupValidators();
     void loadFromRegistry();
     void syncUIFromRegistry();
 
