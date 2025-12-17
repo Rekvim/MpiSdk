@@ -285,7 +285,7 @@ void Program::measureStartPosition(bool normalClosed)
     if (normalClosed) m_mpi[0]->SetMin();
     else m_mpi[0]->SetMax();
 
-    ts.init.startingPositionText  = m_mpi[0]->GetFormatedValue();
+    ts.init.startingPositionText = m_mpi[0]->GetFormatedValue();
     ts.init.startingPositionColor = Qt::darkGreen;
     emit telemetryUpdated(ts);
 }
@@ -303,7 +303,7 @@ void Program::measureEndPosition(bool normalClosed)
     if (normalClosed) m_mpi[0]->SetMax();
     else m_mpi[0]->SetMin();
 
-    ts.init.finalPositionText  = m_mpi[0]->GetFormatedValue();
+    ts.init.finalPositionText = m_mpi[0]->GetFormatedValue();
     ts.init.finalPositionColor = Qt::darkGreen;
     emit telemetryUpdated(ts);
 }

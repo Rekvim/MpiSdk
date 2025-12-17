@@ -28,7 +28,7 @@ public:
     void setReport(const ReportSaver::Report &report);
 
 signals:
-    void setDac(qreal value);
+    void dacValueRequested(qreal value);
     void runMainTest();
     void runStrokeTest();
     void runOptionalTest(quint8 test_num);

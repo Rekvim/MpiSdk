@@ -74,7 +74,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_program, &Program::setTextColor,
             this, &MainWindow::setTextColor);
 
-    connect(this, &MainWindow::setDac,
+    connect(this, &MainWindow::dacValueRequested,
             m_program, &Program::setDac_real);
 
     connect(ui->doubleSpinBox_task,
@@ -83,7 +83,7 @@ MainWindow::MainWindow(QWidget *parent)
             [&](double value) {
                 if (qRound(value * 1000) != ui->verticalSlider_task->value()) {
                     if (ui->verticalSlider_task->isEnabled())
-                        emit setDac(value);
+                        emit dacValueRequested(value);
                     ui->verticalSlider_task->setValue(qRound(value * 1000));
                 }
             });
@@ -92,16 +92,10 @@ MainWindow::MainWindow(QWidget *parent)
             this, [&](int value) {
         if (qRound(ui->doubleSpinBox_task->value() * 1000) != value) {
             if (ui->doubleSpinBox_task->isEnabled())
-                emit setDac(value / 1000.0);
+                emit dacValueRequested(value / 1000.0);
             ui->doubleSpinBox_task->setValue(value / 1000.0);
         }
     });
-
-    ui->label_arrowUp->setCursor(Qt::PointingHandCursor);
-    ui->label_arrowDown->setCursor(Qt::PointingHandCursor);
-
-    ui->label_arrowUp->installEventFilter(this);
-    ui->label_arrowDown->installEventFilter(this);
 
     connect(m_program, &Program::setTask,
             this, &MainWindow::setTask);
@@ -160,20 +154,81 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableWidget_stepResults->setHorizontalHeaderLabels({tr("T86"), tr("Перерегулирование")});
     ui->tableWidget_stepResults->resizeColumnsToContents();
 
-    ui->label_arrowUp->setCursor(Qt::PointingHandCursor);
-    ui->label_arrowDown->setCursor(Qt::PointingHandCursor);
+    ui->toolButton_arrowUp->setIcon(QIcon(":/Src/img/arrowUp.png"));
+    ui->toolButton_arrowUp->setIconSize(ui->toolButton_arrowUp->size());
+    ui->toolButton_arrowUp->setFixedSize(100, 60);
+    ui->toolButton_arrowUp->setIconSize(QSize(90, 50));
+    ui->toolButton_arrowUp->setText(QString());
+    ui->toolButton_arrowUp->setAutoRepeat(true);
+    ui->toolButton_arrowUp->setAutoRepeatDelay(300);
+    ui->toolButton_arrowUp->setAutoRepeatInterval(100);
+
+    ui->toolButton_arrowUp->setStyleSheet(
+        "QToolButton {"
+        "   background-color: transparent;"
+        "   border: none;"
+        "   padding: 0px;"
+        "   margin: 0px;"
+        "}"
+        "QToolButton:hover {"
+        "   background-color: transparent;"
+        "}"
+        "QToolButton:pressed {"
+        "   background-color: transparent;"
+        "}"
+        );
+
+    connect(ui->toolButton_arrowUp, &QToolButton::clicked,
+            this, [this]() {
+                double cur = ui->doubleSpinBox_task->value();
+                double nxt = cur + 0.05;
+                if (nxt > ui->doubleSpinBox_task->maximum())
+                    nxt = ui->doubleSpinBox_task->maximum();
+                ui->doubleSpinBox_task->setValue(nxt);
+                if (ui->doubleSpinBox_task->isEnabled())
+                    emit dacValueRequested(nxt);
+            });
+    ui->toolButton_arrowUp->installEventFilter(this);
+
+    ui->toolButton_arrowDown->setIcon(QIcon(":/Src/img/arrowDown.png"));
+    ui->toolButton_arrowDown->setIconSize(ui->toolButton_arrowDown->size());
+    ui->toolButton_arrowDown->setFixedSize(100, 60);
+    ui->toolButton_arrowDown->setIconSize(QSize(90, 50));
+    ui->toolButton_arrowDown->setText(QString());
+    ui->toolButton_arrowDown->setAutoRepeat(true);
+    ui->toolButton_arrowDown->setAutoRepeatDelay(300);
+    ui->toolButton_arrowDown->setAutoRepeatInterval(100);
+
+    ui->toolButton_arrowDown->setStyleSheet(
+        "QToolButton {"
+        "   background-color: transparent;"
+        "   border: none;"
+        "   padding: 0px;"
+        "   margin: 0px;"
+        "}"
+        "QToolButton:hover {"
+        "   background-color: transparent;"
+        "}"
+        "QToolButton:pressed {"
+        "   background-color: transparent;"
+        "}"
+        );
+
+    ui->toolButton_arrowDown->installEventFilter(this);
+
+    connect(ui->toolButton_arrowDown, &QToolButton::clicked,
+            this, [this]() {
+                double cur = ui->doubleSpinBox_task->value();
+                double nxt = cur - 0.05;
+                if (nxt < ui->doubleSpinBox_task->minimum())
+                    nxt = ui->doubleSpinBox_task->minimum();
+                ui->doubleSpinBox_task->setValue(nxt);
+                if (ui->doubleSpinBox_task->isEnabled())
+                    emit dacValueRequested(nxt);
+            });
 
     connect(m_program, &Program::testFinished,
-            this,        &MainWindow::endTest);
-
-    ui->label_arrowUp->installEventFilter(this);
-    ui->label_arrowDown->installEventFilter(this);
-
-    ui->label_arrowUp->setCursor(Qt::PointingHandCursor);
-    ui->label_arrowDown->setCursor(Qt::PointingHandCursor);
-
-    ui->label_arrowUp->installEventFilter(this);
-    ui->label_arrowDown->installEventFilter(this);
+            this, &MainWindow::endTest);
 }
 
 MainWindow::~MainWindow()
@@ -408,44 +463,24 @@ void MainWindow::endTest()
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 {
-    if (auto w = qobject_cast<QWidget*>(watched)) {
-        if (!w->isEnabled()) {
-            return false;
-        }
-    }
-    if (watched == ui->label_arrowUp && event->type() == QEvent::MouseButtonRelease) {
-        double cur = ui->doubleSpinBox_task->value();
-        double nxt = cur + 0.05;
-        if (nxt > ui->doubleSpinBox_task->maximum())
-            nxt = ui->doubleSpinBox_task->maximum();
-        ui->doubleSpinBox_task->setValue(nxt);
-        return true;
-    }
-    if (watched == ui->label_arrowDown && event->type() == QEvent::MouseButtonRelease) {
-        double cur = ui->doubleSpinBox_task->value();
-        double nxt = cur - 0.05;
-        if (nxt < ui->doubleSpinBox_task->minimum())
-            nxt = ui->doubleSpinBox_task->minimum();
-        ui->doubleSpinBox_task->setValue(nxt);
-        return true;
-    }
-    if (watched == ui->label_arrowUp) {
+    if (watched == ui->toolButton_arrowUp) {
         if (event->type() == QEvent::Enter) {
-            ui->label_arrowUp->setPixmap(QPixmap(":/Src/img/arrowUpHover.png"));
+            ui->toolButton_arrowUp->setIcon(QIcon(":/Src/img/arrowUpHover.png"));
             return true;
         }
         if (event->type() == QEvent::Leave) {
-            ui->label_arrowUp->setPixmap(QPixmap(":/Src/img/arrowUp.png"));
+            ui->toolButton_arrowUp->setIcon(QIcon(":/Src/img/arrowUp.png"));
             return true;
         }
     }
-    if (watched == ui->label_arrowDown) {
+
+    if (watched == ui->toolButton_arrowDown) {
         if (event->type() == QEvent::Enter) {
-            ui->label_arrowDown->setPixmap(QPixmap(":/Src/img/arrowDownHover.png"));
+            ui->toolButton_arrowDown->setIcon(QIcon(":/Src/img/arrowDownHover.png"));
             return true;
         }
         if (event->type() == QEvent::Leave) {
-            ui->label_arrowDown->setPixmap(QPixmap(":/Src/img/arrowDown.png"));
+            ui->toolButton_arrowDown->setIcon(QIcon(":/Src/img/arrowDown.png"));
             return true;
         }
     }
@@ -587,7 +622,7 @@ void MainWindow::setSensorsNumber(quint8 num)
     ui->tabWidget->setTabEnabled(1, num > 1);
     ui->tabWidget->setTabEnabled(2, !noSensors);
     ui->tabWidget->setTabEnabled(3, !noSensors);
-    ui->groupBox_SettingCurrentSignal->setEnabled(!noSensors);
+    // ui->groupBox_SettingCurrentSignal->setEnabled(!noSensors);
 
     if (num > 0) {
         ui->checkBox_showCurve_task->setVisible(num > 1);
@@ -645,7 +680,7 @@ void MainWindow::enableSetTask(bool enable)
 {
     ui->verticalSlider_task->setEnabled(enable);
     ui->doubleSpinBox_task->setEnabled(enable);
-    ui->groupBox_SettingCurrentSignal->setEnabled(enable);
+    // ui->groupBox_SettingCurrentSignal->setEnabled(enable);
 }
 
 void MainWindow::receivedPoints_mainTest(QVector<QVector<QPointF>> &points, Charts chart)
